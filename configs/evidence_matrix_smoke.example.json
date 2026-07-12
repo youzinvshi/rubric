@@ -1,0 +1,82 @@
+{
+  "claims": [
+    {
+      "id": "C1",
+      "section": "Motivation",
+      "claim": "BSC can quantify uncovered human evaluation dimensions as Blind = 1 - Cov.",
+      "artifacts": [
+        {
+          "label": "Toy BSC summary",
+          "path": "outputs/toy_bsc/summary.json"
+        },
+        {
+          "label": "Toy BSC per-item diagnostics",
+          "path": "outputs/toy_bsc/per_item.csv"
+        }
+      ],
+      "metrics": [
+        {
+          "label": "At least one evaluated item",
+          "path": "outputs/toy_bsc/summary.json",
+          "metric": "n",
+          "op": ">",
+          "value": 0
+        },
+        {
+          "label": "Toy blind spot is measurable",
+          "path": "outputs/toy_bsc/summary.json",
+          "metric": "mean_blind",
+          "op": ">=",
+          "value": 0
+        }
+      ],
+      "notes": "Toy evidence validates the pipeline shape; paper claims require RubricBench-scale data."
+    },
+    {
+      "id": "C2",
+      "section": "Robustness",
+      "claim": "BSC conclusions can be audited across semantic threshold choices.",
+      "artifacts": [
+        {
+          "label": "Threshold sweep CSV",
+          "path": "outputs/toy_bsc_sweep/threshold_sweep.csv"
+        },
+        {
+          "label": "Threshold sweep Markdown",
+          "path": "outputs/toy_bsc_sweep/threshold_sweep.md"
+        }
+      ],
+      "metrics": [
+        {
+          "label": "Smoke BSC sweep exists",
+          "path": "outputs/toy_bsc_sweep/threshold_sweep.json",
+          "metric": "0.n",
+          "op": ">",
+          "value": 0
+        }
+      ],
+      "notes": "Use the real grid with BGE embeddings for appendix sensitivity."
+    },
+    {
+      "id": "C3",
+      "section": "Downstream",
+      "claim": "Generated evaluation criteria can support a smoke-test chosen-vs-rejected preference evaluation.",
+      "artifacts": [
+        {
+          "label": "Toy downstream summary",
+          "path": "outputs/toy_downstream/summary.json"
+        }
+      ],
+      "metrics": [
+        {
+          "label": "At least one downstream pair",
+          "path": "outputs/toy_downstream/summary.json",
+          "metric": "n",
+          "op": ">",
+          "value": 0
+        }
+      ],
+      "notes": "Toy keyword scorer is not a paper claim; real evidence should use API scorer or fixed judge."
+    }
+  ]
+}

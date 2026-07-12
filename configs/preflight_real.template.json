@@ -1,0 +1,62 @@
+{
+  "stages": [
+    {
+      "name": "real_run_preflight",
+      "type": "preflight",
+      "args": {
+        "input": [
+          "data/processed/rubricbench_gold.jsonl",
+          "data/processed/rubricbench_queries.jsonl",
+          "data/processed/splits/rubricbench_gold_train_seed.jsonl",
+          "data/processed/rewardbench_pref.jsonl",
+          "data/processed/rewardbench_queries.jsonl",
+          "data/processed/judgebench_pref.jsonl",
+          "data/processed/judgebench_queries.jsonl",
+          "data/processed/rewardbench2_queries.clean.jsonl",
+          "data/processed/rewardbench2_multicandidate.clean.jsonl",
+          "data/processed/rmbench_queries.jsonl",
+          "data/processed/healthbench_queries.jsonl",
+          "data/processed/writingbench_queries.jsonl",
+          "data/processed/healthbench_hard_queries.jsonl",
+          "data/processed/arenahard_queries.jsonl"
+        ],
+        "providers": [
+          "configs/generators.local.jsonl",
+          "configs/providers.local.jsonl",
+          "configs/verifier.local.jsonl",
+          "configs/judge_scorer.local.jsonl"
+        ],
+        "required_provider": [
+          "base",
+          "gpt4o",
+          "claude",
+          "sft_only",
+          "sft_rl",
+          "gpt-4o",
+          "deepseek",
+          "qwen",
+          "meta-verifier",
+          "judge-scorer"
+        ],
+        "required_provider_in": [
+          "configs/generators.local.jsonl:base,gpt4o,claude,sft_only,sft_rl",
+          "configs/providers.local.jsonl:gpt-4o,deepseek,qwen",
+          "configs/verifier.local.jsonl:meta-verifier",
+          "configs/judge_scorer.local.jsonl:judge-scorer"
+        ],
+        "training_config": "configs/training_commands.example.json",
+        "required_env": [
+          "LOCAL_OPENAI_API_KEY",
+          "OPENAI_API_KEY",
+          "ANTHROPIC_API_KEY",
+          "DEEPSEEK_API_KEY",
+          "DASHSCOPE_API_KEY"
+        ],
+        "min_records": 1,
+        "output": "outputs/preflight/real_run_preflight.json",
+        "output_md": "outputs/preflight/real_run_preflight.md",
+        "strict": true
+      }
+    }
+  ]
+}

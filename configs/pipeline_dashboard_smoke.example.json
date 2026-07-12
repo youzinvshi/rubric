@@ -1,0 +1,13 @@
+{
+  "stages": [
+    {
+      "name": "dashboard",
+      "type": "dashboard",
+      "args": {
+        "config": "configs/dashboard_smoke.example.json",
+        "output_json": "outputs/toy_dashboard/run_dashboard.json",
+        "output_md": "outputs/toy_dashboard/run_dashboard.md"
+      }
+    }
+  ]
+}

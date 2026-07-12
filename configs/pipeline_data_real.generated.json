@@ -1,0 +1,617 @@
+{
+  "stages": [
+    {
+      "name": "init_data_source_local_config",
+      "type": "init_data_source_config",
+      "args": {
+        "template": "configs/data_sources_real.template.json",
+        "output": "configs/data_sources_real.local.json",
+        "report_json": "outputs/data_sources/local_config_init.json",
+        "report_md": "outputs/data_sources/local_config_init.md",
+        "required_dataset": [],
+        "fill_present_sha256": false,
+        "update_existing": false,
+        "strict": false
+      }
+    },
+    {
+      "name": "download_rubricbench",
+      "type": "download",
+      "args": {
+        "url": "https://huggingface.co/datasets/DonJoey/rubricbench/resolve/main/data/train-00000-of-00001.parquet",
+        "output": "data/raw/rubricbench_raw.jsonl"
+      }
+    },
+    {
+      "name": "download_researchrubrics",
+      "type": "download",
+      "args": {
+        "url": "https://huggingface.co/datasets/ScaleAI/researchrubrics/resolve/main/processed_data.jsonl",
+        "output": "data/raw/researchrubrics_raw.jsonl"
+      }
+    },
+    {
+      "name": "download_rewardbench",
+      "type": "download",
+      "args": {
+        "output": "data/raw/rewardbench_filtered.jsonl",
+        "preset": "rewardbench"
+      }
+    },
+    {
+      "name": "download_judgebench",
+      "type": "download",
+      "args": {
+        "output": "data/raw/judgebench_test.jsonl",
+        "preset": "judgebench"
+      }
+    },
+    {
+      "name": "download_rewardbench2",
+      "type": "download",
+      "args": {
+        "output": "data/raw/rewardbench2_test.jsonl",
+        "preset": "rewardbench2"
+      }
+    },
+    {
+      "name": "download_healthbench",
+      "type": "download",
+      "args": {
+        "output": "data/raw/healthbench_raw.jsonl",
+        "preset": "healthbench"
+      }
+    },
+    {
+      "name": "download_ifbench",
+      "type": "download",
+      "args": {
+        "output": "data/raw/ifbench_test.jsonl",
+        "preset": "ifbench"
+      }
+    },
+    {
+      "name": "download_beir_nq",
+      "type": "download",
+      "args": {
+        "output": "data/raw/beir_nq_queries.jsonl",
+        "preset": "beir_nq"
+      }
+    },
+    {
+      "name": "download_writingbench",
+      "type": "download",
+      "args": {
+        "output": "data/raw/writingbench_raw.jsonl",
+        "preset": "writingbench",
+        "url": "https://raw.githubusercontent.com/X-PLUG/WritingBench/main/benchmark_query/benchmark_all.jsonl"
+      }
+    },
+    {
+      "name": "init_data_source_local_config_post_download",
+      "type": "init_data_source_config",
+      "args": {
+        "template": "configs/data_sources_real.template.json",
+        "output": "configs/data_sources_real.local.json",
+        "report_json": "outputs/data_sources/local_config_post_download.json",
+        "report_md": "outputs/data_sources/local_config_post_download.md",
+        "required_dataset": [],
+        "fill_present_sha256": true,
+        "update_existing": true,
+        "strict": false
+      }
+    },
+    {
+      "name": "data_source_report_pre_normalization",
+      "type": "data_source_report",
+      "args": {
+        "config": "configs/data_sources_real.local.json",
+        "output_json": "outputs/data_sources/source_report_pre_normalization.json",
+        "output_md": "outputs/data_sources/source_report_pre_normalization.md",
+        "required_dataset": [],
+        "strict": true
+      }
+    },
+    {
+      "name": "profile_rubricbench",
+      "type": "profile_data",
+      "args": {
+        "input": "data/raw/rubricbench_raw.jsonl",
+        "output": "outputs/data_profiles/rubricbench_schema.json",
+        "limit": 100
+      }
+    },
+    {
+      "name": "normalize_rubricbench_gold_1",
+      "type": "normalize",
+      "args": {
+        "input": "data/raw/rubricbench_raw.jsonl",
+        "output": "data/processed/rubricbench_gold.jsonl",
+        "target": "gold",
+        "data_source": "rubricbench",
+        "source_url": "https://huggingface.co/datasets/DonJoey/rubricbench/resolve/main/data/train-00000-of-00001.parquet",
+        "paper_url": "https://arxiv.org/abs/2603.01562",
+        "dedupe_query": true
+      }
+    },
+    {
+      "name": "validate_rubricbench_gold_1",
+      "type": "validate_gold",
+      "args": {
+        "input": "data/processed/rubricbench_gold.jsonl",
+        "target": "gold",
+        "output_json": "outputs/data_validation/rubricbench_gold.json",
+        "output_md": "outputs/data_validation/rubricbench_gold.md",
+        "min_records": 100,
+        "min_rubrics_per_query": 1,
+        "require_provenance": true,
+        "strict": true,
+        "required_data_source": [
+          "rubricbench"
+        ],
+        "forbidden_data_source": [
+          "toy",
+          "proxy"
+        ],
+        "required_provenance": [
+          "paper_url=https://arxiv.org/abs/2603.01562",
+          "source_url=https://huggingface.co/datasets/DonJoey/rubricbench/resolve/main/data/train-00000-of-00001.parquet"
+        ]
+      }
+    },
+    {
+      "name": "split_rubricbench_gold_1",
+      "type": "split_dataset",
+      "args": {
+        "input": "data/processed/rubricbench_gold.jsonl",
+        "split": [
+          "train_seed:500",
+          "dev:150",
+          "test_main:497"
+        ],
+        "output_dir": "data/processed/splits",
+        "output_prefix": "rubricbench_gold_",
+        "group_key": "query",
+        "stratify_key": "data_source",
+        "gold_type": "human_gold",
+        "main_eval_split": [
+          "test_main"
+        ],
+        "seed": 13,
+        "manifest": "outputs/data_splits/rubricbench_gold_split.json"
+      }
+    },
+    {
+      "name": "normalize_rubricbench_query_pool_2",
+      "type": "normalize",
+      "args": {
+        "input": "data/raw/rubricbench_raw.jsonl",
+        "output": "data/processed/rubricbench_queries.jsonl",
+        "target": "query_pool",
+        "data_source": "rubricbench",
+        "source_url": "https://huggingface.co/datasets/DonJoey/rubricbench/resolve/main/data/train-00000-of-00001.parquet",
+        "paper_url": "https://arxiv.org/abs/2603.01562",
+        "dedupe_query": true
+      }
+    },
+    {
+      "name": "validate_rubricbench_query_pool_2",
+      "type": "validate_gold",
+      "args": {
+        "input": "data/processed/rubricbench_queries.jsonl",
+        "target": "query_pool",
+        "output_json": "outputs/data_validation/rubricbench_queries.json",
+        "output_md": "outputs/data_validation/rubricbench_queries.md",
+        "min_records": 100,
+        "min_rubrics_per_query": 1,
+        "require_provenance": true,
+        "strict": true,
+        "required_data_source": [
+          "rubricbench"
+        ],
+        "forbidden_data_source": [
+          "toy",
+          "proxy"
+        ],
+        "required_provenance": [
+          "paper_url=https://arxiv.org/abs/2603.01562",
+          "source_url=https://huggingface.co/datasets/DonJoey/rubricbench/resolve/main/data/train-00000-of-00001.parquet"
+        ]
+      }
+    },
+    {
+      "name": "profile_researchrubrics",
+      "type": "profile_data",
+      "args": {
+        "input": "data/raw/researchrubrics_raw.jsonl",
+        "output": "outputs/data_profiles/researchrubrics_schema.json",
+        "limit": 100
+      }
+    },
+    {
+      "name": "normalize_researchrubrics_gold_1",
+      "type": "normalize",
+      "args": {
+        "input": "data/raw/researchrubrics_raw.jsonl",
+        "output": "data/processed/researchrubrics_gold.jsonl",
+        "target": "gold",
+        "data_source": "researchrubrics",
+        "source_url": "https://huggingface.co/datasets/ScaleAI/researchrubrics/resolve/main/processed_data.jsonl",
+        "paper_url": "https://arxiv.org/abs/2511.07685",
+        "dedupe_query": true
+      }
+    },
+    {
+      "name": "validate_researchrubrics_gold_1",
+      "type": "validate_gold",
+      "args": {
+        "input": "data/processed/researchrubrics_gold.jsonl",
+        "target": "gold",
+        "output_json": "outputs/data_validation/researchrubrics_gold.json",
+        "output_md": "outputs/data_validation/researchrubrics_gold.md",
+        "min_records": 100,
+        "min_rubrics_per_query": 1,
+        "require_provenance": true,
+        "strict": true,
+        "required_data_source": [
+          "researchrubrics"
+        ],
+        "forbidden_data_source": [
+          "toy",
+          "proxy"
+        ],
+        "required_provenance": [
+          "paper_url=https://arxiv.org/abs/2511.07685",
+          "source_url=https://huggingface.co/datasets/ScaleAI/researchrubrics/resolve/main/processed_data.jsonl"
+        ]
+      }
+    },
+    {
+      "name": "split_researchrubrics_gold_1",
+      "type": "split_dataset",
+      "args": {
+        "input": "data/processed/researchrubrics_gold.jsonl",
+        "split": [
+          "train_seed:60",
+          "dev_test:rest"
+        ],
+        "output_dir": "data/processed/splits",
+        "output_prefix": "researchrubrics_gold_",
+        "group_key": "query",
+        "stratify_key": "data_source",
+        "gold_type": "human_gold",
+        "main_eval_split": [],
+        "seed": 13,
+        "manifest": "outputs/data_splits/researchrubrics_gold_split.json"
+      }
+    },
+    {
+      "name": "normalize_researchrubrics_query_pool_2",
+      "type": "normalize",
+      "args": {
+        "input": "data/raw/researchrubrics_raw.jsonl",
+        "output": "data/processed/researchrubrics_queries.jsonl",
+        "target": "query_pool",
+        "data_source": "researchrubrics",
+        "source_url": "https://huggingface.co/datasets/ScaleAI/researchrubrics/resolve/main/processed_data.jsonl",
+        "paper_url": "https://arxiv.org/abs/2511.07685",
+        "dedupe_query": true
+      }
+    },
+    {
+      "name": "validate_researchrubrics_query_pool_2",
+      "type": "validate_gold",
+      "args": {
+        "input": "data/processed/researchrubrics_queries.jsonl",
+        "target": "query_pool",
+        "output_json": "outputs/data_validation/researchrubrics_queries.json",
+        "output_md": "outputs/data_validation/researchrubrics_queries.md",
+        "min_records": 100,
+        "min_rubrics_per_query": 1,
+        "require_provenance": true,
+        "strict": true,
+        "required_data_source": [
+          "researchrubrics"
+        ],
+        "forbidden_data_source": [
+          "toy",
+          "proxy"
+        ],
+        "required_provenance": [
+          "paper_url=https://arxiv.org/abs/2511.07685",
+          "source_url=https://huggingface.co/datasets/ScaleAI/researchrubrics/resolve/main/processed_data.jsonl"
+        ]
+      }
+    },
+    {
+      "name": "profile_rewardbench",
+      "type": "profile_data",
+      "args": {
+        "input": "data/raw/rewardbench_filtered.jsonl",
+        "output": "outputs/data_profiles/rewardbench_schema.json",
+        "limit": 100
+      }
+    },
+    {
+      "name": "normalize_rewardbench_preference_1",
+      "type": "normalize",
+      "args": {
+        "input": "data/raw/rewardbench_filtered.jsonl",
+        "output": "data/processed/rewardbench_pref.jsonl",
+        "target": "preference",
+        "data_source": "rewardbench"
+      }
+    },
+    {
+      "name": "split_rewardbench_preference_1",
+      "type": "split_dataset",
+      "args": {
+        "input": "data/processed/rewardbench_pref.jsonl",
+        "split": [
+          "sft_proxy_train:0.6",
+          "dev:0.2",
+          "downstream_holdout:rest"
+        ],
+        "output_dir": "data/processed/splits",
+        "output_prefix": "rewardbench_pref_",
+        "group_key": "query",
+        "stratify_key": "data_source",
+        "gold_type": "proxy_teacher",
+        "main_eval_split": [],
+        "seed": 13,
+        "manifest": "outputs/data_splits/rewardbench_pref_split.json"
+      }
+    },
+    {
+      "name": "normalize_rewardbench_query_pool_2",
+      "type": "normalize",
+      "args": {
+        "input": "data/raw/rewardbench_filtered.jsonl",
+        "output": "data/processed/rewardbench_queries.jsonl",
+        "target": "query_pool",
+        "data_source": "rewardbench",
+        "dedupe_query": true
+      }
+    },
+    {
+      "name": "profile_judgebench",
+      "type": "profile_data",
+      "args": {
+        "input": "data/raw/judgebench_test.jsonl",
+        "output": "outputs/data_profiles/judgebench_schema.json",
+        "limit": 100
+      }
+    },
+    {
+      "name": "normalize_judgebench_preference_1",
+      "type": "normalize",
+      "args": {
+        "input": "data/raw/judgebench_test.jsonl",
+        "output": "data/processed/judgebench_pref.jsonl",
+        "target": "preference",
+        "data_source": "judgebench"
+      }
+    },
+    {
+      "name": "normalize_judgebench_query_pool_2",
+      "type": "normalize",
+      "args": {
+        "input": "data/raw/judgebench_test.jsonl",
+        "output": "data/processed/judgebench_queries.jsonl",
+        "target": "query_pool",
+        "data_source": "judgebench",
+        "dedupe_query": true
+      }
+    },
+    {
+      "name": "profile_rewardbench2",
+      "type": "profile_data",
+      "args": {
+        "input": "data/raw/rewardbench2_test.jsonl",
+        "output": "outputs/data_profiles/rewardbench2_schema.json",
+        "limit": 100
+      }
+    },
+    {
+      "name": "normalize_rewardbench2_query_pool_1",
+      "type": "normalize",
+      "args": {
+        "input": "data/raw/rewardbench2_test.jsonl",
+        "output": "data/processed/rewardbench2_queries.jsonl",
+        "target": "query_pool",
+        "data_source": "rewardbench2",
+        "dedupe_query": true
+      }
+    },
+    {
+      "name": "normalize_rewardbench2_multicandidate_2",
+      "type": "normalize",
+      "args": {
+        "input": "data/raw/rewardbench2_test.jsonl",
+        "output": "data/processed/rewardbench2_multicandidate.jsonl",
+        "target": "multicandidate",
+        "data_source": "rewardbench2"
+      }
+    },
+    {
+      "name": "profile_rmbench",
+      "type": "profile_data",
+      "args": {
+        "input": "data/raw/rmbench_raw.jsonl",
+        "output": "outputs/data_profiles/rmbench_schema.json",
+        "limit": 100
+      }
+    },
+    {
+      "name": "schema_contract_rmbench",
+      "type": "schema_contract",
+      "args": {
+        "input": "data/raw/rmbench_raw.jsonl",
+        "target": [
+          "preference",
+          "multicandidate"
+        ],
+        "data_source": "rmbench",
+        "min_records": 1,
+        "output_json": "outputs/schema_contracts/rmbench_downstream_schema.json",
+        "output_md": "outputs/schema_contracts/rmbench_downstream_schema.md"
+      }
+    },
+    {
+      "name": "normalize_rmbench_query_pool_1",
+      "type": "normalize",
+      "args": {
+        "input": "data/raw/rmbench_raw.jsonl",
+        "output": "data/processed/rmbench_queries.jsonl",
+        "target": "query_pool",
+        "data_source": "rmbench",
+        "source_url": "https://github.com/THU-KEG/RM-Bench",
+        "paper_url": "https://arxiv.org/abs/2410.09893",
+        "dedupe_query": true
+      }
+    },
+    {
+      "name": "profile_healthbench",
+      "type": "profile_data",
+      "args": {
+        "input": "data/raw/healthbench_raw.jsonl",
+        "output": "outputs/data_profiles/healthbench_schema.json",
+        "limit": 100
+      }
+    },
+    {
+      "name": "normalize_healthbench_query_pool_1",
+      "type": "normalize",
+      "args": {
+        "input": "data/raw/healthbench_raw.jsonl",
+        "output": "data/processed/healthbench_queries.jsonl",
+        "target": "query_pool",
+        "data_source": "healthbench",
+        "source_url": "https://huggingface.co/datasets/openai/healthbench",
+        "paper_url": "https://arxiv.org/abs/2505.08775",
+        "query_key": "prompt",
+        "dedupe_query": true
+      }
+    },
+    {
+      "name": "profile_ifbench",
+      "type": "profile_data",
+      "args": {
+        "input": "data/raw/ifbench_test.jsonl",
+        "output": "outputs/data_profiles/ifbench_schema.json",
+        "limit": 100
+      }
+    },
+    {
+      "name": "normalize_ifbench_query_pool_1",
+      "type": "normalize",
+      "args": {
+        "input": "data/raw/ifbench_test.jsonl",
+        "output": "data/processed/ifbench_queries.jsonl",
+        "target": "query_pool",
+        "data_source": "ifbench",
+        "source_url": "https://huggingface.co/datasets/allenai/IFBench_test",
+        "paper_url": "https://arxiv.org/abs/2507.02833",
+        "query_key": "prompt",
+        "dedupe_query": true
+      }
+    },
+    {
+      "name": "profile_beir_nq",
+      "type": "profile_data",
+      "args": {
+        "input": "data/raw/beir_nq_queries.jsonl",
+        "output": "outputs/data_profiles/beir_nq_schema.json",
+        "limit": 100
+      }
+    },
+    {
+      "name": "normalize_beir_nq_query_pool_1",
+      "type": "normalize",
+      "args": {
+        "input": "data/raw/beir_nq_queries.jsonl",
+        "output": "data/processed/beir_nq_queries.jsonl",
+        "target": "query_pool",
+        "data_source": "beir_nq",
+        "source_url": "https://huggingface.co/datasets/BeIR/nq",
+        "query_key": "text",
+        "dedupe_query": true
+      }
+    },
+    {
+      "name": "profile_writingbench",
+      "type": "profile_data",
+      "args": {
+        "input": "data/raw/writingbench_raw.jsonl",
+        "output": "outputs/data_profiles/writingbench_schema.json",
+        "limit": 100
+      }
+    },
+    {
+      "name": "normalize_writingbench_query_pool_1",
+      "type": "normalize",
+      "args": {
+        "input": "data/raw/writingbench_raw.jsonl",
+        "output": "data/processed/writingbench_queries.jsonl",
+        "target": "query_pool",
+        "data_source": "writingbench",
+        "source_url": "https://github.com/X-PLUG/WritingBench/blob/main/benchmark_query/benchmark_all.jsonl",
+        "paper_url": "https://arxiv.org/abs/2503.05244",
+        "dedupe_query": true
+      }
+    },
+    {
+      "name": "profile_healthbench_hard",
+      "type": "profile_data",
+      "args": {
+        "input": "data/raw/healthbench_hard_raw.jsonl",
+        "output": "outputs/data_profiles/healthbench_hard_schema.json",
+        "limit": 100
+      }
+    },
+    {
+      "name": "normalize_healthbench_hard_query_pool_1",
+      "type": "normalize",
+      "args": {
+        "input": "data/raw/healthbench_hard_raw.jsonl",
+        "output": "data/processed/healthbench_hard_queries.jsonl",
+        "target": "query_pool",
+        "data_source": "healthbench_hard",
+        "source_url": "https://github.com/openai/simple-evals",
+        "dedupe_query": true
+      }
+    },
+    {
+      "name": "profile_arenahard",
+      "type": "profile_data",
+      "args": {
+        "input": "data/raw/arenahard_raw.jsonl",
+        "output": "outputs/data_profiles/arenahard_schema.json",
+        "limit": 100
+      }
+    },
+    {
+      "name": "normalize_arenahard_query_pool_1",
+      "type": "normalize",
+      "args": {
+        "input": "data/raw/arenahard_raw.jsonl",
+        "output": "data/processed/arenahard_queries.jsonl",
+        "target": "query_pool",
+        "data_source": "arenahard",
+        "source_url": "https://github.com/lm-sys/arena-hard-auto",
+        "dedupe_query": true
+      }
+    },
+    {
+      "name": "data_source_report",
+      "type": "data_source_report",
+      "args": {
+        "config": "configs/data_sources_real.local.json",
+        "output_json": "outputs/data_sources/source_report.json",
+        "output_md": "outputs/data_sources/source_report.md",
+        "required_dataset": [],
+        "strict": true
+      }
+    }
+  ]
+}

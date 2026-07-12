@@ -1,0 +1,3 @@
+{"name":"gpt-4o","model":"gpt-4o","base_url":"https://api.openai.com/v1","api_key_env":"OPENAI_API_KEY","temperature":0.2,"max_tokens":1200}
+{"name":"deepseek","model":"deepseek-chat","base_url":"https://api.deepseek.com/v1","api_key_env":"DEEPSEEK_API_KEY","temperature":0.2,"max_tokens":1200}
+{"name":"qwen","model":"qwen-plus","base_url":"https://dashscope.aliyuncs.com/compatible-mode/v1","api_key_env":"DASHSCOPE_API_KEY","temperature":0.2,"max_tokens":1200}

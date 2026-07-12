@@ -1,0 +1,110 @@
+{
+  "title": "BlindSpot-RL Minimal Motivation Result Card",
+  "experiment_id": "minimal_claim_base",
+  "scope": "Minimal motivation experiment: single-model BSC against hard-gold evaluation dimensions.",
+  "safe_claim": "A single-model evaluation-criteria policy leaves measurable blind spots only if Raw Audit Gates and evidence gates pass.",
+  "deferred_claim": "Keep the blind-spot magnitude claim deferred until hard-gold data, criteria elicitation, BSC diagnostics, and evidence gates pass.",
+  "raw_audit_gates": [
+    {
+      "name": "Data Source Local Config",
+      "type": "data_source_local_config",
+      "path": "outputs/data_sources/local_config_init_rubricbench.json"
+    },
+    {
+      "name": "Minimal Claim Preflight",
+      "type": "preflight",
+      "path": "outputs/minimal_claim/base/preflight/preflight.json"
+    },
+    {
+      "name": "Minimal Claim API Budget",
+      "type": "api_budget",
+      "path": "outputs/minimal_claim/base/api_budget/model_rubrics_budget.json"
+    },
+    {
+      "name": "Minimal Claim API Handoff",
+      "type": "minimal_api_handoff",
+      "path": "outputs/minimal_claim/base/handoff/api_handoff.json"
+    },
+    {
+      "name": "Minimal Claim Model Evaluation-Criteria Validation",
+      "type": "validation",
+      "path": "outputs/minimal_claim/base/validation/model_rubrics/validation_report.json"
+    },
+    {
+      "name": "Minimal Claim Verifier API Budget",
+      "type": "api_budget",
+      "path": "outputs/minimal_claim/base/api_budget/model_rubrics_verifier_budget.json"
+    },
+    {
+      "name": "Minimal Claim Verified Model Evaluation-Criteria",
+      "type": "generic",
+      "path": "data/processed/minimal_claim/base/model_rubrics_verified.jsonl"
+    },
+    {
+      "name": "Minimal Claim Verifier Stats",
+      "type": "generic",
+      "path": "outputs/minimal_claim/base/verifier/model_rubrics_stats.jsonl"
+    },
+    {
+      "name": "Minimal Claim Verified Evaluation-Criteria Validation",
+      "type": "validation",
+      "path": "outputs/minimal_claim/base/validation/model_rubrics_verified/validation_report.json"
+    },
+    {
+      "name": "Minimal Claim Audit",
+      "type": "audit",
+      "path": "outputs/minimal_claim/base/audit_report.json"
+    }
+  ],
+  "data_source_reports": [
+    {
+      "name": "Data Source Report",
+      "config": "configs/data_sources_real.local.json",
+      "path": "outputs/data_sources/source_report_rubricbench.json",
+      "output_md": "outputs/data_sources/source_report_rubricbench.md",
+      "strict": true,
+      "required_datasets": [
+        "rubricbench"
+      ]
+    }
+  ],
+  "gold_validations": [
+    {
+      "name": "RubricBench Gold Validation",
+      "path": "outputs/data_validation/rubricbench_gold.json"
+    }
+  ],
+  "query_validations": [
+    {
+      "name": "RubricBench Query Pool Validation",
+      "path": "outputs/data_validation/rubricbench_queries.json"
+    }
+  ],
+  "manifests": [
+    {
+      "name": "Minimal Claim Manifest",
+      "path": "configs/manifest_minimal_claim.generated.json"
+    }
+  ],
+  "bsc_summaries": [
+    {
+      "method": "base",
+      "path": "outputs/minimal_claim/base/bsc/summary.json"
+    }
+  ],
+  "confidence_intervals": [
+    {
+      "name": "BSC Bootstrap CI",
+      "path": "outputs/minimal_claim/base/bsc_ci/bootstrap_ci.json"
+    }
+  ],
+  "downstream_summaries": [],
+  "evidence_matrix": "outputs/minimal_claim/base/evidence/evidence_matrix.json",
+  "readiness_report": "outputs/minimal_claim/base/readiness/readiness_report.json",
+  "dashboard": null,
+  "require_downstream": false,
+  "notes": [
+    "Minimal claim card for the first paper gate: single-model BSC against hard-gold evaluation dimensions.",
+    "Keep the blind-spot magnitude claim deferred unless Raw Audit Gates and evidence gates pass."
+  ]
+}

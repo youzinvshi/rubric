@@ -1,0 +1,99 @@
+{
+  "stages": [
+    {
+      "name": "validate_rubricbench_model_rubrics",
+      "type": "validate_rubrics",
+      "args": {
+        "input": "data/processed/rubricbench_model_rubrics.jsonl",
+        "output_dir": "outputs/validation/rubricbench_model_rubrics",
+        "min_rubrics": 3,
+        "max_rubrics": 12,
+        "redundancy_tau": 0.95,
+        "require_valid_flags": true
+      }
+    },
+    {
+      "name": "validate_rewardbench_model_rubrics",
+      "type": "validate_rubrics",
+      "args": {
+        "input": "data/processed/rewardbench_model_rubrics.jsonl",
+        "output_dir": "outputs/validation/rewardbench_model_rubrics",
+        "min_rubrics": 3,
+        "max_rubrics": 12,
+        "redundancy_tau": 0.95,
+        "require_valid_flags": true
+      }
+    },
+    {
+      "name": "validate_healthbench_model_rubrics",
+      "type": "validate_rubrics",
+      "args": {
+        "input": "data/processed/healthbench_model_rubrics.jsonl",
+        "output_dir": "outputs/validation/healthbench_model_rubrics",
+        "min_rubrics": 3,
+        "max_rubrics": 12,
+        "redundancy_tau": 0.95,
+        "require_valid_flags": true
+      }
+    },
+    {
+      "name": "validate_judgebench_model_rubrics",
+      "type": "validate_rubrics",
+      "args": {
+        "input": "data/processed/judgebench_model_rubrics.jsonl",
+        "output_dir": "outputs/validation/judgebench_model_rubrics",
+        "min_rubrics": 3,
+        "max_rubrics": 12,
+        "redundancy_tau": 0.95,
+        "require_valid_flags": true
+      }
+    },
+    {
+      "name": "validate_rewardbench2_model_rubrics",
+      "type": "validate_rubrics",
+      "args": {
+        "input": "data/processed/rewardbench2_model_rubrics.jsonl",
+        "output_dir": "outputs/validation/rewardbench2_model_rubrics",
+        "min_rubrics": 3,
+        "max_rubrics": 12,
+        "redundancy_tau": 0.95,
+        "require_valid_flags": true
+      }
+    },
+    {
+      "name": "validate_rmbench_model_rubrics",
+      "type": "validate_rubrics",
+      "args": {
+        "input": "data/processed/rmbench_model_rubrics.jsonl",
+        "output_dir": "outputs/validation/rmbench_model_rubrics",
+        "min_rubrics": 3,
+        "max_rubrics": 12,
+        "redundancy_tau": 0.95,
+        "require_valid_flags": true
+      }
+    },
+    {
+      "name": "validate_writingbench_model_rubrics",
+      "type": "validate_rubrics",
+      "args": {
+        "input": "data/processed/writingbench_model_rubrics.jsonl",
+        "output_dir": "outputs/validation/writingbench_model_rubrics",
+        "min_rubrics": 3,
+        "max_rubrics": 12,
+        "redundancy_tau": 0.95,
+        "require_valid_flags": true
+      }
+    },
+    {
+      "name": "validate_teacher_rubrics",
+      "type": "validate_rubrics",
+      "args": {
+        "input": "data/processed/teacher_rubrics_raw.jsonl",
+        "output_dir": "outputs/validation/teacher_rubrics",
+        "min_rubrics": 3,
+        "max_rubrics": 12,
+        "redundancy_tau": 0.95
+      }
+    }
+  ]
+}

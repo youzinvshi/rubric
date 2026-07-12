@@ -1,0 +1,69 @@
+\section{Introduction}
+
+Large language models are increasingly used as judges for open-ended tasks.
+Most work evaluates these judges at the final decision layer: whether the model
+assigns the correct preference, score, or reward. This view misses a preceding
+source of error. A judge can produce a plausible final decision while relying
+on an incomplete set of evaluation dimensions. For example, a criteria list may check
+surface helpfulness and factuality, yet omit instruction constraints,
+evidence-grounding requirements, safety boundaries, or domain-specific failure
+modes that human evaluators explicitly care about.
+
+This is a different object of study from judge accuracy, preference alignment,
+or reward-model ranking. Those metrics ask whether the final scalar or pairwise
+decision agrees with a label. We ask whether the evaluative basis available to
+the judge already contains the human-prioritized dimensions needed to make that
+decision. If the basis is incomplete, a correct-looking decision can still hide
+systematic missing dimensions.
+
+We argue that this dimension-selection step should be studied as a first-class
+research problem. The relevant question is not only ``is the judge accurate?'',
+but also ``what dimensions does the judge consider before judging?'' We call
+systematically omitted human evaluation dimensions \emph{evaluation blind
+spots}. This framing moves LLM-as-a-Judge research upstream from score
+calibration to the construction of the evaluative basis itself.
+
+Open-ended criteria elicitation is difficult to optimize with standard supervised
+or reinforcement learning recipes. Unlike math, code, or closed-form QA, there
+is no unique target string. A good elicited criteria set may differ lexically
+from the human-gold criteria while still covering the same semantic dimension; another
+set may be longer but mostly redundant; a third may invent criteria that are
+not grounded in the task. The training signal must therefore measure semantic
+coverage, penalize duplicate dimensions, and reject unverifiable criteria.
+
+We introduce Blind-Spot Coverage (BSC), a computable metric that measures the
+fraction of human-gold evaluation dimensions semantically covered by generated
+criteria. BSC is designed not only as an evaluation metric but also as a
+verifiable reward. It rewards coverage of human dimensions, subtracts
+redundancy among generated criteria, and penalizes invalid or hallucinated
+criteria through a verifier. This converts open-ended criteria elicitation into a
+reward-optimizable task without requiring an exact reference output.
+
+Our framework, BlindSpot-RL, formulates a test of whether this reward can
+extend RLVR/GRPO beyond deterministic domains into open-ended
+criteria elicitation. The
+training protocol separates human hard-gold evaluation data from proxy-gold
+training data: RubricBench \texttt{test\_main} remains a held-out BSC benchmark,
+while large-scale proxy criteria are elicited from non-overlapping query pools
+with multi-teacher criteria elicitation and fail-closed verification.
+
+This gives the paper a problem--metric--method structure rather than a claim
+that a larger policy is simply better. Our contributions are:
+\begin{itemize}
+  \item We identify evaluation blind spots as an upstream failure mode of
+  LLM-as-a-Judge: models may score plausibly while omitting human-prioritized
+  dimensions.
+  \item We propose Blind-Spot Coverage, a semantic metric and verifiable reward
+  that combines gold-dimension coverage, redundancy control, and invalidity or
+  hallucination filtering.
+  \item We formulate an evidence-gated RLVR/GRPO training route for
+  open-ended, semantic, subjective criteria elicitation by optimizing
+  BSC rather than exact answers; empirical dimension-recovery wording is
+  allowed only after hard-gold, downstream, ablation, and dimension-transition
+  evidence gates pass.
+\end{itemize}
+
+The experiments are deliberately claim-gated: hard-gold holdout evaluation,
+proxy-gold training isolation, downstream holdouts, confidence intervals,
+ablations, human audit, semantic visualization, and submission-readiness gates
+determine which empirical statements are safe to include.

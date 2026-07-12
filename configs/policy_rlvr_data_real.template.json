@@ -1,0 +1,28 @@
+{
+  "stages": [
+    {
+      "name": "convert_healthbench_hard_policy_rlvr_data",
+      "type": "convert_policy_rlvr",
+      "args": {
+        "input": "data/processed/healthbench_hard_queries.jsonl",
+        "output": "data/processed/healthbench_hard_policy_rlvr.parquet",
+        "data_source": "healthbench_hard",
+        "prompt_template": "{query}",
+        "metadata_key": ["category", "difficulty", "source_id"],
+        "min_records": 1
+      }
+    },
+    {
+      "name": "convert_arenahard_policy_rlvr_data",
+      "type": "convert_policy_rlvr",
+      "args": {
+        "input": "data/processed/arenahard_queries.jsonl",
+        "output": "data/processed/arenahard_policy_rlvr.parquet",
+        "data_source": "arenahard",
+        "prompt_template": "{query}",
+        "metadata_key": ["category", "difficulty", "source_id"],
+        "min_records": 1
+      }
+    }
+  ]
+}

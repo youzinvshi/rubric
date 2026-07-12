@@ -1,0 +1,37 @@
+{
+  "required_files": [
+    "data/processed/toy_gold_normalized.jsonl",
+    "data/processed/toy_query_pool.jsonl",
+    "data/processed/toy_preference_normalized.jsonl",
+    "data/processed/toy_sft.jsonl",
+    "data/processed/dataset_info.json",
+    "data/processed/toy_proxy_gold.jsonl",
+    "data/processed/toy_verl.jsonl",
+    "data/processed/toy_bsc_eval_joined.jsonl",
+    "data/processed/toy_downstream_eval_joined.jsonl",
+    "outputs/toy_bsc_join_report.json",
+    "outputs/toy_downstream_join_report.json",
+    "outputs/toy_verifier_stats.jsonl",
+    "outputs/toy_bsc/summary.json",
+    "outputs/toy_bsc_sweep/threshold_sweep.csv",
+    "outputs/toy_downstream/summary.json",
+    "outputs/toy_bsc_ablation/ablation_summary.csv",
+    "outputs/toy_teacher_union_ablation/teacher_union_ablation.csv",
+    "outputs/toy_main_table.csv",
+    "outputs/toy_evidence/evidence_matrix.json",
+    "outputs/toy_evidence/evidence_matrix.csv",
+    "outputs/toy_evidence/evidence_matrix.md"
+  ],
+  "summaries": [
+    {
+      "name": "toy_bsc",
+      "path": "outputs/toy_bsc/summary.json",
+      "required_keys": ["n", "mean_coverage", "mean_blind", "mean_redundancy", "mean_hallucination"]
+    },
+    {
+      "name": "toy_downstream",
+      "path": "outputs/toy_downstream/summary.json",
+      "required_keys": ["n", "accuracy", "tie_rate", "mean_margin"]
+    }
+  ]
+}

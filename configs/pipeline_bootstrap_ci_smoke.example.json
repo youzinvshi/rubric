@@ -1,0 +1,32 @@
+{
+  "stages": [
+    {
+      "name": "bsc_bootstrap_ci",
+      "type": "bootstrap_ci",
+      "args": {
+        "input": "outputs/toy_bsc/per_item.csv",
+        "metric": ["coverage", "blind", "redundancy", "hallucination", "reward"],
+        "n_boot": 200,
+        "seed": 13,
+        "confidence": 0.95,
+        "output_json": "outputs/toy_bsc_ci/bootstrap_ci.json",
+        "output_csv": "outputs/toy_bsc_ci/bootstrap_ci.csv",
+        "output_md": "outputs/toy_bsc_ci/bootstrap_ci.md"
+      }
+    },
+    {
+      "name": "downstream_bootstrap_ci",
+      "type": "bootstrap_ci",
+      "args": {
+        "input": "outputs/toy_downstream/per_item.csv",
+        "metric": ["correct", "tie", "margin"],
+        "n_boot": 200,
+        "seed": 13,
+        "confidence": 0.95,
+        "output_json": "outputs/toy_downstream_ci/bootstrap_ci.json",
+        "output_csv": "outputs/toy_downstream_ci/bootstrap_ci.csv",
+        "output_md": "outputs/toy_downstream_ci/bootstrap_ci.md"
+      }
+    }
+  ]
+}

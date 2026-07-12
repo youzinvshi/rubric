@@ -1,0 +1,118 @@
+{
+  "required_files": [
+    "outputs/generalization_matrix/trained_method_gate.json",
+    "outputs/generalization_matrix/trained_method_gate.md",
+    "data/processed/matrix_generalization/healthbench_base/bsc_eval.jsonl",
+    "outputs/generalization_matrix/healthbench_base/bsc_join_report.json",
+    "outputs/generalization_matrix/healthbench_base/bsc/summary.json",
+    "outputs/generalization_matrix/healthbench_base/bsc_ci/bootstrap_ci.json",
+    "outputs/generalization_matrix/healthbench_base/bsc_ci/bootstrap_ci.csv",
+    "outputs/generalization_matrix/healthbench_base/bsc_ci/bootstrap_ci.md",
+    "outputs/generalization_matrix/healthbench_base/bsc_sweep/threshold_sweep.csv",
+    "outputs/generalization_matrix/healthbench_base/bsc_sweep/threshold_sweep.json",
+    "outputs/generalization_matrix/healthbench_base/bsc_sweep/threshold_sweep.md",
+    "data/processed/matrix_generalization/healthbench_sft_rl/bsc_eval.jsonl",
+    "outputs/generalization_matrix/healthbench_sft_rl/bsc_join_report.json",
+    "outputs/generalization_matrix/healthbench_sft_rl/bsc/summary.json",
+    "outputs/generalization_matrix/healthbench_sft_rl/bsc_ci/bootstrap_ci.json",
+    "outputs/generalization_matrix/healthbench_sft_rl/bsc_ci/bootstrap_ci.csv",
+    "outputs/generalization_matrix/healthbench_sft_rl/bsc_ci/bootstrap_ci.md",
+    "outputs/generalization_matrix/healthbench_sft_rl/bsc_sweep/threshold_sweep.csv",
+    "outputs/generalization_matrix/healthbench_sft_rl/bsc_sweep/threshold_sweep.json",
+    "outputs/generalization_matrix/healthbench_sft_rl/bsc_sweep/threshold_sweep.md",
+    "data/processed/matrix_generalization/writingbench_base/bsc_eval.jsonl",
+    "outputs/generalization_matrix/writingbench_base/bsc_join_report.json",
+    "outputs/generalization_matrix/writingbench_base/bsc/summary.json",
+    "outputs/generalization_matrix/writingbench_base/bsc_ci/bootstrap_ci.json",
+    "outputs/generalization_matrix/writingbench_base/bsc_ci/bootstrap_ci.csv",
+    "outputs/generalization_matrix/writingbench_base/bsc_ci/bootstrap_ci.md",
+    "outputs/generalization_matrix/writingbench_base/bsc_sweep/threshold_sweep.csv",
+    "outputs/generalization_matrix/writingbench_base/bsc_sweep/threshold_sweep.json",
+    "outputs/generalization_matrix/writingbench_base/bsc_sweep/threshold_sweep.md",
+    "data/processed/matrix_generalization/writingbench_sft_rl/bsc_eval.jsonl",
+    "outputs/generalization_matrix/writingbench_sft_rl/bsc_join_report.json",
+    "outputs/generalization_matrix/writingbench_sft_rl/bsc/summary.json",
+    "outputs/generalization_matrix/writingbench_sft_rl/bsc_ci/bootstrap_ci.json",
+    "outputs/generalization_matrix/writingbench_sft_rl/bsc_ci/bootstrap_ci.csv",
+    "outputs/generalization_matrix/writingbench_sft_rl/bsc_ci/bootstrap_ci.md",
+    "outputs/generalization_matrix/writingbench_sft_rl/bsc_sweep/threshold_sweep.csv",
+    "outputs/generalization_matrix/writingbench_sft_rl/bsc_sweep/threshold_sweep.json",
+    "outputs/generalization_matrix/writingbench_sft_rl/bsc_sweep/threshold_sweep.md",
+    "outputs/generalization_matrix/main_table.csv",
+    "outputs/generalization_matrix/main_table.md"
+  ],
+  "summaries": [
+    {
+      "name": "healthbench_base_bsc",
+      "path": "outputs/generalization_matrix/healthbench_base/bsc/summary.json",
+      "required_keys": [
+        "n",
+        "input",
+        "embedding_model",
+        "coverage_tau",
+        "redundancy_tau",
+        "data_source_counts",
+        "verifier_source",
+        "verifier_source_counts",
+        "mean_coverage",
+        "mean_blind",
+        "mean_redundancy",
+        "mean_hallucination"
+      ]
+    },
+    {
+      "name": "healthbench_sft_rl_bsc",
+      "path": "outputs/generalization_matrix/healthbench_sft_rl/bsc/summary.json",
+      "required_keys": [
+        "n",
+        "input",
+        "embedding_model",
+        "coverage_tau",
+        "redundancy_tau",
+        "data_source_counts",
+        "verifier_source",
+        "verifier_source_counts",
+        "mean_coverage",
+        "mean_blind",
+        "mean_redundancy",
+        "mean_hallucination"
+      ]
+    },
+    {
+      "name": "writingbench_base_bsc",
+      "path": "outputs/generalization_matrix/writingbench_base/bsc/summary.json",
+      "required_keys": [
+        "n",
+        "input",
+        "embedding_model",
+        "coverage_tau",
+        "redundancy_tau",
+        "data_source_counts",
+        "verifier_source",
+        "verifier_source_counts",
+        "mean_coverage",
+        "mean_blind",
+        "mean_redundancy",
+        "mean_hallucination"
+      ]
+    },
+    {
+      "name": "writingbench_sft_rl_bsc",
+      "path": "outputs/generalization_matrix/writingbench_sft_rl/bsc/summary.json",
+      "required_keys": [
+        "n",
+        "input",
+        "embedding_model",
+        "coverage_tau",
+        "redundancy_tau",
+        "data_source_counts",
+        "verifier_source",
+        "verifier_source_counts",
+        "mean_coverage",
+        "mean_blind",
+        "mean_redundancy",
+        "mean_hallucination"
+      ]
+    }
+  ]
+}

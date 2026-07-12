@@ -1,0 +1,291 @@
+{
+  "stages": [
+    {
+      "name": "toy_base_prepare_bsc",
+      "type": "prepare_bsc",
+      "args": {
+        "gold": "data/processed/toy_gold_normalized.jsonl",
+        "predictions": "data/processed/toy_teacher_filtered.jsonl",
+        "output": "data/processed/matrix_smoke/toy_base/bsc_eval.jsonl",
+        "report": "outputs/matrix_smoke/toy_base/bsc_join_report.json",
+        "model": null,
+        "data_source": "toy_bsc_matrix"
+      }
+    },
+    {
+      "name": "toy_base_bsc",
+      "type": "bsc",
+      "args": {
+        "input": "data/processed/matrix_smoke/toy_base/bsc_eval.jsonl",
+        "embedding_model": "token-overlap",
+        "coverage_tau": 0.5,
+        "redundancy_tau": 0.9,
+        "output_dir": "outputs/matrix_smoke/toy_base/bsc"
+      }
+    },
+    {
+      "name": "toy_base_bsc_sweep",
+      "type": "bsc_sweep",
+      "args": {
+        "input": "data/processed/matrix_smoke/toy_base/bsc_eval.jsonl",
+        "embedding_model": "token-overlap",
+        "coverage_tau": [
+          0.5,
+          0.7
+        ],
+        "redundancy_tau": [
+          0.8,
+          0.9
+        ],
+        "output_dir": "outputs/matrix_smoke/toy_base/bsc_sweep"
+      }
+    },
+    {
+      "name": "toy_base_prepare_downstream",
+      "type": "prepare_downstream",
+      "args": {
+        "preferences": "examples/toy_preference.jsonl",
+        "rubrics": "examples/toy_downstream_rubrics.jsonl",
+        "output": "data/processed/matrix_smoke/toy_base/downstream_eval.jsonl",
+        "report": "outputs/matrix_smoke/toy_base/downstream_join_report.json",
+        "model": null,
+        "data_source": "toy_downstream_matrix"
+      }
+    },
+    {
+      "name": "toy_base_downstream",
+      "type": "downstream",
+      "args": {
+        "input": "data/processed/matrix_smoke/toy_base/downstream_eval.jsonl",
+        "output_dir": "outputs/matrix_smoke/toy_base/downstream",
+        "scorer": "keyword"
+      }
+    },
+    {
+      "name": "toy_base_bsc_bootstrap_ci",
+      "type": "bootstrap_ci",
+      "args": {
+        "input": "outputs/matrix_smoke/toy_base/bsc/per_item.csv",
+        "metric": [
+          "coverage",
+          "blind",
+          "redundancy",
+          "hallucination",
+          "reward"
+        ],
+        "n_boot": 50,
+        "seed": 13,
+        "confidence": 0.95,
+        "output_json": "outputs/matrix_smoke/toy_base/bsc_ci/bootstrap_ci.json",
+        "output_csv": "outputs/matrix_smoke/toy_base/bsc_ci/bootstrap_ci.csv",
+        "output_md": "outputs/matrix_smoke/toy_base/bsc_ci/bootstrap_ci.md"
+      }
+    },
+    {
+      "name": "toy_base_downstream_bootstrap_ci",
+      "type": "bootstrap_ci",
+      "args": {
+        "input": "outputs/matrix_smoke/toy_base/downstream/per_item.csv",
+        "metric": [
+          "correct",
+          "tie",
+          "margin"
+        ],
+        "n_boot": 50,
+        "seed": 13,
+        "confidence": 0.95,
+        "output_json": "outputs/matrix_smoke/toy_base/downstream_ci/bootstrap_ci.json",
+        "output_csv": "outputs/matrix_smoke/toy_base/downstream_ci/bootstrap_ci.csv",
+        "output_md": "outputs/matrix_smoke/toy_base/downstream_ci/bootstrap_ci.md"
+      }
+    },
+    {
+      "name": "toy_alt_prepare_bsc",
+      "type": "prepare_bsc",
+      "args": {
+        "gold": "data/processed/toy_gold_normalized.jsonl",
+        "predictions": "data/processed/toy_teacher_filtered.jsonl",
+        "output": "data/processed/matrix_smoke/toy_alt/bsc_eval.jsonl",
+        "report": "outputs/matrix_smoke/toy_alt/bsc_join_report.json",
+        "model": null,
+        "data_source": "toy_bsc_matrix"
+      }
+    },
+    {
+      "name": "toy_alt_bsc",
+      "type": "bsc",
+      "args": {
+        "input": "data/processed/matrix_smoke/toy_alt/bsc_eval.jsonl",
+        "embedding_model": "token-overlap",
+        "coverage_tau": 0.5,
+        "redundancy_tau": 0.9,
+        "output_dir": "outputs/matrix_smoke/toy_alt/bsc"
+      }
+    },
+    {
+      "name": "toy_alt_prepare_downstream",
+      "type": "prepare_downstream",
+      "args": {
+        "preferences": "examples/toy_preference.jsonl",
+        "rubrics": "examples/toy_downstream_rubrics.jsonl",
+        "output": "data/processed/matrix_smoke/toy_alt/downstream_eval.jsonl",
+        "report": "outputs/matrix_smoke/toy_alt/downstream_join_report.json",
+        "model": null,
+        "data_source": "toy_downstream_matrix"
+      }
+    },
+    {
+      "name": "toy_alt_downstream",
+      "type": "downstream",
+      "args": {
+        "input": "data/processed/matrix_smoke/toy_alt/downstream_eval.jsonl",
+        "output_dir": "outputs/matrix_smoke/toy_alt/downstream",
+        "scorer": "keyword"
+      }
+    },
+    {
+      "name": "toy_alt_bsc_bootstrap_ci",
+      "type": "bootstrap_ci",
+      "args": {
+        "input": "outputs/matrix_smoke/toy_alt/bsc/per_item.csv",
+        "metric": [
+          "coverage",
+          "blind",
+          "redundancy",
+          "hallucination",
+          "reward"
+        ],
+        "n_boot": 50,
+        "seed": 13,
+        "confidence": 0.95,
+        "output_json": "outputs/matrix_smoke/toy_alt/bsc_ci/bootstrap_ci.json",
+        "output_csv": "outputs/matrix_smoke/toy_alt/bsc_ci/bootstrap_ci.csv",
+        "output_md": "outputs/matrix_smoke/toy_alt/bsc_ci/bootstrap_ci.md"
+      }
+    },
+    {
+      "name": "toy_alt_downstream_bootstrap_ci",
+      "type": "bootstrap_ci",
+      "args": {
+        "input": "outputs/matrix_smoke/toy_alt/downstream/per_item.csv",
+        "metric": [
+          "correct",
+          "tie",
+          "margin"
+        ],
+        "n_boot": 50,
+        "seed": 13,
+        "confidence": 0.95,
+        "output_json": "outputs/matrix_smoke/toy_alt/downstream_ci/bootstrap_ci.json",
+        "output_csv": "outputs/matrix_smoke/toy_alt/downstream_ci/bootstrap_ci.csv",
+        "output_md": "outputs/matrix_smoke/toy_alt/downstream_ci/bootstrap_ci.md"
+      }
+    },
+    {
+      "name": "reward_component_ablation",
+      "type": "ablation",
+      "args": {
+        "input": "data/processed/matrix_smoke/toy_base/bsc_eval.jsonl",
+        "embedding_model": "token-overlap",
+        "coverage_tau": 0.5,
+        "redundancy_tau": 0.9,
+        "output_dir": "outputs/matrix_smoke/reward_ablation"
+      }
+    },
+    {
+      "name": "teacher_union_ablation",
+      "type": "teacher_union_ablation",
+      "args": {
+        "teachers": "data/processed/toy_teacher_filtered.jsonl",
+        "gold": "data/processed/toy_gold_normalized.jsonl",
+        "embedding_model": "token-overlap",
+        "coverage_tau": 0.5,
+        "redundancy_tau": 0.9,
+        "dedupe_tau": 0.9,
+        "min_teachers": 2,
+        "output_dir": "outputs/matrix_smoke/teacher_union_ablation"
+      }
+    },
+    {
+      "name": "dimension_transition_toy_base_to_toy_alt",
+      "type": "dimension_transition",
+      "args": {
+        "baseline": "data/processed/matrix_smoke/toy_base/bsc_eval.jsonl",
+        "candidate": "data/processed/matrix_smoke/toy_alt/bsc_eval.jsonl",
+        "output_dir": "outputs/matrix_smoke/dimension_transition/toy_base_to_toy_alt",
+        "embedding_model": "token-overlap",
+        "coverage_tau": 0.5,
+        "join_key": "query",
+        "baseline_label": "toy_base",
+        "candidate_label": "toy_alt"
+      }
+    },
+    {
+      "name": "semantic_space",
+      "type": "semantic_space",
+      "args": {
+        "input": [
+          "toy_base=data/processed/matrix_smoke/toy_base/bsc_eval.jsonl",
+          "toy_alt=data/processed/matrix_smoke/toy_alt/bsc_eval.jsonl"
+        ],
+        "join_report": [
+          "toy_base=outputs/matrix_smoke/toy_base/bsc_join_report.json",
+          "toy_alt=outputs/matrix_smoke/toy_alt/bsc_join_report.json"
+        ],
+        "output_dir": "outputs/matrix_smoke/semantic_space",
+        "embedding_model": "token-overlap",
+        "projection": "pca",
+        "gold_cluster_tau": 0.5,
+        "max_points": 200
+      }
+    },
+    {
+      "name": "summarize",
+      "type": "summarize",
+      "args": {
+        "bsc": [
+          "toy_base=outputs/matrix_smoke/toy_base/bsc/summary.json",
+          "toy_alt=outputs/matrix_smoke/toy_alt/bsc/summary.json"
+        ],
+        "output_csv": "outputs/matrix_smoke/main_table.csv",
+        "output_md": "outputs/matrix_smoke/main_table.md",
+        "downstream": [
+          "toy_base=outputs/matrix_smoke/toy_base/downstream/summary.json",
+          "toy_alt=outputs/matrix_smoke/toy_alt/downstream/summary.json"
+        ],
+        "bsc_ci": [
+          "toy_base=outputs/matrix_smoke/toy_base/bsc_ci/bootstrap_ci.json",
+          "toy_alt=outputs/matrix_smoke/toy_alt/bsc_ci/bootstrap_ci.json"
+        ],
+        "downstream_ci": [
+          "toy_base=outputs/matrix_smoke/toy_base/downstream_ci/bootstrap_ci.json",
+          "toy_alt=outputs/matrix_smoke/toy_alt/downstream_ci/bootstrap_ci.json"
+        ]
+      }
+    },
+    {
+      "name": "audit",
+      "type": "audit",
+      "args": {
+        "manifest": "configs/manifest_matrix_smoke.generated.json",
+        "output": "outputs/matrix_smoke/audit_report.json"
+      }
+    },
+    {
+      "name": "export",
+      "type": "export",
+      "args": {
+        "main_table_csv": "outputs/matrix_smoke/main_table.csv",
+        "main_table_md": "outputs/matrix_smoke/main_table.md",
+        "audit_report": "outputs/matrix_smoke/audit_report.json",
+        "output_dir": "outputs/matrix_smoke/paper_artifacts",
+        "ablation_csv": "outputs/matrix_smoke/reward_ablation/ablation_summary.csv",
+        "teacher_union_csv": "outputs/matrix_smoke/teacher_union_ablation/teacher_union_ablation.csv",
+        "transition_summary_json": [
+          "outputs/matrix_smoke/dimension_transition/toy_base_to_toy_alt/transition_summary.json"
+        ],
+        "semantic_space_dir": "outputs/matrix_smoke/semantic_space"
+      }
+    }
+  ]
+}

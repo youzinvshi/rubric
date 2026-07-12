@@ -1,0 +1,2249 @@
+{
+  "ok": false,
+  "readiness_ok": false,
+  "evidence": {
+    "safe_to_claim": 0,
+    "missing_evidence": 15,
+    "contradicted": 0,
+    "not_yet_supported": 0,
+    "total": 15
+  },
+  "claim_ladder": [
+    {
+      "level": "motivation",
+      "required_claim_ids": [
+        "C1",
+        "C6"
+      ],
+      "evidence_required": "Frozen 100-example hard-gold diagnostic with C1 and threshold-robustness C6 gates.",
+      "paper_sentence": "If C1/C6 pass, report systematic evaluation blind spots for the base evaluation-criteria policy.",
+      "downgrade_rule": "Does not support any trained-method claim by itself.",
+      "status": "missing_evidence",
+      "missing_or_non_safe_claims": [
+        "C1: missing_evidence",
+        "C6: missing_evidence"
+      ]
+    },
+    {
+      "level": "metric-support",
+      "required_claim_ids": [
+        "C0",
+        "C2",
+        "C3"
+      ],
+      "evidence_required": "Hard-gold BSC coverage change with stable redundancy and hallucination under the fixed protocol.",
+      "paper_sentence": "If C0/C2/C3 pass, report a hard-gold BSC coverage change as metric evidence.",
+      "downgrade_rule": "Without downstream support, report metric-only BSC evidence.",
+      "status": "missing_evidence",
+      "missing_or_non_safe_claims": [
+        "C0: missing_evidence",
+        "C2: missing_evidence",
+        "C3: missing_evidence"
+      ]
+    },
+    {
+      "level": "method-support",
+      "required_claim_ids": [
+        "C5",
+        "C7",
+        "C14"
+      ],
+      "evidence_required": "SFT-only vs SFT+GRPO and reward-component ablations pass C5/C7/C14.",
+      "paper_sentence": "If C5/C7/C14 pass, attribute the coverage change to the RLVR reward stage.",
+      "downgrade_rule": "Without C14, report proxy-gold supervision evidence rather than RLVR evidence.",
+      "status": "missing_evidence",
+      "missing_or_non_safe_claims": [
+        "C5: missing_evidence",
+        "C7: missing_evidence",
+        "C14: missing_evidence"
+      ]
+    },
+    {
+      "level": "judge-utility support",
+      "required_claim_ids": [
+        "C0",
+        "C4",
+        "C9",
+        "C10",
+        "C12"
+      ],
+      "evidence_required": "RewardBench, RewardBench-2, and JudgeBench API/model scorer rows pass C4/C9/C10.",
+      "paper_sentence": "If C0/C4/C9/C10/C12 pass, report held-out downstream judge-utility support.",
+      "downgrade_rule": "Without C12, write aggregate coverage change rather than dimension-level recovery; without C0, no trained-method row is paper-facing.",
+      "status": "missing_evidence",
+      "missing_or_non_safe_claims": [
+        "C0: missing_evidence",
+        "C4: missing_evidence",
+        "C9: missing_evidence",
+        "C10: missing_evidence",
+        "C12: missing_evidence"
+      ]
+    }
+  ],
+  "hard_blocker_count": 43,
+  "warning_count": 2,
+  "missing_prerequisites": {
+    "input_files": [
+      "data/processed/rmbench_queries.jsonl",
+      "data/processed/healthbench_hard_queries.jsonl",
+      "data/processed/arenahard_queries.jsonl"
+    ],
+    "api_env": [
+      "LOCAL_OPENAI_API_KEY for provider base",
+      "GPT_AK_1 for provider gpt-5.4",
+      "GPT_AK_2 for provider gpt-5",
+      "GPT_AK_3 for provider gpt-4o",
+      "GPT_AK_1 for provider gemini",
+      "GPT_AK_1 for provider gemini-2.5-pro",
+      "GPT_AK_3 for provider meta-verifier"
+    ],
+    "api_env_by_file": {
+      "configs/generators.local.jsonl": [
+        "base: LOCAL_OPENAI_API_KEY",
+        "gpt-5.4: GPT_AK_1",
+        "gpt-5: GPT_AK_2",
+        "gpt-4o: GPT_AK_3",
+        "gemini: GPT_AK_1"
+      ],
+      "configs/providers.local.jsonl": [
+        "gemini-2.5-pro: GPT_AK_1",
+        "gpt-5.4: GPT_AK_1",
+        "gpt-5: GPT_AK_2",
+        "gpt-4o: GPT_AK_3"
+      ],
+      "configs/verifier.local.jsonl": [
+        "meta-verifier: GPT_AK_3"
+      ]
+    },
+    "api_env_by_provider": {
+      "base": "LOCAL_OPENAI_API_KEY",
+      "gpt-5.4": "GPT_AK_1",
+      "gpt-5": "GPT_AK_2",
+      "gpt-4o": "GPT_AK_3",
+      "gemini": "GPT_AK_1",
+      "gemini-2.5-pro": "GPT_AK_1",
+      "meta-verifier": "GPT_AK_3"
+    },
+    "required_env": [
+      "LOCAL_OPENAI_API_KEY",
+      "OPENAI_API_KEY",
+      "ANTHROPIC_API_KEY",
+      "DEEPSEEK_API_KEY",
+      "DASHSCOPE_API_KEY",
+      "GPT_AK_1",
+      "GPT_AK_2",
+      "GPT_AK_3"
+    ],
+    "provider_configs": [
+      "configs/judge_scorer.local.jsonl"
+    ],
+    "required_providers": [
+      "gpt4o",
+      "claude",
+      "sft_only",
+      "sft_rl",
+      "deepseek",
+      "qwen",
+      "judge-scorer"
+    ],
+    "provider_file_entries": [
+      "configs/generators.local.jsonl: gpt4o",
+      "configs/generators.local.jsonl: claude",
+      "configs/generators.local.jsonl: sft_only",
+      "configs/generators.local.jsonl: sft_rl",
+      "configs/providers.local.jsonl: deepseek",
+      "configs/providers.local.jsonl: qwen",
+      "configs/judge_scorer.local.jsonl: judge-scorer"
+    ],
+    "paper_artifacts": [
+      "tables/main_table.tex",
+      "tables/rl_stage_ablation_table.tex",
+      "tables/downstream_utility_table.tex",
+      "tables/ablation_table.tex",
+      "tables/teacher_union_ablation_table.tex",
+      "tables/verifier_filter_ablation_table.tex",
+      "tables/dimension_transition_table.tex",
+      "figures/semantic_space.pdf",
+      "figures/semantic_space.svg"
+    ]
+  },
+  "operator_handoff": {
+    "status": "ready_for_operator_input",
+    "redacted_env_exports": [
+      "export LOCAL_OPENAI_API_KEY=<REDACTED>",
+      "export OPENAI_API_KEY=<REDACTED>",
+      "export ANTHROPIC_API_KEY=<REDACTED>",
+      "export DEEPSEEK_API_KEY=<REDACTED>",
+      "export DASHSCOPE_API_KEY=<REDACTED>",
+      "export GPT_AK_1=<REDACTED>",
+      "export GPT_AK_2=<REDACTED>",
+      "export GPT_AK_3=<REDACTED>"
+    ],
+    "input_files": [
+      "data/processed/rmbench_queries.jsonl",
+      "data/processed/healthbench_hard_queries.jsonl",
+      "data/processed/arenahard_queries.jsonl"
+    ],
+    "provider_configs": [
+      "configs/judge_scorer.local.jsonl"
+    ],
+    "provider_file_entries": [
+      "configs/generators.local.jsonl: gpt4o",
+      "configs/generators.local.jsonl: claude",
+      "configs/generators.local.jsonl: sft_only",
+      "configs/generators.local.jsonl: sft_rl",
+      "configs/providers.local.jsonl: deepseek",
+      "configs/providers.local.jsonl: qwen",
+      "configs/judge_scorer.local.jsonl: judge-scorer"
+    ],
+    "provider_entries_by_file": {
+      "configs/generators.local.jsonl": [
+        "gpt4o",
+        "claude",
+        "sft_only",
+        "sft_rl"
+      ],
+      "configs/providers.local.jsonl": [
+        "deepseek",
+        "qwen"
+      ],
+      "configs/judge_scorer.local.jsonl": [
+        "judge-scorer"
+      ]
+    },
+    "api_env_by_file": {
+      "configs/generators.local.jsonl": [
+        "base: LOCAL_OPENAI_API_KEY",
+        "gpt-5.4: GPT_AK_1",
+        "gpt-5: GPT_AK_2",
+        "gpt-4o: GPT_AK_3",
+        "gemini: GPT_AK_1"
+      ],
+      "configs/providers.local.jsonl": [
+        "gemini-2.5-pro: GPT_AK_1",
+        "gpt-5.4: GPT_AK_1",
+        "gpt-5: GPT_AK_2",
+        "gpt-4o: GPT_AK_3"
+      ],
+      "configs/verifier.local.jsonl": [
+        "meta-verifier: GPT_AK_3"
+      ]
+    },
+    "api_env_by_provider": {
+      "base": "LOCAL_OPENAI_API_KEY",
+      "gpt-5.4": "GPT_AK_1",
+      "gpt-5": "GPT_AK_2",
+      "gpt-4o": "GPT_AK_3",
+      "gemini": "GPT_AK_1",
+      "gemini-2.5-pro": "GPT_AK_1",
+      "meta-verifier": "GPT_AK_3"
+    },
+    "provider_template_commands": [
+      "test -f configs/judge_scorer.local.jsonl || cp configs/judge_scorer.example.jsonl configs/judge_scorer.local.jsonl",
+      "test -f configs/generators.local.jsonl || cp configs/generators.example.jsonl configs/generators.local.jsonl",
+      "test -f configs/providers.local.jsonl || cp configs/providers.example.jsonl configs/providers.local.jsonl",
+      "test -f configs/verifier.local.jsonl || cp configs/verifier.example.jsonl configs/verifier.local.jsonl"
+    ],
+    "required_providers": [
+      "gpt4o",
+      "claude",
+      "sft_only",
+      "sft_rl",
+      "deepseek",
+      "qwen",
+      "judge-scorer"
+    ],
+    "training_artifacts": [],
+    "training_data_chain": [],
+    "training_artifact_producers": {},
+    "c0_provenance_action_chain": [
+      {
+        "order": 1,
+        "stage": "sft_data_preflight_and_teacher_budgets",
+        "command": "python3 scripts/run_experiment_pipeline.py --config configs/pipeline_real_run.generated.json --from-stage api_budget_teacher_rubrics --to-stage sft_data_preflight",
+        "outputs": [
+          "outputs/api_budget/teacher_rubrics_budget.json",
+          "outputs/api_budget/healthbench_teacher_rubrics_budget.json",
+          "outputs/api_budget/writingbench_teacher_rubrics_budget.json",
+          "outputs/preflight/sft_data_preflight.json",
+          "outputs/preflight/sft_data_preflight.md"
+        ],
+        "checks": [
+          "teacher-generation budgets are within run limits",
+          "provider configs expose all teacher and verifier entries",
+          "GPT_AK_1/GPT_AK_2/GPT_AK_3 are present before paid API calls"
+        ]
+      },
+      {
+        "order": 2,
+        "stage": "generate_teacher_rubrics",
+        "command": "python3 scripts/run_experiment_pipeline.py --config configs/pipeline_real_run.generated.json --from-stage generate_teacher_rubrics_rubricbench --to-stage generate_teacher_rubrics_writingbench",
+        "outputs": [
+          "data/processed/teacher_rubrics_raw.jsonl"
+        ],
+        "checks": [
+          "teacher raw criteria are generated only from train/proxy source pools",
+          "RubricBench test_main remains excluded from teacher generation",
+          "resume mode preserves completed provider-query pairs"
+        ]
+      },
+      {
+        "order": 3,
+        "stage": "api_budget_meta_verifier",
+        "command": "python3 scripts/run_experiment_pipeline.py --config configs/pipeline_real_run.generated.json --from-stage api_budget_meta_verifier --to-stage api_budget_meta_verifier",
+        "outputs": [
+          "outputs/api_budget/meta_verifier_budget.json",
+          "outputs/api_budget/meta_verifier_budget.md"
+        ],
+        "checks": [
+          "meta-verifier budget binds data/processed/teacher_rubrics_raw.jsonl",
+          "rubric-level verifier units are counted before filtering",
+          "budget report is present before verifier API mode runs"
+        ]
+      },
+      {
+        "order": 4,
+        "stage": "filter_teacher_rubrics",
+        "command": "python3 scripts/run_experiment_pipeline.py --config configs/pipeline_real_run.generated.json --from-stage filter_teacher_rubrics --to-stage filter_teacher_rubrics_rewardbench2_downstream_overlap",
+        "outputs": [
+          "outputs/verifier/teacher_rubrics_filtered_report.json",
+          "outputs/contamination_audit/teacher_rubrics_hard_gold_holdout_filter.json",
+          "outputs/contamination_audit/teacher_rubrics_rewardbench_holdout_filter.json",
+          "outputs/contamination_audit/teacher_rubrics_judgebench_holdout_filter.json",
+          "outputs/contamination_audit/teacher_rubrics_rewardbench2_holdout_filter.json",
+          "data/processed/teacher_rubrics_training_clean.jsonl"
+        ],
+        "checks": [
+          "API verifier provenance is present",
+          "teacher criteria are holdout-clean before proxy-gold build",
+          "teacher clean output SHA feeds proxy-gold build input"
+        ]
+      },
+      {
+        "order": 5,
+        "stage": "build_sft_all_domains",
+        "command": "python3 scripts/run_experiment_pipeline.py --config configs/pipeline_real_run.generated.json --from-stage build_sft_all_domains --to-stage filter_proxy_gold_rewardbench2_downstream_overlap",
+        "outputs": [
+          "outputs/sft_data/proxy_gold_build_report.json",
+          "data/processed/blindspot_sft.unfiltered.jsonl",
+          "data/processed/proxy_gold.unfiltered.jsonl",
+          "outputs/contamination_audit/blindspot_sft_rewardbench2_holdout_filter.json",
+          "outputs/contamination_audit/proxy_gold_rewardbench2_holdout_filter.json",
+          "data/processed/blindspot_sft.jsonl",
+          "data/processed/proxy_gold.jsonl"
+        ],
+        "checks": [
+          "build report binds data/processed/teacher_rubrics_training_clean.jsonl",
+          "build report writes .unfiltered SFT/proxy-gold outputs",
+          "post-SFT filters write final clean SFT/proxy-gold outputs"
+        ]
+      },
+      {
+        "order": 6,
+        "stage": "convert_proxy_gold_to_verl_and_audit_holdouts",
+        "command": "python3 scripts/run_experiment_pipeline.py --config configs/pipeline_real_run.generated.json --from-stage convert_proxy_gold_to_verl --to-stage audit_rewardbench2_downstream_holdout_contamination",
+        "outputs": [
+          "outputs/sft_data/proxy_gold_verl_report.json",
+          "data/processed/proxy_gold_verl.parquet",
+          "outputs/contamination_audit/hard_gold_holdout_contamination.json",
+          "outputs/contamination_audit/rewardbench_downstream_holdout_contamination.json",
+          "outputs/contamination_audit/judgebench_downstream_holdout_contamination.json",
+          "outputs/contamination_audit/rewardbench2_downstream_holdout_contamination.json"
+        ],
+        "checks": [
+          "VERL report input SHA matches final clean proxy-gold",
+          "hard-gold and downstream audits are complete",
+          "overlap_query_count is zero for all final holdouts"
+        ]
+      },
+      {
+        "order": 7,
+        "stage": "refresh_evidence_and_reports",
+        "command": "python3 scripts/run_experiment_pipeline.py --config configs/pipeline_real_run.generated.json --from-stage evidence_real --to-stage sync_result_card_real",
+        "outputs": [
+          "outputs/evidence_real/evidence_matrix.json",
+          "outputs/submission_readiness/readiness_report.json",
+          "outputs/dashboard/real_run_dashboard.json",
+          "outputs/result_card/result_card.json",
+          "paper/asset_index/evidence_matrix.json"
+        ],
+        "checks": [
+          "C0 status is recomputed from refreshed provenance",
+          "readiness remains fail-closed for unrelated missing evidence",
+          "paper-facing asset index uses refreshed reports"
+        ]
+      }
+    ],
+    "paper_artifacts": [
+      "tables/main_table.tex",
+      "tables/rl_stage_ablation_table.tex",
+      "tables/downstream_utility_table.tex",
+      "tables/ablation_table.tex",
+      "tables/teacher_union_ablation_table.tex",
+      "tables/verifier_filter_ablation_table.tex",
+      "tables/dimension_transition_table.tex",
+      "figures/semantic_space.pdf",
+      "figures/semantic_space.svg"
+    ],
+    "validation_commands": [
+      "python3 scripts/run_experiment_pipeline.py --config configs/pipeline_real_run.generated.json --only real_run_preflight --only sft_data_preflight",
+      "python3 scripts/build_submission_gap_report.py --readiness-report outputs/submission_readiness/readiness_report.json --evidence-matrix outputs/evidence_real/evidence_matrix.json --rebuttal-manifest outputs/rebuttal_pack/rebuttal_pack_manifest.json --preflight-report outputs/preflight/real_run_preflight.json --preflight-report outputs/preflight/sft_data_preflight.json --gate-report outputs/contamination_audit/hard_gold_holdout_contamination.json --gate-report outputs/contamination_audit/rewardbench_downstream_holdout_contamination.json --gate-report outputs/contamination_audit/judgebench_downstream_holdout_contamination.json --gate-report outputs/contamination_audit/rewardbench2_downstream_holdout_contamination.json --output-dir outputs/submission_readiness/gap_report"
+    ],
+    "safety_notes": [
+      "Do not commit local provider files or API key values.",
+      "Keep hard-gold holdouts out of proxy-gold training inputs.",
+      "Rerun preflight after changing provider files, API key env vars, or input data."
+    ]
+  },
+  "execution_sequence": [
+    {
+      "id": "data_isolation",
+      "phase_id": "data_isolation_hard_gold",
+      "order": 1,
+      "commands": [
+        "python3 scripts/run_experiment_pipeline.py --config configs/pipeline_real_run.generated.json --from-stage audit_data_readiness --to-stage audit_rewardbench2_downstream_holdout_contamination"
+      ],
+      "unlocks": [
+        "outputs/contamination_audit/*",
+        "query-disjoint hard-gold/proxy/downstream evidence"
+      ],
+      "evidence_gates": [
+        "C0"
+      ],
+      "notes": "Run before training or downstream claims; hard-gold/proxy/downstream isolation is the contamination gate.",
+      "phase_status": "blocked",
+      "blocked_by_prior_phases": [],
+      "missing_prerequisites": {
+        "input_files": [
+          "data/processed/rmbench_queries.jsonl",
+          "data/processed/healthbench_hard_queries.jsonl",
+          "data/processed/arenahard_queries.jsonl"
+        ]
+      },
+      "summary": "phase_status=blocked; evidence_gates=C0; missing_prerequisites=3; ready_to_run=false"
+    },
+    {
+      "id": "training_and_serving",
+      "phase_id": "training_and_serving",
+      "order": 2,
+      "commands": [
+        "python3 scripts/run_experiment_pipeline.py --config configs/pipeline_real_run.generated.json --from-stage training_commands --to-stage training_completion_gate"
+      ],
+      "unlocks": [
+        "outputs/training_commands/training_done.json",
+        "SFT-only and SFT+GRPO serving metadata"
+      ],
+      "evidence_gates": [
+        "C2",
+        "C3",
+        "C14"
+      ],
+      "notes": "The manual completion gate must bind checkpoints, serving endpoints, proxy-gold data, and reward configuration.",
+      "phase_status": "blocked",
+      "blocked_by_prior_phases": [
+        "data_isolation_hard_gold"
+      ],
+      "missing_prerequisites": {
+        "required_env": [
+          "LOCAL_OPENAI_API_KEY",
+          "OPENAI_API_KEY",
+          "ANTHROPIC_API_KEY",
+          "DEEPSEEK_API_KEY",
+          "DASHSCOPE_API_KEY",
+          "GPT_AK_1",
+          "GPT_AK_2",
+          "GPT_AK_3"
+        ]
+      },
+      "summary": "phase_status=blocked; evidence_gates=C2,C3,C14; blocked_by_prior_phases=1; missing_prerequisites=8; ready_to_run=false"
+    },
+    {
+      "id": "model_evaluation_criteria_generation",
+      "phase_id": "training_and_serving",
+      "order": 3,
+      "commands": [
+        "python3 scripts/run_experiment_pipeline.py --config configs/pipeline_real_run.generated.json --from-stage generate_model_rubrics_rubricbench --to-stage validate_writingbench_model_rubrics"
+      ],
+      "unlocks": [
+        "data/processed/*_model_rubrics.jsonl",
+        "verifier-filtered model evaluation-criteria reports"
+      ],
+      "evidence_gates": [
+        "C2",
+        "C3",
+        "C4",
+        "C9",
+        "C10"
+      ],
+      "notes": "Requires provider configs and budgets; verified evaluation-criteria files feed hard-gold and downstream matrices.",
+      "phase_status": "blocked",
+      "blocked_by_prior_phases": [
+        "data_isolation_hard_gold"
+      ],
+      "missing_prerequisites": {
+        "api_env": [
+          "LOCAL_OPENAI_API_KEY for provider base",
+          "GPT_AK_1 for provider gpt-5.4",
+          "GPT_AK_2 for provider gpt-5",
+          "GPT_AK_3 for provider gpt-4o",
+          "GPT_AK_1 for provider gemini",
+          "GPT_AK_1 for provider gemini-2.5-pro",
+          "GPT_AK_3 for provider meta-verifier"
+        ],
+        "required_env": [
+          "LOCAL_OPENAI_API_KEY",
+          "OPENAI_API_KEY",
+          "ANTHROPIC_API_KEY",
+          "DEEPSEEK_API_KEY",
+          "DASHSCOPE_API_KEY",
+          "GPT_AK_1",
+          "GPT_AK_2",
+          "GPT_AK_3"
+        ],
+        "provider_configs": [
+          "configs/judge_scorer.local.jsonl"
+        ],
+        "required_providers": [
+          "gpt4o",
+          "claude",
+          "sft_only",
+          "sft_rl",
+          "deepseek",
+          "qwen",
+          "judge-scorer"
+        ],
+        "provider_file_entries": [
+          "configs/generators.local.jsonl: gpt4o",
+          "configs/generators.local.jsonl: claude",
+          "configs/generators.local.jsonl: sft_only",
+          "configs/generators.local.jsonl: sft_rl",
+          "configs/providers.local.jsonl: deepseek",
+          "configs/providers.local.jsonl: qwen",
+          "configs/judge_scorer.local.jsonl: judge-scorer"
+        ]
+      },
+      "summary": "phase_status=blocked; evidence_gates=C2,C3,C4,C9,C10; blocked_by_prior_phases=1; missing_prerequisites=30; ready_to_run=false"
+    },
+    {
+      "id": "main_matrix_and_ablations",
+      "phase_id": "main_hard_gold_bsc",
+      "order": 4,
+      "commands": [
+        "python3 scripts/run_experiment_pipeline.py --config configs/pipeline_matrix_real.generated.json"
+      ],
+      "unlocks": [
+        "outputs/matrix_real/main_table.csv",
+        "outputs/bsc_ablation/ablation_summary.csv",
+        "outputs/teacher_union_ablation/teacher_union_ablation.csv",
+        "outputs/verifier_filter_ablation/verifier_filter_ablation.csv",
+        "outputs/matrix_real/semantic_space/*"
+      ],
+      "evidence_gates": [
+        "C1",
+        "C2",
+        "C3",
+        "C5",
+        "C6",
+        "C7",
+        "C12",
+        "C13",
+        "C14"
+      ],
+      "notes": "This produces the hard-gold BSC matrix, RL-stage comparison inputs, ablations, dimension-transition audit, and semantic-space assets.",
+      "phase_status": "blocked",
+      "blocked_by_prior_phases": [
+        "data_isolation_hard_gold",
+        "training_and_serving"
+      ],
+      "missing_prerequisites": {},
+      "summary": "phase_status=blocked; evidence_gates=C1,C2,C3,C5,C6,C7,C12,C13,C14; blocked_by_prior_phases=2; ready_to_run=false"
+    },
+    {
+      "id": "downstream_matrices",
+      "phase_id": "downstream_utility",
+      "order": 5,
+      "commands": [
+        "python3 scripts/run_experiment_pipeline.py --config configs/pipeline_matrix_judgebench.generated.json",
+        "python3 scripts/run_experiment_pipeline.py --config configs/pipeline_matrix_rewardbench2.generated.json"
+      ],
+      "unlocks": [
+        "outputs/matrix_judgebench/main_table.csv",
+        "outputs/matrix_rewardbench2/main_table.csv",
+        "outputs/generalization_matrix/main_table.csv"
+      ],
+      "evidence_gates": [
+        "C4",
+        "C9",
+        "C10"
+      ],
+      "notes": "Run held-out downstream utility matrices with API/model scorer summaries and paper_claim_eligible provenance.",
+      "phase_status": "blocked",
+      "blocked_by_prior_phases": [
+        "data_isolation_hard_gold",
+        "main_hard_gold_bsc",
+        "training_and_serving"
+      ],
+      "missing_prerequisites": {
+        "provider_configs": [
+          "configs/judge_scorer.local.jsonl"
+        ],
+        "required_providers": [
+          "gpt4o",
+          "claude",
+          "sft_only",
+          "sft_rl",
+          "deepseek",
+          "qwen",
+          "judge-scorer"
+        ],
+        "provider_file_entries": [
+          "configs/generators.local.jsonl: gpt4o",
+          "configs/generators.local.jsonl: claude",
+          "configs/generators.local.jsonl: sft_only",
+          "configs/generators.local.jsonl: sft_rl",
+          "configs/providers.local.jsonl: deepseek",
+          "configs/providers.local.jsonl: qwen",
+          "configs/judge_scorer.local.jsonl: judge-scorer"
+        ]
+      },
+      "summary": "phase_status=blocked; evidence_gates=C4,C9,C10; blocked_by_prior_phases=3; missing_prerequisites=15; ready_to_run=false"
+    },
+    {
+      "id": "paper_export_and_readiness",
+      "phase_id": "paper_readiness",
+      "order": 6,
+      "commands": [
+        "python3 scripts/run_experiment_pipeline.py --config configs/pipeline_real_run.generated.json --from-stage evidence_real --to-stage sync_result_card_real"
+      ],
+      "unlocks": [
+        "outputs/paper_artifacts/*",
+        "paper/asset_index/*",
+        "outputs/submission_readiness/*"
+      ],
+      "evidence_gates": [
+        "C0-C14"
+      ],
+      "notes": "Rebuild evidence, paper tables/figures, readiness, rebuttal pack, dashboard, Result Card, and synced asset index.",
+      "phase_status": "blocked",
+      "blocked_by_prior_phases": [
+        "ablations",
+        "data_isolation_hard_gold",
+        "downstream_utility",
+        "main_hard_gold_bsc",
+        "semantic_space",
+        "training_and_serving"
+      ],
+      "missing_prerequisites": {
+        "paper_artifacts": [
+          "tables/main_table.tex",
+          "tables/rl_stage_ablation_table.tex",
+          "tables/downstream_utility_table.tex",
+          "tables/ablation_table.tex",
+          "tables/teacher_union_ablation_table.tex",
+          "tables/verifier_filter_ablation_table.tex",
+          "tables/dimension_transition_table.tex",
+          "figures/semantic_space.pdf",
+          "figures/semantic_space.svg"
+        ]
+      },
+      "summary": "phase_status=blocked; evidence_gates=C0-C14; blocked_by_prior_phases=6; missing_prerequisites=9; ready_to_run=false"
+    }
+  ],
+  "phases": [
+    {
+      "id": "data_isolation_hard_gold",
+      "name": "Data Isolation And Hard-Gold Holdouts",
+      "status": "blocked",
+      "depends_on": [],
+      "blocked_by_prior_phases": [],
+      "claim_ids": [
+        "C0"
+      ],
+      "claim_gaps": [
+        {
+          "claim_id": "C0",
+          "status": "missing_evidence",
+          "claim": "RubricBench test_main hard-gold and downstream benchmark holdout queries are query-disjoint from all configured SFT/proxy/RL training artifacts.",
+          "missing_or_failed_checks": [
+            "[missing] Teacher evaluation-criteria verifier-filtering provenance report (outputs/verifier/teacher_rubrics_filtered_report.json)",
+            "[missing] Teacher evaluation-criteria vs RewardBench filter report (outputs/contamination_audit/teacher_rubrics_rewardbench_holdout_filter.json)",
+            "[missing] Teacher evaluation-criteria vs JudgeBench filter report (outputs/contamination_audit/teacher_rubrics_judgebench_holdout_filter.json)",
+            "[missing] Teacher evaluation-criteria vs RewardBench-2 filter report (outputs/contamination_audit/teacher_rubrics_rewardbench2_holdout_filter.json)",
+            "[missing] Teacher verifier report binds raw teacher input (outputs/verifier/teacher_rubrics_filtered_report.json)",
+            "[missing] Teacher verifier report records raw teacher input hash (outputs/verifier/teacher_rubrics_filtered_report.json)",
+            "[missing] Teacher verifier report writes filtered teacher evaluation criteria (outputs/verifier/teacher_rubrics_filtered_report.json)",
+            "[missing] Teacher verifier report records filtered teacher hash (outputs/verifier/teacher_rubrics_filtered_report.json)",
+            "[missing] Teacher verifier report uses API verifier (outputs/verifier/teacher_rubrics_filtered_report.json)",
+            "[missing] Teacher verifier report binds verifier provider (outputs/verifier/teacher_rubrics_filtered_report.json)",
+            "[missing] Teacher verifier report records verifier provider hash (outputs/verifier/teacher_rubrics_filtered_report.json)",
+            "[missing] Teacher verifier report binds meta-verifier budget (outputs/verifier/teacher_rubrics_filtered_report.json)",
+            "[missing] Teacher verifier report records meta-verifier budget hash (outputs/verifier/teacher_rubrics_filtered_report.json)",
+            "[missing] Teacher verifier report binds SFT preflight (outputs/verifier/teacher_rubrics_filtered_report.json)",
+            "[missing] Teacher verifier report records SFT preflight hash (outputs/verifier/teacher_rubrics_filtered_report.json)",
+            "[missing] Proxy-gold build report binds holdout-clean teacher input (input=closed_human_seed_and_proxy_assets == data/processed/teacher_rubrics_training_clean.jsonl)",
+            "[missing] Proxy-gold build report writes unfiltered SFT data (sft_output=data/processed/blindspot_sft.jsonl == data/processed/blindspot_sft.unfiltered.jsonl)",
+            "[missing] Proxy-gold build report writes unfiltered proxy-gold data (proxy_gold_output=data/processed/proxy_gold.jsonl == data/processed/proxy_gold.unfiltered.jsonl)",
+            "[missing] Teacher verifier filtered output hash matches file (outputs/verifier/teacher_rubrics_filtered_report.json)",
+            "[missing] Teacher hard-gold-clean output hash matches file (data/processed/teacher_rubrics_filtered.hard_gold_clean.jsonl)",
+            "[missing] Teacher RewardBench-clean output hash matches file (outputs/contamination_audit/teacher_rubrics_rewardbench_holdout_filter.json)",
+            "[missing] Teacher JudgeBench-clean output hash matches file (outputs/contamination_audit/teacher_rubrics_judgebench_holdout_filter.json)",
+            "[missing] Teacher final holdout-clean output hash matches file (outputs/contamination_audit/teacher_rubrics_rewardbench2_holdout_filter.json)",
+            "[missing] Verifier-filtered teacher hash feeds hard-gold teacher filter (outputs/verifier/teacher_rubrics_filtered_report.json)",
+            "[missing] Hard-gold-clean teacher hash feeds RewardBench teacher filter (outputs/contamination_audit/teacher_rubrics_rewardbench_holdout_filter.json)",
+            "[missing] RewardBench-clean teacher hash feeds JudgeBench teacher filter (outputs/contamination_audit/teacher_rubrics_rewardbench_holdout_filter.json)",
+            "[missing] JudgeBench-clean teacher hash feeds RewardBench-2 teacher filter (outputs/contamination_audit/teacher_rubrics_judgebench_holdout_filter.json)",
+            "[missing] Final clean teacher hash feeds proxy-gold build input (outputs/contamination_audit/teacher_rubrics_rewardbench2_holdout_filter.json)"
+          ],
+          "notes": "This gate directly supports the hard-gold/proxy-gold isolation and downstream holdout non-overlap claims. It should pass before reporting main BSC, RL, or downstream utility results."
+        }
+      ],
+      "manifest_gaps": [],
+      "paper_asset_blockers": [],
+      "paper_asset_warnings": [],
+      "readiness_blockers": [
+        "required evidence claim C0 is missing_evidence"
+      ],
+      "next_actions": [
+        "Run real data normalization and hard-gold/downstream split stages.",
+        "Refresh proxy-train filters and zero-overlap contamination audits before training."
+      ],
+      "claim_discipline": "Do not report hard-gold, trained-method, ablation, downstream, or visualization results until C0 is safe_to_claim with query-disjoint holdouts and SHA-bound training/evaluation provenance.",
+      "summary": "blocked: claim_gaps=1, readiness_blockers=1"
+    },
+    {
+      "id": "training_and_serving",
+      "name": "SFT/GRPO Training And Serving",
+      "status": "blocked",
+      "depends_on": [
+        "data_isolation_hard_gold"
+      ],
+      "blocked_by_prior_phases": [
+        "data_isolation_hard_gold"
+      ],
+      "claim_ids": [
+        "C14",
+        "C2",
+        "C3"
+      ],
+      "claim_gaps": [
+        {
+          "claim_id": "C14",
+          "status": "missing_evidence",
+          "claim": "The GRPO/RLVR stage is tested against SFT-only under matched redundancy and hallucination controls.",
+          "missing_or_failed_checks": [
+            "[missing] Main table (outputs/matrix_real/main_table.csv)",
+            "[missing] SFT/GRPO training completion manifest (outputs/training_commands/training_done.json)",
+            "[missing] SFT-only BSC summary (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL BSC summary (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only BSC bootstrap CI (outputs/matrix_real/sft_only/bsc_ci/bootstrap_ci.json)",
+            "[missing] SFT+RL BSC bootstrap CI (outputs/matrix_real/sft_rl/bsc_ci/bootstrap_ci.json)",
+            "[missing] SFT-only BSC source count for RL-stage comparison (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL BSC source count for RL-stage comparison (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only coverage threshold matches RL-stage protocol (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL coverage threshold matches RL-stage protocol (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only redundancy threshold matches RL-stage protocol (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL redundancy threshold matches RL-stage protocol (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only verifier-backed BSC records (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL verifier-backed BSC records (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only tracks generated criteria count (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL tracks generated criteria count (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only tracks generated-to-gold ratio (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL tracks generated-to-gold ratio (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only tracks length-normalized coverage (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL tracks length-normalized coverage (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only BSC join has no missing predictions (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT-only BSC join has no unmatched predictions (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT-only BSC join has no duplicate gold records (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT-only BSC join has no duplicate prediction records (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join has no missing predictions (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join has no unmatched predictions (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join has no duplicate gold records (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join has no duplicate prediction records (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] Matrix trained-method gate passed (ok=False == True)",
+            "[missing] Training completion serves base, SFT-only, and SFT+RL (outputs/training_commands/training_done.json)",
+            "[missing] Training completion binds SFT config (outputs/training_commands/training_done.json)",
+            "[missing] Training completion binds GRPO config (outputs/training_commands/training_done.json)",
+            "[missing] Training completion binds SFT data (outputs/training_commands/training_done.json)",
+            "[missing] Training completion binds proxy-gold RL data (outputs/training_commands/training_done.json)",
+            "[missing] Training completion binds proxy-gold RL data report (outputs/training_commands/training_done.json)",
+            "[missing] Training completion binds BSC reward function (outputs/training_commands/training_done.json)",
+            "[missing] SFT-only BSC embedding model matches RL-stage protocol (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL BSC embedding model matches RL-stage protocol (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only hallucination source is verifier-backed (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL hallucination source is verifier-backed (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only BSC join uses RubricBench test_main hard-gold (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT-only BSC join output is fixed (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT-only BSC join query alignment is exact (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT-only BSC join output row count matches joined records (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT-only BSC join output is not limit-truncated (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join uses RubricBench test_main hard-gold (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join output is fixed (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join query alignment is exact (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join output row count matches joined records (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join output is not limit-truncated (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT-only BSC summary binds expected eval input (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT-only BSC summary records evaluated input hash (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT-only BSC summary records per-item output (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT-only BSC summary records per-item hash (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT-only BSC summary records per-item row count (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT-only BSC CI binds per-item input (outputs/matrix_real/sft_only/bsc_ci/bootstrap_ci.json)",
+            "[missing] SFT-only BSC CI records per-item input hash (outputs/matrix_real/sft_only/bsc_ci/bootstrap_ci.json)",
+            "[missing] SFT+RL BSC summary binds expected eval input (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL BSC summary records evaluated input hash (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL BSC summary records per-item output (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL BSC summary records per-item hash (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL BSC summary records per-item row count (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL BSC CI binds per-item input (outputs/matrix_real/sft_rl/bsc_ci/bootstrap_ci.json)",
+            "[missing] SFT+RL BSC CI records per-item input hash (outputs/matrix_real/sft_rl/bsc_ci/bootstrap_ci.json)",
+            "[missing] Main table exposes RL-stage length audit columns (outputs/matrix_real/main_table.csv)",
+            "[missing] SFT-only main-table row exposes length audit values (outputs/matrix_real/main_table.csv)",
+            "[missing] SFT+RL main-table row exposes length audit values (outputs/matrix_real/main_table.csv)",
+            "[missing] Training completion SFT config SHA matches file (outputs/training_commands/training_done.json)",
+            "[missing] Training completion GRPO config SHA matches file (outputs/training_commands/training_done.json)",
+            "[missing] Training completion SFT data SHA matches file (outputs/training_commands/training_done.json)",
+            "[missing] Training completion RL data SHA matches file (outputs/training_commands/training_done.json)",
+            "[missing] Training completion RL data report SHA matches file (outputs/training_commands/training_done.json)",
+            "[missing] Training completion reward function SHA matches file (outputs/training_commands/training_done.json)",
+            "[missing] SFT+RL coverage change over SFT-only (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL redundancy increase over SFT-only is bounded (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL hallucination increase over SFT-only is bounded (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL conservative coverage change over SFT-only (outputs/matrix_real/sft_rl/bsc_ci/bootstrap_ci.json)",
+            "[missing] SFT+RL mean generated criteria count is not a length-only expansion over SFT-only (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL generated-to-gold ratio is not a length-only expansion over SFT-only (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL length-normalized coverage is not lower than SFT-only (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only BSC summary input hash matches join output (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT-only BSC summary per-item hash matches CI input (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT-only BSC summary per-item row count matches CI rows (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL BSC summary input hash matches join output (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL BSC summary per-item hash matches CI input (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL BSC summary per-item row count matches CI rows (outputs/matrix_real/sft_rl/bsc/summary.json)"
+          ],
+          "notes": "This gate is the explicit SFT-only vs SFT+GRPO ablation. Do not claim RL-stage support unless it passes. Both rows must use the same BGE embedding model, coverage/redundancy thresholds, verifier-backed hallucination source, bootstrap-CI protocol, exact hard-gold join, bounded generated-criteria count, and non-degraded length-normalized coverage; otherwise the RL-stage comparison is not reportable."
+        },
+        {
+          "claim_id": "C2",
+          "status": "missing_evidence",
+          "claim": "BSC reward training is tested for hard-gold evaluation-dimension coverage changes relative to the base policy.",
+          "missing_or_failed_checks": [
+            "[missing] Main table (outputs/matrix_real/main_table.csv)",
+            "[missing] Base BSC bootstrap CI (outputs/matrix_real/base/bsc_ci/bootstrap_ci.json)",
+            "[missing] SFT+RL BSC bootstrap CI (outputs/matrix_real/sft_rl/bsc_ci/bootstrap_ci.json)",
+            "[missing] Base BSC join report (outputs/matrix_real/base/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join report (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] Base BSC source count for training comparison (outputs/matrix_real/base/bsc/summary.json)",
+            "[missing] SFT+RL BSC source count for training comparison (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL coverage threshold matches protocol (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL redundancy threshold matches protocol (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] Base BSC embedding model for training comparison (outputs/matrix_real/base/bsc/summary.json)",
+            "[missing] SFT+RL BSC embedding model for training comparison (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] Base BSC join uses RubricBench test_main hard-gold (outputs/matrix_real/base/bsc_join_report.json)",
+            "[missing] Base BSC join output is fixed (outputs/matrix_real/base/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join uses RubricBench test_main hard-gold (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join output is fixed (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL coverage change over base meets the pre-registered threshold (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL conservative coverage change over base meets the CI threshold (outputs/matrix_real/sft_rl/bsc_ci/bootstrap_ci.json)"
+          ],
+          "notes": "Adjust the minimum gain threshold only before looking at final results."
+        },
+        {
+          "claim_id": "C3",
+          "status": "missing_evidence",
+          "claim": "The trained evaluation-criteria policy is tested for whether coverage changes remain reportable under redundancy and hallucination controls.",
+          "missing_or_failed_checks": [
+            "[missing] Base BSC bootstrap CI (outputs/matrix_real/base/bsc_ci/bootstrap_ci.json)",
+            "[missing] SFT+RL BSC bootstrap CI (outputs/matrix_real/sft_rl/bsc_ci/bootstrap_ci.json)",
+            "[missing] SFT-only BSC join report (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join report (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] Base verifier-backed BSC records (outputs/matrix_real/base/bsc/summary.json)",
+            "[missing] SFT+RL verifier-backed BSC records (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] Base tracks generated criteria count (outputs/matrix_real/base/bsc/summary.json)",
+            "[missing] SFT+RL tracks generated criteria count (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] Base tracks generated-to-gold ratio (outputs/matrix_real/base/bsc/summary.json)",
+            "[missing] SFT+RL tracks generated-to-gold ratio (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] Base tracks length-normalized coverage (outputs/matrix_real/base/bsc/summary.json)",
+            "[missing] SFT+RL tracks length-normalized coverage (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] Base hallucination uses verifier flags (outputs/matrix_real/base/bsc/summary.json)",
+            "[missing] SFT+RL hallucination uses verifier flags (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL redundancy does not exceed base by more than 0.05 (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL conservative redundancy increase is bounded (outputs/matrix_real/sft_rl/bsc_ci/bootstrap_ci.json)",
+            "[missing] SFT+RL hallucination does not exceed base by more than 0.05 (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL conservative hallucination increase is bounded (outputs/matrix_real/sft_rl/bsc_ci/bootstrap_ci.json)",
+            "[missing] SFT+RL mean generated criteria count is not a length-only expansion (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL generated-to-gold ratio is not a length-only expansion (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL length-normalized coverage is not lower than base (outputs/matrix_real/sft_rl/bsc/summary.json)"
+          ],
+          "notes": "Requires API verifier-backed hallucination estimates for final paper numbers. C3 also bounds the SFT+RL/base mean generated-criteria count and generated-to-gold ratio, and audits coverage per generated criterion, so a coverage change remains metric-only and is not eligible for a dimension-level recovery conclusion if it is mainly a length expansion."
+        }
+      ],
+      "manifest_gaps": [],
+      "paper_asset_blockers": [],
+      "paper_asset_warnings": [],
+      "readiness_blockers": [
+        "required evidence claim C2 is missing_evidence",
+        "required evidence claim C3 is missing_evidence",
+        "required evidence claim C14 is missing_evidence",
+        "raw gate SFT Data Preflight is blocked: 8 blockers, 0 warnings",
+        "raw gate Training Completion Gate is blocked: 46 blockers, 0 warnings",
+        "raw gate Matrix Trained Method Gate is blocked: 44 blockers, 0 warnings",
+        "raw gate JudgeBench Trained Method Gate is blocked: 44 blockers, 0 warnings",
+        "raw gate RewardBench-2 Trained Method Gate is blocked: 44 blockers, 0 warnings",
+        "raw gate Generalization Trained Method Gate is blocked: 44 blockers, 0 warnings"
+      ],
+      "next_actions": [
+        "Run SFT-only and SFT+GRPO on proxy-gold data only.",
+        "Write training_done.json with checkpoint paths, serving endpoints, rl_data_report, and reward_function."
+      ],
+      "claim_discipline": "Treat SFT/GRPO as unavailable for paper claims until training_done.json binds SFT-only and SFT+GRPO checkpoints, serving metadata, proxy-gold RL data, and reward configuration.",
+      "summary": "blocked: claim_gaps=3, readiness_blockers=9, blocked_by_prior_phases=1"
+    },
+    {
+      "id": "main_hard_gold_bsc",
+      "name": "Main Hard-Gold BSC Evidence",
+      "status": "blocked",
+      "depends_on": [
+        "data_isolation_hard_gold",
+        "training_and_serving"
+      ],
+      "blocked_by_prior_phases": [
+        "data_isolation_hard_gold",
+        "training_and_serving"
+      ],
+      "claim_ids": [
+        "C1",
+        "C12",
+        "C14",
+        "C2",
+        "C3",
+        "C6"
+      ],
+      "claim_gaps": [
+        {
+          "claim_id": "C1",
+          "status": "missing_evidence",
+          "claim": "A single-model evaluation-criteria policy leaves measurable blind spots against human-gold evaluation dimensions on RubricBench.",
+          "missing_or_failed_checks": [
+            "[missing] Base BSC summary (outputs/matrix_real/base/bsc/summary.json)",
+            "[missing] Base BSC per-item diagnostics (outputs/matrix_real/base/bsc/per_item.csv)",
+            "[missing] Base BSC bootstrap CI (outputs/matrix_real/base/bsc_ci/bootstrap_ci.json)",
+            "[missing] RubricBench-scale sample size (outputs/matrix_real/base/bsc/summary.json)",
+            "[missing] Base blind spot is non-trivial (outputs/matrix_real/base/bsc/summary.json)",
+            "[missing] Base median query blind spot is non-trivial (outputs/matrix_real/base/bsc/summary.json)",
+            "[missing] Base blind spot affects most diagnostic queries (outputs/matrix_real/base/bsc/summary.json)",
+            "[missing] Base blind spot CI lower bound is non-trivial (outputs/matrix_real/base/bsc_ci/bootstrap_ci.json)",
+            "[missing] Base BSC coverage threshold matches protocol (outputs/matrix_real/base/bsc/summary.json)",
+            "[missing] Base BSC redundancy threshold matches protocol (outputs/matrix_real/base/bsc/summary.json)",
+            "[missing] Base BSC uses RubricBench hard-gold records (outputs/matrix_real/base/bsc/summary.json)",
+            "[missing] Base BSC hallucination is verifier-backed (outputs/matrix_real/base/bsc/summary.json)",
+            "[missing] Base BSC embedding model matches protocol (outputs/matrix_real/base/bsc/summary.json)",
+            "[missing] Base BSC coverage weight matches protocol (outputs/matrix_real/base/bsc/summary.json)",
+            "[missing] Base BSC validity weight matches protocol (outputs/matrix_real/base/bsc/summary.json)",
+            "[missing] Base BSC redundancy weight matches protocol (outputs/matrix_real/base/bsc/summary.json)",
+            "[missing] Base BSC hallucination source is verifier-backed (outputs/matrix_real/base/bsc/summary.json)"
+          ],
+          "notes": "Use this claim only after running real RubricBench or an explicitly named hard-gold substitute."
+        },
+        {
+          "claim_id": "C12",
+          "status": "missing_evidence",
+          "claim": "SFT+RL is evaluated with a dimension-transition audit on human-gold dimensions rather than only aggregate BSC changes.",
+          "missing_or_failed_checks": [
+            "[missing] Base to SFT-only dimension-transition summary (outputs/matrix_real/dimension_transition/base_to_sft_only/transition_summary.json)",
+            "[missing] Base to SFT+RL dimension-transition summary (outputs/matrix_real/dimension_transition/base_to_sft_rl/transition_summary.json)",
+            "[missing] Base to SFT+RL category transition table (outputs/matrix_real/dimension_transition/base_to_sft_rl/transition_by_category.csv)",
+            "[missing] Base to SFT+RL gold-dimension audit rows (outputs/matrix_real/dimension_transition/base_to_sft_rl/transition_gold_items.jsonl)",
+            "[missing] Base BSC join report for dimension-transition provenance (outputs/matrix_real/base/bsc_join_report.json)",
+            "[missing] SFT-only BSC join report for dimension-transition provenance (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join report for dimension-transition provenance (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL recovers a non-trivial share of baseline-uncovered gold dimensions (outputs/matrix_real/dimension_transition/base_to_sft_rl/transition_summary.json)",
+            "[missing] SFT+RL does not lose many baseline-covered gold dimensions (outputs/matrix_real/dimension_transition/base_to_sft_rl/transition_summary.json)",
+            "[missing] SFT+RL recovers more human-gold dimensions than it loses (outputs/matrix_real/dimension_transition/base_to_sft_rl/transition_summary.json)",
+            "[missing] SFT+RL dimension-transition audit uses the hard-gold evaluation set (outputs/matrix_real/dimension_transition/base_to_sft_rl/transition_summary.json)",
+            "[missing] Base to SFT-only dimension-transition audit has matched hard-gold records (outputs/matrix_real/dimension_transition/base_to_sft_only/transition_summary.json)",
+            "[missing] Base to SFT-only dimension-transition audit has no unmatched baseline records (outputs/matrix_real/dimension_transition/base_to_sft_only/transition_summary.json)",
+            "[missing] Base to SFT-only dimension-transition audit has no unmatched candidate records (outputs/matrix_real/dimension_transition/base_to_sft_only/transition_summary.json)",
+            "[missing] Base to SFT-only dimension-transition audit has no duplicate baseline records (outputs/matrix_real/dimension_transition/base_to_sft_only/transition_summary.json)",
+            "[missing] Base to SFT-only dimension-transition audit has no duplicate candidate records (outputs/matrix_real/dimension_transition/base_to_sft_only/transition_summary.json)",
+            "[missing] Base to SFT-only dimension-transition audit coverage threshold matches BSC protocol (outputs/matrix_real/dimension_transition/base_to_sft_only/transition_summary.json)",
+            "[missing] Base to SFT+RL dimension-transition audit has matched hard-gold records (outputs/matrix_real/dimension_transition/base_to_sft_rl/transition_summary.json)",
+            "[missing] Base to SFT+RL dimension-transition audit has no unmatched baseline records (outputs/matrix_real/dimension_transition/base_to_sft_rl/transition_summary.json)",
+            "[missing] Base to SFT+RL dimension-transition audit has no unmatched candidate records (outputs/matrix_real/dimension_transition/base_to_sft_rl/transition_summary.json)",
+            "[missing] Base to SFT+RL dimension-transition audit has no duplicate baseline records (outputs/matrix_real/dimension_transition/base_to_sft_rl/transition_summary.json)",
+            "[missing] Base to SFT+RL dimension-transition audit has no duplicate candidate records (outputs/matrix_real/dimension_transition/base_to_sft_rl/transition_summary.json)",
+            "[missing] Base to SFT+RL dimension-transition audit coverage threshold matches BSC protocol (outputs/matrix_real/dimension_transition/base_to_sft_rl/transition_summary.json)",
+            "[missing] Base to SFT-only dimension-transition baseline input is fixed (outputs/matrix_real/dimension_transition/base_to_sft_only/transition_summary.json)",
+            "[missing] Base BSC join report uses RubricBench test_main hard-gold (outputs/matrix_real/base/bsc_join_report.json)",
+            "[missing] Base BSC join output feeds the dimension-transition baseline (outputs/matrix_real/base/bsc_join_report.json)",
+            "[missing] Base BSC join query alignment is exact (outputs/matrix_real/base/bsc_join_report.json)",
+            "[missing] Base BSC join has no missing predictions (outputs/matrix_real/base/bsc_join_report.json)",
+            "[missing] Base BSC join has no unmatched predictions (outputs/matrix_real/base/bsc_join_report.json)",
+            "[missing] Base BSC join has no duplicate gold records (outputs/matrix_real/base/bsc_join_report.json)",
+            "[missing] Base BSC join has no duplicate prediction records (outputs/matrix_real/base/bsc_join_report.json)",
+            "[missing] Base BSC join output row count matches joined records (outputs/matrix_real/base/bsc_join_report.json)",
+            "[missing] Base BSC join output is not limit-truncated (outputs/matrix_real/base/bsc_join_report.json)",
+            "[missing] Base to SFT-only dimension-transition candidate input is fixed (outputs/matrix_real/dimension_transition/base_to_sft_only/transition_summary.json)",
+            "[missing] SFT-only BSC join report uses RubricBench test_main hard-gold (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT-only BSC join output feeds the dimension-transition candidate (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT-only BSC join query alignment is exact (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT-only BSC join has no missing predictions (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT-only BSC join has no unmatched predictions (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT-only BSC join has no duplicate gold records (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT-only BSC join has no duplicate prediction records (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT-only BSC join output row count matches joined records (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT-only BSC join output is not limit-truncated (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] Base to SFT-only dimension-transition embedding model matches BSC protocol (outputs/matrix_real/dimension_transition/base_to_sft_only/transition_summary.json)",
+            "[missing] Base to SFT-only dimension-transition audit joins by query (outputs/matrix_real/dimension_transition/base_to_sft_only/transition_summary.json)",
+            "[missing] Base to SFT-only dimension-transition audit respects verifier valid flags (outputs/matrix_real/dimension_transition/base_to_sft_only/transition_summary.json)",
+            "[missing] Base to SFT-only dimension-transition query alignment is exact (outputs/matrix_real/dimension_transition/base_to_sft_only/transition_summary.json)",
+            "[missing] Base to SFT-only dimension-transition gold rows match total gold (outputs/matrix_real/dimension_transition/base_to_sft_only/transition_summary.json)",
+            "[missing] Base to SFT-only dimension-transition per-item rows match matched records (outputs/matrix_real/dimension_transition/base_to_sft_only/transition_summary.json)",
+            "[missing] Base to SFT+RL dimension-transition baseline input is fixed (outputs/matrix_real/dimension_transition/base_to_sft_rl/transition_summary.json)",
+            "[missing] Base to SFT+RL dimension-transition candidate input is fixed (outputs/matrix_real/dimension_transition/base_to_sft_rl/transition_summary.json)",
+            "[missing] SFT+RL BSC join report uses RubricBench test_main hard-gold (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join output feeds the dimension-transition candidate (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join query alignment is exact (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join has no missing predictions (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join has no unmatched predictions (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join has no duplicate gold records (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join has no duplicate prediction records (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join output row count matches joined records (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join output is not limit-truncated (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] Base to SFT+RL dimension-transition embedding model matches BSC protocol (outputs/matrix_real/dimension_transition/base_to_sft_rl/transition_summary.json)",
+            "[missing] Base to SFT+RL dimension-transition audit joins by query (outputs/matrix_real/dimension_transition/base_to_sft_rl/transition_summary.json)",
+            "[missing] Base to SFT+RL dimension-transition audit respects verifier valid flags (outputs/matrix_real/dimension_transition/base_to_sft_rl/transition_summary.json)",
+            "[missing] Base to SFT+RL dimension-transition query alignment is exact (outputs/matrix_real/dimension_transition/base_to_sft_rl/transition_summary.json)",
+            "[missing] Base to SFT+RL dimension-transition gold rows match total gold (outputs/matrix_real/dimension_transition/base_to_sft_rl/transition_summary.json)",
+            "[missing] Base to SFT+RL dimension-transition per-item rows match matched records (outputs/matrix_real/dimension_transition/base_to_sft_rl/transition_summary.json)",
+            "[missing] Base to SFT+RL dimension-transition net transition is positive (outputs/matrix_real/dimension_transition/base_to_sft_rl/transition_summary.json)",
+            "[missing] SFT+RL recovered-dimension rate is at least as high as SFT-only (outputs/matrix_real/dimension_transition/base_to_sft_rl/transition_summary.json)",
+            "[missing] Base to SFT-only baseline SHA matches base BSC join output (outputs/matrix_real/dimension_transition/base_to_sft_only/transition_summary.json)",
+            "[missing] Base to SFT-only candidate SHA matches SFT-only BSC join output (outputs/matrix_real/dimension_transition/base_to_sft_only/transition_summary.json)",
+            "[missing] Base to SFT+RL baseline SHA matches base BSC join output (outputs/matrix_real/dimension_transition/base_to_sft_rl/transition_summary.json)",
+            "[missing] Base to SFT+RL candidate SHA matches SFT+RL BSC join output (outputs/matrix_real/dimension_transition/base_to_sft_rl/transition_summary.json)"
+          ],
+          "notes": "This gate audits recovered and lost human-gold dimensions under the same hard-gold BSC protocol; it does not by itself permit a dimension-level recovery conclusion. C12 also requires exact base/candidate input identities, input SHA binding to the BSC join outputs, query-level alignment with no unmatched or duplicate records, BGE embeddings, coverage_tau=0.75, verifier valid-flag filtering, and gold-row consistency so dimension-level transitions are measured on the same hard-gold examples."
+        },
+        {
+          "claim_id": "C14",
+          "status": "missing_evidence",
+          "claim": "The GRPO/RLVR stage is tested against SFT-only under matched redundancy and hallucination controls.",
+          "missing_or_failed_checks": [
+            "[missing] Main table (outputs/matrix_real/main_table.csv)",
+            "[missing] SFT/GRPO training completion manifest (outputs/training_commands/training_done.json)",
+            "[missing] SFT-only BSC summary (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL BSC summary (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only BSC bootstrap CI (outputs/matrix_real/sft_only/bsc_ci/bootstrap_ci.json)",
+            "[missing] SFT+RL BSC bootstrap CI (outputs/matrix_real/sft_rl/bsc_ci/bootstrap_ci.json)",
+            "[missing] SFT-only BSC source count for RL-stage comparison (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL BSC source count for RL-stage comparison (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only coverage threshold matches RL-stage protocol (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL coverage threshold matches RL-stage protocol (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only redundancy threshold matches RL-stage protocol (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL redundancy threshold matches RL-stage protocol (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only verifier-backed BSC records (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL verifier-backed BSC records (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only tracks generated criteria count (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL tracks generated criteria count (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only tracks generated-to-gold ratio (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL tracks generated-to-gold ratio (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only tracks length-normalized coverage (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL tracks length-normalized coverage (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only BSC join has no missing predictions (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT-only BSC join has no unmatched predictions (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT-only BSC join has no duplicate gold records (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT-only BSC join has no duplicate prediction records (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join has no missing predictions (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join has no unmatched predictions (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join has no duplicate gold records (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join has no duplicate prediction records (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] Matrix trained-method gate passed (ok=False == True)",
+            "[missing] Training completion serves base, SFT-only, and SFT+RL (outputs/training_commands/training_done.json)",
+            "[missing] Training completion binds SFT config (outputs/training_commands/training_done.json)",
+            "[missing] Training completion binds GRPO config (outputs/training_commands/training_done.json)",
+            "[missing] Training completion binds SFT data (outputs/training_commands/training_done.json)",
+            "[missing] Training completion binds proxy-gold RL data (outputs/training_commands/training_done.json)",
+            "[missing] Training completion binds proxy-gold RL data report (outputs/training_commands/training_done.json)",
+            "[missing] Training completion binds BSC reward function (outputs/training_commands/training_done.json)",
+            "[missing] SFT-only BSC embedding model matches RL-stage protocol (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL BSC embedding model matches RL-stage protocol (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only hallucination source is verifier-backed (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL hallucination source is verifier-backed (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only BSC join uses RubricBench test_main hard-gold (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT-only BSC join output is fixed (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT-only BSC join query alignment is exact (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT-only BSC join output row count matches joined records (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT-only BSC join output is not limit-truncated (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join uses RubricBench test_main hard-gold (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join output is fixed (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join query alignment is exact (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join output row count matches joined records (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join output is not limit-truncated (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT-only BSC summary binds expected eval input (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT-only BSC summary records evaluated input hash (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT-only BSC summary records per-item output (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT-only BSC summary records per-item hash (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT-only BSC summary records per-item row count (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT-only BSC CI binds per-item input (outputs/matrix_real/sft_only/bsc_ci/bootstrap_ci.json)",
+            "[missing] SFT-only BSC CI records per-item input hash (outputs/matrix_real/sft_only/bsc_ci/bootstrap_ci.json)",
+            "[missing] SFT+RL BSC summary binds expected eval input (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL BSC summary records evaluated input hash (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL BSC summary records per-item output (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL BSC summary records per-item hash (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL BSC summary records per-item row count (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL BSC CI binds per-item input (outputs/matrix_real/sft_rl/bsc_ci/bootstrap_ci.json)",
+            "[missing] SFT+RL BSC CI records per-item input hash (outputs/matrix_real/sft_rl/bsc_ci/bootstrap_ci.json)",
+            "[missing] Main table exposes RL-stage length audit columns (outputs/matrix_real/main_table.csv)",
+            "[missing] SFT-only main-table row exposes length audit values (outputs/matrix_real/main_table.csv)",
+            "[missing] SFT+RL main-table row exposes length audit values (outputs/matrix_real/main_table.csv)",
+            "[missing] Training completion SFT config SHA matches file (outputs/training_commands/training_done.json)",
+            "[missing] Training completion GRPO config SHA matches file (outputs/training_commands/training_done.json)",
+            "[missing] Training completion SFT data SHA matches file (outputs/training_commands/training_done.json)",
+            "[missing] Training completion RL data SHA matches file (outputs/training_commands/training_done.json)",
+            "[missing] Training completion RL data report SHA matches file (outputs/training_commands/training_done.json)",
+            "[missing] Training completion reward function SHA matches file (outputs/training_commands/training_done.json)",
+            "[missing] SFT+RL coverage change over SFT-only (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL redundancy increase over SFT-only is bounded (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL hallucination increase over SFT-only is bounded (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL conservative coverage change over SFT-only (outputs/matrix_real/sft_rl/bsc_ci/bootstrap_ci.json)",
+            "[missing] SFT+RL mean generated criteria count is not a length-only expansion over SFT-only (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL generated-to-gold ratio is not a length-only expansion over SFT-only (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL length-normalized coverage is not lower than SFT-only (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only BSC summary input hash matches join output (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT-only BSC summary per-item hash matches CI input (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT-only BSC summary per-item row count matches CI rows (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL BSC summary input hash matches join output (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL BSC summary per-item hash matches CI input (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL BSC summary per-item row count matches CI rows (outputs/matrix_real/sft_rl/bsc/summary.json)"
+          ],
+          "notes": "This gate is the explicit SFT-only vs SFT+GRPO ablation. Do not claim RL-stage support unless it passes. Both rows must use the same BGE embedding model, coverage/redundancy thresholds, verifier-backed hallucination source, bootstrap-CI protocol, exact hard-gold join, bounded generated-criteria count, and non-degraded length-normalized coverage; otherwise the RL-stage comparison is not reportable."
+        },
+        {
+          "claim_id": "C2",
+          "status": "missing_evidence",
+          "claim": "BSC reward training is tested for hard-gold evaluation-dimension coverage changes relative to the base policy.",
+          "missing_or_failed_checks": [
+            "[missing] Main table (outputs/matrix_real/main_table.csv)",
+            "[missing] Base BSC bootstrap CI (outputs/matrix_real/base/bsc_ci/bootstrap_ci.json)",
+            "[missing] SFT+RL BSC bootstrap CI (outputs/matrix_real/sft_rl/bsc_ci/bootstrap_ci.json)",
+            "[missing] Base BSC join report (outputs/matrix_real/base/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join report (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] Base BSC source count for training comparison (outputs/matrix_real/base/bsc/summary.json)",
+            "[missing] SFT+RL BSC source count for training comparison (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL coverage threshold matches protocol (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL redundancy threshold matches protocol (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] Base BSC embedding model for training comparison (outputs/matrix_real/base/bsc/summary.json)",
+            "[missing] SFT+RL BSC embedding model for training comparison (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] Base BSC join uses RubricBench test_main hard-gold (outputs/matrix_real/base/bsc_join_report.json)",
+            "[missing] Base BSC join output is fixed (outputs/matrix_real/base/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join uses RubricBench test_main hard-gold (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join output is fixed (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL coverage change over base meets the pre-registered threshold (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL conservative coverage change over base meets the CI threshold (outputs/matrix_real/sft_rl/bsc_ci/bootstrap_ci.json)"
+          ],
+          "notes": "Adjust the minimum gain threshold only before looking at final results."
+        },
+        {
+          "claim_id": "C3",
+          "status": "missing_evidence",
+          "claim": "The trained evaluation-criteria policy is tested for whether coverage changes remain reportable under redundancy and hallucination controls.",
+          "missing_or_failed_checks": [
+            "[missing] Base BSC bootstrap CI (outputs/matrix_real/base/bsc_ci/bootstrap_ci.json)",
+            "[missing] SFT+RL BSC bootstrap CI (outputs/matrix_real/sft_rl/bsc_ci/bootstrap_ci.json)",
+            "[missing] SFT-only BSC join report (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join report (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] Base verifier-backed BSC records (outputs/matrix_real/base/bsc/summary.json)",
+            "[missing] SFT+RL verifier-backed BSC records (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] Base tracks generated criteria count (outputs/matrix_real/base/bsc/summary.json)",
+            "[missing] SFT+RL tracks generated criteria count (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] Base tracks generated-to-gold ratio (outputs/matrix_real/base/bsc/summary.json)",
+            "[missing] SFT+RL tracks generated-to-gold ratio (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] Base tracks length-normalized coverage (outputs/matrix_real/base/bsc/summary.json)",
+            "[missing] SFT+RL tracks length-normalized coverage (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] Base hallucination uses verifier flags (outputs/matrix_real/base/bsc/summary.json)",
+            "[missing] SFT+RL hallucination uses verifier flags (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL redundancy does not exceed base by more than 0.05 (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL conservative redundancy increase is bounded (outputs/matrix_real/sft_rl/bsc_ci/bootstrap_ci.json)",
+            "[missing] SFT+RL hallucination does not exceed base by more than 0.05 (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL conservative hallucination increase is bounded (outputs/matrix_real/sft_rl/bsc_ci/bootstrap_ci.json)",
+            "[missing] SFT+RL mean generated criteria count is not a length-only expansion (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL generated-to-gold ratio is not a length-only expansion (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL length-normalized coverage is not lower than base (outputs/matrix_real/sft_rl/bsc/summary.json)"
+          ],
+          "notes": "Requires API verifier-backed hallucination estimates for final paper numbers. C3 also bounds the SFT+RL/base mean generated-criteria count and generated-to-gold ratio, and audits coverage per generated criterion, so a coverage change remains metric-only and is not eligible for a dimension-level recovery conclusion if it is mainly a length expansion."
+        },
+        {
+          "claim_id": "C6",
+          "status": "missing_evidence",
+          "claim": "BSC findings are auditable across semantic threshold settings.",
+          "missing_or_failed_checks": [
+            "[missing] Base threshold sweep (outputs/matrix_real/base/bsc_sweep/threshold_sweep.csv)",
+            "[missing] SFT+RL threshold sweep (outputs/matrix_real/sft_rl/bsc_sweep/threshold_sweep.csv)",
+            "[missing] Base BSC human audit annotation pack (outputs/matrix_real/base/bsc_human_audit_pack/audit_items.csv)",
+            "[missing] SFT+RL BSC human audit annotation pack (outputs/matrix_real/sft_rl/bsc_human_audit_pack/audit_items.csv)",
+            "[missing] Base BSC C6-gated human-audit summary (outputs/matrix_real/base/bsc_human_audit_pack/human_label_summary.json)",
+            "[missing] Base BSC C6-gated human-audit report (outputs/matrix_real/base/bsc_human_audit_pack/human_label_summary.md)",
+            "[missing] SFT+RL BSC C6-gated human-audit summary (outputs/matrix_real/sft_rl/bsc_human_audit_pack/human_label_summary.json)",
+            "[missing] SFT+RL BSC C6-gated human-audit report (outputs/matrix_real/sft_rl/bsc_human_audit_pack/human_label_summary.md)",
+            "[missing] Threshold sweep has evaluated records (outputs/matrix_real/base/bsc_sweep/threshold_sweep.json)",
+            "[missing] Base loose coverage-threshold blind spot remains non-trivial (outputs/matrix_real/base/bsc_sweep/threshold_sweep.json)",
+            "[missing] Base strict coverage-threshold blind spot remains non-trivial (outputs/matrix_real/base/bsc_sweep/threshold_sweep.json)",
+            "[missing] SFT+RL threshold sweep has evaluated records (outputs/matrix_real/sft_rl/bsc_sweep/threshold_sweep.json)",
+            "[missing] Base BSC human audit pack has matched samples (outputs/matrix_real/base/bsc_human_audit_pack/summary.json)",
+            "[missing] Base BSC human audit pack has unmatched samples (outputs/matrix_real/base/bsc_human_audit_pack/summary.json)",
+            "[missing] SFT+RL BSC human audit pack has matched samples (outputs/matrix_real/sft_rl/bsc_human_audit_pack/summary.json)",
+            "[missing] SFT+RL BSC human audit pack has unmatched samples (outputs/matrix_real/sft_rl/bsc_human_audit_pack/summary.json)",
+            "[missing] Base BSC C6 human-audit label-count gate (outputs/matrix_real/base/bsc_human_audit_pack/human_label_summary.json)",
+            "[missing] Base BSC C6 human-audit invalid-label gate (outputs/matrix_real/base/bsc_human_audit_pack/human_label_summary.json)",
+            "[missing] Base BSC C6 human-audit uncertainty gate (outputs/matrix_real/base/bsc_human_audit_pack/human_label_summary.json)",
+            "[missing] Base auto-matched BSC pairs align with human labels (outputs/matrix_real/base/bsc_human_audit_pack/human_label_summary.json)",
+            "[missing] Base auto-unmatched BSC pairs are human-confirmed (outputs/matrix_real/base/bsc_human_audit_pack/human_label_summary.json)",
+            "[missing] SFT+RL BSC C6 human-audit label-count gate (outputs/matrix_real/sft_rl/bsc_human_audit_pack/human_label_summary.json)",
+            "[missing] SFT+RL BSC C6 human-audit invalid-label gate (outputs/matrix_real/sft_rl/bsc_human_audit_pack/human_label_summary.json)",
+            "[missing] SFT+RL BSC C6 human-audit uncertainty gate (outputs/matrix_real/sft_rl/bsc_human_audit_pack/human_label_summary.json)",
+            "[missing] SFT+RL auto-matched BSC pairs align with human labels (outputs/matrix_real/sft_rl/bsc_human_audit_pack/human_label_summary.json)",
+            "[missing] SFT+RL auto-unmatched BSC pairs are human-confirmed (outputs/matrix_real/sft_rl/bsc_human_audit_pack/human_label_summary.json)",
+            "[missing] Base BSC human audit pack is annotation-ready (outputs/matrix_real/base/bsc_human_audit_pack/summary.json)",
+            "[missing] SFT+RL BSC human audit pack is annotation-ready (outputs/matrix_real/sft_rl/bsc_human_audit_pack/summary.json)",
+            "[missing] Base BSC C6 human-audit completion gate (outputs/matrix_real/base/bsc_human_audit_pack/human_label_summary.json)",
+            "[missing] Base BSC C6 strict human-audit gate passed (outputs/matrix_real/base/bsc_human_audit_pack/human_label_summary.json)",
+            "[missing] SFT+RL BSC C6 human-audit completion gate (outputs/matrix_real/sft_rl/bsc_human_audit_pack/human_label_summary.json)",
+            "[missing] SFT+RL BSC C6 strict human-audit gate passed (outputs/matrix_real/sft_rl/bsc_human_audit_pack/human_label_summary.json)"
+          ],
+          "notes": "Run sweep_bsc_thresholds.py for every method or at least the base and SFT+RL endpoints. The annotation pack alone is not enough for this claim: run summarize_bsc_human_audit_labels.py after human labels are filled, requiring at least 50 labels, no invalid labels, bounded uncertainty, and >=0.8 confirmation for both auto-matched and auto-unmatched samples."
+        }
+      ],
+      "manifest_gaps": [],
+      "paper_asset_blockers": [
+        {
+          "category": "main_bsc_table",
+          "count": 1,
+          "label": "main hard-gold BSC paper table",
+          "claim_ids": [
+            "C1",
+            "C2",
+            "C3",
+            "C14"
+          ],
+          "evidence_gate": "C1/C2/C3/C14",
+          "producer": "scripts/export_paper_artifacts.py",
+          "source_artifacts": [
+            "outputs/matrix_real/main_table.csv"
+          ],
+          "paper_artifacts": [
+            "main_table.tex"
+          ],
+          "action": "Run the real hard-gold BSC matrix and export the main paper table only after paper_claim_eligible summaries pass."
+        },
+        {
+          "category": "dimension_transition",
+          "count": 1,
+          "label": "dimension-transition audit paper table",
+          "claim_ids": [
+            "C12"
+          ],
+          "evidence_gate": "C12",
+          "producer": "scripts/export_paper_artifacts.py",
+          "source_artifacts": [
+            "outputs/matrix_real/dimension_transition_summary.csv"
+          ],
+          "paper_artifacts": [
+            "dimension_transition_table.tex"
+          ],
+          "action": "Run the dimension-transition audit and export the C12 table before writing dimension-level recovery language."
+        }
+      ],
+      "paper_asset_warnings": [],
+      "readiness_blockers": [
+        "audit report is not ok",
+        "required evidence claim C1 is missing_evidence",
+        "required evidence claim C6 is missing_evidence",
+        "required evidence claim C12 is missing_evidence"
+      ],
+      "next_actions": [
+        "Run the real RubricBench test_main matrix for base, API teachers, SFT-only, and SFT+GRPO.",
+        "Generate BSC summaries, paired bootstrap CIs, threshold sweeps, dimension-transition summaries, and matrix audit report."
+      ],
+      "claim_discipline": "A BSC coverage change is only metric evidence until C3 controls redundancy/hallucination, C6 verifies threshold robustness and human audit, and C12/C14 audit dimension-level recovery over SFT-only; dimension-level recovery remains a permitted conclusion only after those gates pass.",
+      "summary": "blocked: claim_gaps=6, readiness_blockers=4, paper_asset_blockers=2, blocked_by_prior_phases=2"
+    },
+    {
+      "id": "downstream_utility",
+      "name": "Downstream Judge Utility",
+      "status": "blocked",
+      "depends_on": [
+        "data_isolation_hard_gold",
+        "main_hard_gold_bsc",
+        "training_and_serving"
+      ],
+      "blocked_by_prior_phases": [
+        "data_isolation_hard_gold",
+        "main_hard_gold_bsc",
+        "training_and_serving"
+      ],
+      "claim_ids": [
+        "C10",
+        "C11",
+        "C4",
+        "C9"
+      ],
+      "claim_gaps": [
+        {
+          "claim_id": "C10",
+          "status": "missing_evidence",
+          "claim": "On RewardBench-2, BSC-optimized evaluation criteria are tested for multi-candidate utility relative to the base policy.",
+          "missing_or_failed_checks": [
+            "[missing] RewardBench-2 multi-candidate table (outputs/matrix_rewardbench2/main_table.csv)",
+            "[missing] RewardBench-2 base downstream bootstrap CI (outputs/matrix_rewardbench2/rewardbench2_base/downstream_ci/bootstrap_ci.json)",
+            "[missing] RewardBench-2 SFT+RL downstream bootstrap CI (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream_ci/bootstrap_ci.json)",
+            "[missing] RewardBench-2 base downstream join report (outputs/matrix_rewardbench2/rewardbench2_base/downstream_join_report.json)",
+            "[missing] RewardBench-2 SFT+RL downstream join report (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream_join_report.json)",
+            "[missing] RewardBench-2 base downstream API budget report (outputs/matrix_rewardbench2/rewardbench2_base/downstream_api_budget/budget.json)",
+            "[missing] RewardBench-2 SFT+RL downstream API budget report (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream_api_budget/budget.json)",
+            "[missing] RewardBench-2 base downstream evaluated examples (outputs/matrix_rewardbench2/rewardbench2_base/downstream/summary.json)",
+            "[missing] RewardBench-2 SFT+RL downstream evaluated examples (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream/summary.json)",
+            "[missing] RewardBench-2 base downstream join has no missing criteria (outputs/matrix_rewardbench2/rewardbench2_base/downstream_join_report.json)",
+            "[missing] RewardBench-2 base downstream join has no unmatched criteria predictions (outputs/matrix_rewardbench2/rewardbench2_base/downstream_join_report.json)",
+            "[missing] RewardBench-2 base downstream join has no duplicate benchmark records (outputs/matrix_rewardbench2/rewardbench2_base/downstream_join_report.json)",
+            "[missing] RewardBench-2 base downstream join has no duplicate criteria records (outputs/matrix_rewardbench2/rewardbench2_base/downstream_join_report.json)",
+            "[missing] RewardBench-2 SFT+RL downstream join has no missing criteria (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream_join_report.json)",
+            "[missing] RewardBench-2 SFT+RL downstream join has no unmatched criteria predictions (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream_join_report.json)",
+            "[missing] RewardBench-2 SFT+RL downstream join has no duplicate benchmark records (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream_join_report.json)",
+            "[missing] RewardBench-2 SFT+RL downstream join has no duplicate criteria records (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream_join_report.json)",
+            "[missing] RewardBench-2 base downstream uses API scorer (outputs/matrix_rewardbench2/rewardbench2_base/downstream/summary.json)",
+            "[missing] RewardBench-2 base downstream summary is paper-claim eligible (outputs/matrix_rewardbench2/rewardbench2_base/downstream/summary.json)",
+            "[missing] RewardBench-2 base downstream summary has no paper-claim eligibility blockers (outputs/matrix_rewardbench2/rewardbench2_base/downstream/summary.json)",
+            "[missing] RewardBench-2 base downstream uses configured judge provider (outputs/matrix_rewardbench2/rewardbench2_base/downstream/summary.json)",
+            "[missing] RewardBench-2 base downstream records budget gate (outputs/matrix_rewardbench2/rewardbench2_base/downstream/summary.json)",
+            "[missing] RewardBench-2 base downstream summary binds expected eval input (outputs/matrix_rewardbench2/rewardbench2_base/downstream/summary.json)",
+            "[missing] RewardBench-2 base downstream summary records evaluated input hash (outputs/matrix_rewardbench2/rewardbench2_base/downstream/summary.json)",
+            "[missing] RewardBench-2 base downstream join binds benchmark (outputs/matrix_rewardbench2/rewardbench2_base/downstream_join_report.json)",
+            "[missing] RewardBench-2 base downstream join binds criteria predictions (outputs/matrix_rewardbench2/rewardbench2_base/downstream_join_report.json)",
+            "[missing] RewardBench-2 base downstream join binds expected eval output (outputs/matrix_rewardbench2/rewardbench2_base/downstream_join_report.json)",
+            "[missing] RewardBench-2 base downstream join records output hash (outputs/matrix_rewardbench2/rewardbench2_base/downstream_join_report.json)",
+            "[missing] RewardBench-2 base downstream join records data source (outputs/matrix_rewardbench2/rewardbench2_base/downstream_join_report.json)",
+            "[missing] RewardBench-2 base downstream join records model filter (outputs/matrix_rewardbench2/rewardbench2_base/downstream_join_report.json)",
+            "[missing] RewardBench-2 base downstream join query alignment is exact (outputs/matrix_rewardbench2/rewardbench2_base/downstream_join_report.json)",
+            "[missing] RewardBench-2 base downstream join output row count matches joined records (outputs/matrix_rewardbench2/rewardbench2_base/downstream_join_report.json)",
+            "[missing] RewardBench-2 base downstream join output is not limit-truncated (outputs/matrix_rewardbench2/rewardbench2_base/downstream_join_report.json)",
+            "[missing] RewardBench-2 base downstream summary records judge provider hash (outputs/matrix_rewardbench2/rewardbench2_base/downstream/summary.json)",
+            "[missing] RewardBench-2 base downstream summary declares multi-candidate format (outputs/matrix_rewardbench2/rewardbench2_base/downstream/summary.json)",
+            "[missing] RewardBench-2 base downstream summary records multi-candidate call contract (outputs/matrix_rewardbench2/rewardbench2_base/downstream/summary.json)",
+            "[missing] RewardBench-2 base downstream summary records criteria unit field (outputs/matrix_rewardbench2/rewardbench2_base/downstream/summary.json)",
+            "[missing] RewardBench-2 base downstream summary records candidate multiplier (outputs/matrix_rewardbench2/rewardbench2_base/downstream/summary.json)",
+            "[missing] RewardBench-2 base downstream API budget gate passed (outputs/matrix_rewardbench2/rewardbench2_base/downstream_api_budget/budget.json)",
+            "[missing] RewardBench-2 SFT+RL downstream uses API scorer (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream/summary.json)",
+            "[missing] RewardBench-2 SFT+RL downstream summary is paper-claim eligible (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream/summary.json)",
+            "[missing] RewardBench-2 SFT+RL downstream summary has no paper-claim eligibility blockers (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream/summary.json)",
+            "[missing] RewardBench-2 SFT+RL downstream uses configured judge provider (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream/summary.json)",
+            "[missing] RewardBench-2 SFT+RL downstream records budget gate (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream/summary.json)",
+            "[missing] RewardBench-2 SFT+RL downstream summary binds expected eval input (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream/summary.json)",
+            "[missing] RewardBench-2 SFT+RL downstream summary records evaluated input hash (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream/summary.json)",
+            "[missing] RewardBench-2 SFT+RL downstream join binds benchmark (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream_join_report.json)",
+            "[missing] RewardBench-2 SFT+RL downstream join binds criteria predictions (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream_join_report.json)",
+            "[missing] RewardBench-2 SFT+RL downstream join binds expected eval output (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream_join_report.json)",
+            "[missing] RewardBench-2 SFT+RL downstream join records output hash (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream_join_report.json)",
+            "[missing] RewardBench-2 SFT+RL downstream join records data source (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream_join_report.json)",
+            "[missing] RewardBench-2 SFT+RL downstream join records model filter (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream_join_report.json)",
+            "[missing] RewardBench-2 SFT+RL downstream join query alignment is exact (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream_join_report.json)",
+            "[missing] RewardBench-2 SFT+RL downstream join output row count matches joined records (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream_join_report.json)",
+            "[missing] RewardBench-2 SFT+RL downstream join output is not limit-truncated (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream_join_report.json)",
+            "[missing] RewardBench-2 SFT+RL downstream summary records judge provider hash (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream/summary.json)",
+            "[missing] RewardBench-2 SFT+RL downstream summary declares multi-candidate format (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream/summary.json)",
+            "[missing] RewardBench-2 SFT+RL downstream summary records multi-candidate call contract (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream/summary.json)",
+            "[missing] RewardBench-2 SFT+RL downstream summary records criteria unit field (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream/summary.json)",
+            "[missing] RewardBench-2 SFT+RL downstream summary records candidate multiplier (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream/summary.json)",
+            "[missing] RewardBench-2 SFT+RL downstream API budget gate passed (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream_api_budget/budget.json)",
+            "[missing] RewardBench-2 base downstream budget binds expected eval input (outputs/matrix_rewardbench2/rewardbench2_base/downstream_api_budget/budget.json)",
+            "[missing] RewardBench-2 base downstream budget binds judge provider (outputs/matrix_rewardbench2/rewardbench2_base/downstream_api_budget/budget.json)",
+            "[missing] RewardBench-2 base downstream budget uses multi-candidate call contract (outputs/matrix_rewardbench2/rewardbench2_base/downstream_api_budget/budget.json)",
+            "[missing] RewardBench-2 base downstream budget estimates criteria units (outputs/matrix_rewardbench2/rewardbench2_base/downstream_api_budget/budget.json)",
+            "[missing] RewardBench-2 base downstream budget binds candidate multiplier (outputs/matrix_rewardbench2/rewardbench2_base/downstream_api_budget/budget.json)",
+            "[missing] RewardBench-2 SFT+RL downstream budget binds expected eval input (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream_api_budget/budget.json)",
+            "[missing] RewardBench-2 SFT+RL downstream budget binds judge provider (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream_api_budget/budget.json)",
+            "[missing] RewardBench-2 SFT+RL downstream budget uses multi-candidate call contract (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream_api_budget/budget.json)",
+            "[missing] RewardBench-2 SFT+RL downstream budget estimates criteria units (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream_api_budget/budget.json)",
+            "[missing] RewardBench-2 SFT+RL downstream budget binds candidate multiplier (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream_api_budget/budget.json)",
+            "[missing] RewardBench-2 base downstream summary records per-item output (outputs/matrix_rewardbench2/rewardbench2_base/downstream/summary.json)",
+            "[missing] RewardBench-2 base downstream summary records per-item hash (outputs/matrix_rewardbench2/rewardbench2_base/downstream/summary.json)",
+            "[missing] RewardBench-2 base downstream CI binds per-item input (outputs/matrix_rewardbench2/rewardbench2_base/downstream_ci/bootstrap_ci.json)",
+            "[missing] RewardBench-2 base downstream CI records per-item input hash (outputs/matrix_rewardbench2/rewardbench2_base/downstream_ci/bootstrap_ci.json)",
+            "[missing] RewardBench-2 SFT+RL downstream summary records per-item output (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream/summary.json)",
+            "[missing] RewardBench-2 SFT+RL downstream summary records per-item hash (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream/summary.json)",
+            "[missing] RewardBench-2 SFT+RL downstream CI binds per-item input (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream_ci/bootstrap_ci.json)",
+            "[missing] RewardBench-2 SFT+RL downstream CI records per-item input hash (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream_ci/bootstrap_ci.json)",
+            "[missing] RewardBench-2 base main table downstream status is pass (outputs/matrix_rewardbench2/main_table.csv)",
+            "[missing] RewardBench-2 base main table downstream row is paper eligible (outputs/matrix_rewardbench2/main_table.csv)",
+            "[missing] RewardBench-2 SFT+RL main table downstream status is pass (outputs/matrix_rewardbench2/main_table.csv)",
+            "[missing] RewardBench-2 SFT+RL main table downstream row is paper eligible (outputs/matrix_rewardbench2/main_table.csv)",
+            "[missing] RewardBench-2 SFT+RL multi-candidate accuracy delta (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream/summary.json)",
+            "[missing] RewardBench-2 conservative multi-candidate accuracy delta (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream_ci/bootstrap_ci.json)",
+            "[missing] RewardBench-2 base downstream summary input hash matches budget report (outputs/matrix_rewardbench2/rewardbench2_base/downstream/summary.json)",
+            "[missing] RewardBench-2 base downstream summary input hash matches join output (outputs/matrix_rewardbench2/rewardbench2_base/downstream/summary.json)",
+            "[missing] RewardBench-2 base downstream summary provider hash matches budget report (outputs/matrix_rewardbench2/rewardbench2_base/downstream/summary.json)",
+            "[missing] RewardBench-2 SFT+RL downstream summary input hash matches budget report (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream/summary.json)",
+            "[missing] RewardBench-2 SFT+RL downstream summary input hash matches join output (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream/summary.json)",
+            "[missing] RewardBench-2 SFT+RL downstream summary provider hash matches budget report (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream/summary.json)",
+            "[missing] RewardBench-2 base downstream summary per-item hash matches CI input (outputs/matrix_rewardbench2/rewardbench2_base/downstream/summary.json)",
+            "[missing] RewardBench-2 base downstream summary per-item row count matches CI rows (outputs/matrix_rewardbench2/rewardbench2_base/downstream/summary.json)",
+            "[missing] RewardBench-2 SFT+RL downstream summary per-item hash matches CI input (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream/summary.json)",
+            "[missing] RewardBench-2 SFT+RL downstream summary per-item row count matches CI rows (outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream/summary.json)"
+          ],
+          "notes": "This claim uses the dedicated multi-candidate evaluator, not the pairwise chosen/rejected evaluator. The join report, budget report contract, and downstream summary must bind the exact RewardBench-2 downstream_eval input, benchmark file, criteria predictions, judge provider, benchmark format, criteria unit field, multi-candidate candidate multiplier, and paper_claim_eligible=true so stale joins or stale budget reports cannot satisfy this gate."
+        },
+        {
+          "claim_id": "C11",
+          "status": "missing_evidence",
+          "claim": "HealthBench-Hard and ArenaHard policy-level RLVR results are only reportable after evaluation-criteria policy reward training, policy GRPO, and benchmark evaluation artifacts are complete.",
+          "missing_or_failed_checks": [
+            "[missing] Downstream RLVR command manifest (outputs/downstream_rlvr_commands/downstream_rlvr_manifest.json)",
+            "[missing] HealthBench-Hard policy checkpoint (outputs/policy_rlvr/healthbench_hard_policy)",
+            "[missing] HealthBench-Hard evaluation report (outputs/policy_rlvr/healthbench_hard_eval.json)",
+            "[missing] ArenaHard policy checkpoint (outputs/policy_rlvr/arenahard_policy)",
+            "[missing] ArenaHard evaluation report (outputs/policy_rlvr/arenahard_eval.json)",
+            "[missing] Downstream RLVR manual gate ok (ok=0.0000 == 1.0000)"
+          ],
+          "notes": "Do not write downstream policy-RLVR gains unless this gate is safe_to_claim. This extension is distinct from BSC training for evaluation criteria."
+        },
+        {
+          "claim_id": "C4",
+          "status": "missing_evidence",
+          "claim": "BSC-optimized evaluation criteria are tested for downstream chosen-vs-rejected utility relative to the base policy.",
+          "missing_or_failed_checks": [
+            "[missing] Base downstream bootstrap CI (outputs/matrix_real/base/downstream_ci/bootstrap_ci.json)",
+            "[missing] SFT+RL downstream bootstrap CI (outputs/matrix_real/sft_rl/downstream_ci/bootstrap_ci.json)",
+            "[missing] Base downstream join report (outputs/matrix_real/base/downstream_join_report.json)",
+            "[missing] SFT+RL downstream join report (outputs/matrix_real/sft_rl/downstream_join_report.json)",
+            "[missing] Base downstream API budget report (outputs/matrix_real/base/downstream_api_budget/budget.json)",
+            "[missing] SFT+RL downstream API budget report (outputs/matrix_real/sft_rl/downstream_api_budget/budget.json)",
+            "[missing] Base downstream evaluated examples (outputs/matrix_real/base/downstream/summary.json)",
+            "[missing] SFT+RL downstream evaluated examples (outputs/matrix_real/sft_rl/downstream/summary.json)",
+            "[missing] Base downstream join has no missing criteria (outputs/matrix_real/base/downstream_join_report.json)",
+            "[missing] Base downstream join has no unmatched criteria predictions (outputs/matrix_real/base/downstream_join_report.json)",
+            "[missing] Base downstream join has no duplicate preference records (outputs/matrix_real/base/downstream_join_report.json)",
+            "[missing] Base downstream join has no duplicate criteria records (outputs/matrix_real/base/downstream_join_report.json)",
+            "[missing] SFT+RL downstream join has no missing criteria (outputs/matrix_real/sft_rl/downstream_join_report.json)",
+            "[missing] SFT+RL downstream join has no unmatched criteria predictions (outputs/matrix_real/sft_rl/downstream_join_report.json)",
+            "[missing] SFT+RL downstream join has no duplicate preference records (outputs/matrix_real/sft_rl/downstream_join_report.json)",
+            "[missing] SFT+RL downstream join has no duplicate criteria records (outputs/matrix_real/sft_rl/downstream_join_report.json)",
+            "[missing] Base downstream uses API scorer (outputs/matrix_real/base/downstream/summary.json)",
+            "[missing] Base downstream summary is paper-claim eligible (outputs/matrix_real/base/downstream/summary.json)",
+            "[missing] Base downstream summary has no paper-claim eligibility blockers (outputs/matrix_real/base/downstream/summary.json)",
+            "[missing] Base downstream uses configured judge provider (outputs/matrix_real/base/downstream/summary.json)",
+            "[missing] Base downstream records budget gate (outputs/matrix_real/base/downstream/summary.json)",
+            "[missing] Base downstream summary binds expected eval input (outputs/matrix_real/base/downstream/summary.json)",
+            "[missing] Base downstream summary records evaluated input hash (outputs/matrix_real/base/downstream/summary.json)",
+            "[missing] Base downstream join binds RewardBench preferences (outputs/matrix_real/base/downstream_join_report.json)",
+            "[missing] Base downstream join binds criteria predictions (outputs/matrix_real/base/downstream_join_report.json)",
+            "[missing] Base downstream join binds expected eval output (outputs/matrix_real/base/downstream_join_report.json)",
+            "[missing] Base downstream join records output hash (outputs/matrix_real/base/downstream_join_report.json)",
+            "[missing] Base downstream join records data source (outputs/matrix_real/base/downstream_join_report.json)",
+            "[missing] Base downstream join records model filter (outputs/matrix_real/base/downstream_join_report.json)",
+            "[missing] Base downstream join query alignment is exact (outputs/matrix_real/base/downstream_join_report.json)",
+            "[missing] Base downstream join output row count matches joined records (outputs/matrix_real/base/downstream_join_report.json)",
+            "[missing] Base downstream join output is not limit-truncated (outputs/matrix_real/base/downstream_join_report.json)",
+            "[missing] Base downstream summary records judge provider hash (outputs/matrix_real/base/downstream/summary.json)",
+            "[missing] Base downstream summary declares pairwise format (outputs/matrix_real/base/downstream/summary.json)",
+            "[missing] Base downstream summary records pairwise call contract (outputs/matrix_real/base/downstream/summary.json)",
+            "[missing] Base downstream summary records criteria unit field (outputs/matrix_real/base/downstream/summary.json)",
+            "[missing] Base downstream API budget gate passed (outputs/matrix_real/base/downstream_api_budget/budget.json)",
+            "[missing] SFT+RL downstream uses API scorer (outputs/matrix_real/sft_rl/downstream/summary.json)",
+            "[missing] SFT+RL downstream summary is paper-claim eligible (outputs/matrix_real/sft_rl/downstream/summary.json)",
+            "[missing] SFT+RL downstream summary has no paper-claim eligibility blockers (outputs/matrix_real/sft_rl/downstream/summary.json)",
+            "[missing] SFT+RL downstream uses configured judge provider (outputs/matrix_real/sft_rl/downstream/summary.json)",
+            "[missing] SFT+RL downstream records budget gate (outputs/matrix_real/sft_rl/downstream/summary.json)",
+            "[missing] SFT+RL downstream summary binds expected eval input (outputs/matrix_real/sft_rl/downstream/summary.json)",
+            "[missing] SFT+RL downstream summary records evaluated input hash (outputs/matrix_real/sft_rl/downstream/summary.json)",
+            "[missing] SFT+RL downstream join binds RewardBench preferences (outputs/matrix_real/sft_rl/downstream_join_report.json)",
+            "[missing] SFT+RL downstream join binds criteria predictions (outputs/matrix_real/sft_rl/downstream_join_report.json)",
+            "[missing] SFT+RL downstream join binds expected eval output (outputs/matrix_real/sft_rl/downstream_join_report.json)",
+            "[missing] SFT+RL downstream join records output hash (outputs/matrix_real/sft_rl/downstream_join_report.json)",
+            "[missing] SFT+RL downstream join records data source (outputs/matrix_real/sft_rl/downstream_join_report.json)",
+            "[missing] SFT+RL downstream join records model filter (outputs/matrix_real/sft_rl/downstream_join_report.json)",
+            "[missing] SFT+RL downstream join query alignment is exact (outputs/matrix_real/sft_rl/downstream_join_report.json)",
+            "[missing] SFT+RL downstream join output row count matches joined records (outputs/matrix_real/sft_rl/downstream_join_report.json)",
+            "[missing] SFT+RL downstream join output is not limit-truncated (outputs/matrix_real/sft_rl/downstream_join_report.json)",
+            "[missing] SFT+RL downstream summary records judge provider hash (outputs/matrix_real/sft_rl/downstream/summary.json)",
+            "[missing] SFT+RL downstream summary declares pairwise format (outputs/matrix_real/sft_rl/downstream/summary.json)",
+            "[missing] SFT+RL downstream summary records pairwise call contract (outputs/matrix_real/sft_rl/downstream/summary.json)",
+            "[missing] SFT+RL downstream summary records criteria unit field (outputs/matrix_real/sft_rl/downstream/summary.json)",
+            "[missing] SFT+RL downstream API budget gate passed (outputs/matrix_real/sft_rl/downstream_api_budget/budget.json)",
+            "[missing] Base downstream budget binds expected eval input (outputs/matrix_real/base/downstream_api_budget/budget.json)",
+            "[missing] Base downstream budget binds judge provider (outputs/matrix_real/base/downstream_api_budget/budget.json)",
+            "[missing] Base downstream budget uses pairwise call contract (outputs/matrix_real/base/downstream_api_budget/budget.json)",
+            "[missing] Base downstream budget estimates criteria units (outputs/matrix_real/base/downstream_api_budget/budget.json)",
+            "[missing] SFT+RL downstream budget binds expected eval input (outputs/matrix_real/sft_rl/downstream_api_budget/budget.json)",
+            "[missing] SFT+RL downstream budget binds judge provider (outputs/matrix_real/sft_rl/downstream_api_budget/budget.json)",
+            "[missing] SFT+RL downstream budget uses pairwise call contract (outputs/matrix_real/sft_rl/downstream_api_budget/budget.json)",
+            "[missing] SFT+RL downstream budget estimates criteria units (outputs/matrix_real/sft_rl/downstream_api_budget/budget.json)",
+            "[missing] Base downstream summary records per-item output (outputs/matrix_real/base/downstream/summary.json)",
+            "[missing] Base downstream summary records per-item hash (outputs/matrix_real/base/downstream/summary.json)",
+            "[missing] Base downstream CI binds per-item input (outputs/matrix_real/base/downstream_ci/bootstrap_ci.json)",
+            "[missing] Base downstream CI records per-item input hash (outputs/matrix_real/base/downstream_ci/bootstrap_ci.json)",
+            "[missing] SFT+RL downstream summary records per-item output (outputs/matrix_real/sft_rl/downstream/summary.json)",
+            "[missing] SFT+RL downstream summary records per-item hash (outputs/matrix_real/sft_rl/downstream/summary.json)",
+            "[missing] SFT+RL downstream CI binds per-item input (outputs/matrix_real/sft_rl/downstream_ci/bootstrap_ci.json)",
+            "[missing] SFT+RL downstream CI records per-item input hash (outputs/matrix_real/sft_rl/downstream_ci/bootstrap_ci.json)",
+            "[missing] Base main table downstream status is pass (outputs/matrix_real/main_table.csv)",
+            "[missing] Base main table downstream row is paper eligible (outputs/matrix_real/main_table.csv)",
+            "[missing] SFT+RL main table downstream status is pass (outputs/matrix_real/main_table.csv)",
+            "[missing] SFT+RL main table downstream row is paper eligible (outputs/matrix_real/main_table.csv)",
+            "[missing] SFT+RL downstream accuracy delta (outputs/matrix_real/sft_rl/downstream/summary.json)",
+            "[missing] SFT+RL conservative downstream accuracy delta (outputs/matrix_real/sft_rl/downstream_ci/bootstrap_ci.json)",
+            "[missing] Base downstream summary input hash matches budget report (outputs/matrix_real/base/downstream/summary.json)",
+            "[missing] Base downstream summary input hash matches join output (outputs/matrix_real/base/downstream/summary.json)",
+            "[missing] Base downstream summary provider hash matches budget report (outputs/matrix_real/base/downstream/summary.json)",
+            "[missing] SFT+RL downstream summary input hash matches budget report (outputs/matrix_real/sft_rl/downstream/summary.json)",
+            "[missing] SFT+RL downstream summary input hash matches join output (outputs/matrix_real/sft_rl/downstream/summary.json)",
+            "[missing] SFT+RL downstream summary provider hash matches budget report (outputs/matrix_real/sft_rl/downstream/summary.json)",
+            "[missing] Base downstream summary per-item hash matches CI input (outputs/matrix_real/base/downstream/summary.json)",
+            "[missing] Base downstream summary per-item row count matches CI rows (outputs/matrix_real/base/downstream/summary.json)",
+            "[missing] SFT+RL downstream summary per-item hash matches CI input (outputs/matrix_real/sft_rl/downstream/summary.json)",
+            "[missing] SFT+RL downstream summary per-item row count matches CI rows (outputs/matrix_real/sft_rl/downstream/summary.json)"
+          ],
+          "notes": "Use API/fixed judge scorer for paper claims, not the smoke-test keyword scorer. The join report, budget report contract, and downstream summary must bind the exact downstream_eval input, benchmark preferences, criteria predictions, judge provider, benchmark format, criteria unit field, pairwise call count, and paper_claim_eligible=true so stale joins or stale budget reports cannot satisfy this gate."
+        },
+        {
+          "claim_id": "C9",
+          "status": "missing_evidence",
+          "claim": "On JudgeBench, BSC-optimized evaluation criteria are tested for chosen-vs-rejected utility relative to the base policy.",
+          "missing_or_failed_checks": [
+            "[missing] JudgeBench main table (outputs/matrix_judgebench/main_table.csv)",
+            "[missing] JudgeBench base downstream bootstrap CI (outputs/matrix_judgebench/judgebench_base/downstream_ci/bootstrap_ci.json)",
+            "[missing] JudgeBench SFT+RL downstream bootstrap CI (outputs/matrix_judgebench/judgebench_sft_rl/downstream_ci/bootstrap_ci.json)",
+            "[missing] JudgeBench base downstream join report (outputs/matrix_judgebench/judgebench_base/downstream_join_report.json)",
+            "[missing] JudgeBench SFT+RL downstream join report (outputs/matrix_judgebench/judgebench_sft_rl/downstream_join_report.json)",
+            "[missing] JudgeBench base downstream API budget report (outputs/matrix_judgebench/judgebench_base/downstream_api_budget/budget.json)",
+            "[missing] JudgeBench SFT+RL downstream API budget report (outputs/matrix_judgebench/judgebench_sft_rl/downstream_api_budget/budget.json)",
+            "[missing] JudgeBench base downstream evaluated examples (outputs/matrix_judgebench/judgebench_base/downstream/summary.json)",
+            "[missing] JudgeBench SFT+RL downstream evaluated examples (outputs/matrix_judgebench/judgebench_sft_rl/downstream/summary.json)",
+            "[missing] JudgeBench base downstream join has no missing criteria (outputs/matrix_judgebench/judgebench_base/downstream_join_report.json)",
+            "[missing] JudgeBench base downstream join has no unmatched criteria predictions (outputs/matrix_judgebench/judgebench_base/downstream_join_report.json)",
+            "[missing] JudgeBench base downstream join has no duplicate preference records (outputs/matrix_judgebench/judgebench_base/downstream_join_report.json)",
+            "[missing] JudgeBench base downstream join has no duplicate criteria records (outputs/matrix_judgebench/judgebench_base/downstream_join_report.json)",
+            "[missing] JudgeBench SFT+RL downstream join has no missing criteria (outputs/matrix_judgebench/judgebench_sft_rl/downstream_join_report.json)",
+            "[missing] JudgeBench SFT+RL downstream join has no unmatched criteria predictions (outputs/matrix_judgebench/judgebench_sft_rl/downstream_join_report.json)",
+            "[missing] JudgeBench SFT+RL downstream join has no duplicate preference records (outputs/matrix_judgebench/judgebench_sft_rl/downstream_join_report.json)",
+            "[missing] JudgeBench SFT+RL downstream join has no duplicate criteria records (outputs/matrix_judgebench/judgebench_sft_rl/downstream_join_report.json)",
+            "[missing] JudgeBench base downstream uses API scorer (outputs/matrix_judgebench/judgebench_base/downstream/summary.json)",
+            "[missing] JudgeBench base downstream summary is paper-claim eligible (outputs/matrix_judgebench/judgebench_base/downstream/summary.json)",
+            "[missing] JudgeBench base downstream summary has no paper-claim eligibility blockers (outputs/matrix_judgebench/judgebench_base/downstream/summary.json)",
+            "[missing] JudgeBench base downstream uses configured judge provider (outputs/matrix_judgebench/judgebench_base/downstream/summary.json)",
+            "[missing] JudgeBench base downstream records budget gate (outputs/matrix_judgebench/judgebench_base/downstream/summary.json)",
+            "[missing] JudgeBench base downstream summary binds expected eval input (outputs/matrix_judgebench/judgebench_base/downstream/summary.json)",
+            "[missing] JudgeBench base downstream summary records evaluated input hash (outputs/matrix_judgebench/judgebench_base/downstream/summary.json)",
+            "[missing] JudgeBench base downstream join binds preferences (outputs/matrix_judgebench/judgebench_base/downstream_join_report.json)",
+            "[missing] JudgeBench base downstream join binds criteria predictions (outputs/matrix_judgebench/judgebench_base/downstream_join_report.json)",
+            "[missing] JudgeBench base downstream join binds expected eval output (outputs/matrix_judgebench/judgebench_base/downstream_join_report.json)",
+            "[missing] JudgeBench base downstream join records output hash (outputs/matrix_judgebench/judgebench_base/downstream_join_report.json)",
+            "[missing] JudgeBench base downstream join records data source (outputs/matrix_judgebench/judgebench_base/downstream_join_report.json)",
+            "[missing] JudgeBench base downstream join records model filter (outputs/matrix_judgebench/judgebench_base/downstream_join_report.json)",
+            "[missing] JudgeBench base downstream join query alignment is exact (outputs/matrix_judgebench/judgebench_base/downstream_join_report.json)",
+            "[missing] JudgeBench base downstream join output row count matches joined records (outputs/matrix_judgebench/judgebench_base/downstream_join_report.json)",
+            "[missing] JudgeBench base downstream join output is not limit-truncated (outputs/matrix_judgebench/judgebench_base/downstream_join_report.json)",
+            "[missing] JudgeBench base downstream summary records judge provider hash (outputs/matrix_judgebench/judgebench_base/downstream/summary.json)",
+            "[missing] JudgeBench base downstream summary declares pairwise format (outputs/matrix_judgebench/judgebench_base/downstream/summary.json)",
+            "[missing] JudgeBench base downstream summary records pairwise call contract (outputs/matrix_judgebench/judgebench_base/downstream/summary.json)",
+            "[missing] JudgeBench base downstream summary records criteria unit field (outputs/matrix_judgebench/judgebench_base/downstream/summary.json)",
+            "[missing] JudgeBench base downstream API budget gate passed (outputs/matrix_judgebench/judgebench_base/downstream_api_budget/budget.json)",
+            "[missing] JudgeBench SFT+RL downstream uses API scorer (outputs/matrix_judgebench/judgebench_sft_rl/downstream/summary.json)",
+            "[missing] JudgeBench SFT+RL downstream summary is paper-claim eligible (outputs/matrix_judgebench/judgebench_sft_rl/downstream/summary.json)",
+            "[missing] JudgeBench SFT+RL downstream summary has no paper-claim eligibility blockers (outputs/matrix_judgebench/judgebench_sft_rl/downstream/summary.json)",
+            "[missing] JudgeBench SFT+RL downstream uses configured judge provider (outputs/matrix_judgebench/judgebench_sft_rl/downstream/summary.json)",
+            "[missing] JudgeBench SFT+RL downstream records budget gate (outputs/matrix_judgebench/judgebench_sft_rl/downstream/summary.json)",
+            "[missing] JudgeBench SFT+RL downstream summary binds expected eval input (outputs/matrix_judgebench/judgebench_sft_rl/downstream/summary.json)",
+            "[missing] JudgeBench SFT+RL downstream summary records evaluated input hash (outputs/matrix_judgebench/judgebench_sft_rl/downstream/summary.json)",
+            "[missing] JudgeBench SFT+RL downstream join binds preferences (outputs/matrix_judgebench/judgebench_sft_rl/downstream_join_report.json)",
+            "[missing] JudgeBench SFT+RL downstream join binds criteria predictions (outputs/matrix_judgebench/judgebench_sft_rl/downstream_join_report.json)",
+            "[missing] JudgeBench SFT+RL downstream join binds expected eval output (outputs/matrix_judgebench/judgebench_sft_rl/downstream_join_report.json)",
+            "[missing] JudgeBench SFT+RL downstream join records output hash (outputs/matrix_judgebench/judgebench_sft_rl/downstream_join_report.json)",
+            "[missing] JudgeBench SFT+RL downstream join records data source (outputs/matrix_judgebench/judgebench_sft_rl/downstream_join_report.json)",
+            "[missing] JudgeBench SFT+RL downstream join records model filter (outputs/matrix_judgebench/judgebench_sft_rl/downstream_join_report.json)",
+            "[missing] JudgeBench SFT+RL downstream join query alignment is exact (outputs/matrix_judgebench/judgebench_sft_rl/downstream_join_report.json)",
+            "[missing] JudgeBench SFT+RL downstream join output row count matches joined records (outputs/matrix_judgebench/judgebench_sft_rl/downstream_join_report.json)",
+            "[missing] JudgeBench SFT+RL downstream join output is not limit-truncated (outputs/matrix_judgebench/judgebench_sft_rl/downstream_join_report.json)",
+            "[missing] JudgeBench SFT+RL downstream summary records judge provider hash (outputs/matrix_judgebench/judgebench_sft_rl/downstream/summary.json)",
+            "[missing] JudgeBench SFT+RL downstream summary declares pairwise format (outputs/matrix_judgebench/judgebench_sft_rl/downstream/summary.json)",
+            "[missing] JudgeBench SFT+RL downstream summary records pairwise call contract (outputs/matrix_judgebench/judgebench_sft_rl/downstream/summary.json)",
+            "[missing] JudgeBench SFT+RL downstream summary records criteria unit field (outputs/matrix_judgebench/judgebench_sft_rl/downstream/summary.json)",
+            "[missing] JudgeBench SFT+RL downstream API budget gate passed (outputs/matrix_judgebench/judgebench_sft_rl/downstream_api_budget/budget.json)",
+            "[missing] JudgeBench base downstream budget binds expected eval input (outputs/matrix_judgebench/judgebench_base/downstream_api_budget/budget.json)",
+            "[missing] JudgeBench base downstream budget binds judge provider (outputs/matrix_judgebench/judgebench_base/downstream_api_budget/budget.json)",
+            "[missing] JudgeBench base downstream budget uses pairwise call contract (outputs/matrix_judgebench/judgebench_base/downstream_api_budget/budget.json)",
+            "[missing] JudgeBench base downstream budget estimates criteria units (outputs/matrix_judgebench/judgebench_base/downstream_api_budget/budget.json)",
+            "[missing] JudgeBench SFT+RL downstream budget binds expected eval input (outputs/matrix_judgebench/judgebench_sft_rl/downstream_api_budget/budget.json)",
+            "[missing] JudgeBench SFT+RL downstream budget binds judge provider (outputs/matrix_judgebench/judgebench_sft_rl/downstream_api_budget/budget.json)",
+            "[missing] JudgeBench SFT+RL downstream budget uses pairwise call contract (outputs/matrix_judgebench/judgebench_sft_rl/downstream_api_budget/budget.json)",
+            "[missing] JudgeBench SFT+RL downstream budget estimates criteria units (outputs/matrix_judgebench/judgebench_sft_rl/downstream_api_budget/budget.json)",
+            "[missing] JudgeBench base downstream summary records per-item output (outputs/matrix_judgebench/judgebench_base/downstream/summary.json)",
+            "[missing] JudgeBench base downstream summary records per-item hash (outputs/matrix_judgebench/judgebench_base/downstream/summary.json)",
+            "[missing] JudgeBench base downstream CI binds per-item input (outputs/matrix_judgebench/judgebench_base/downstream_ci/bootstrap_ci.json)",
+            "[missing] JudgeBench base downstream CI records per-item input hash (outputs/matrix_judgebench/judgebench_base/downstream_ci/bootstrap_ci.json)",
+            "[missing] JudgeBench SFT+RL downstream summary records per-item output (outputs/matrix_judgebench/judgebench_sft_rl/downstream/summary.json)",
+            "[missing] JudgeBench SFT+RL downstream summary records per-item hash (outputs/matrix_judgebench/judgebench_sft_rl/downstream/summary.json)",
+            "[missing] JudgeBench SFT+RL downstream CI binds per-item input (outputs/matrix_judgebench/judgebench_sft_rl/downstream_ci/bootstrap_ci.json)",
+            "[missing] JudgeBench SFT+RL downstream CI records per-item input hash (outputs/matrix_judgebench/judgebench_sft_rl/downstream_ci/bootstrap_ci.json)",
+            "[missing] JudgeBench base main table downstream status is pass (outputs/matrix_judgebench/main_table.csv)",
+            "[missing] JudgeBench base main table downstream row is paper eligible (outputs/matrix_judgebench/main_table.csv)",
+            "[missing] JudgeBench SFT+RL main table downstream status is pass (outputs/matrix_judgebench/main_table.csv)",
+            "[missing] JudgeBench SFT+RL main table downstream row is paper eligible (outputs/matrix_judgebench/main_table.csv)",
+            "[missing] JudgeBench SFT+RL downstream accuracy delta (outputs/matrix_judgebench/judgebench_sft_rl/downstream/summary.json)",
+            "[missing] JudgeBench conservative downstream accuracy delta (outputs/matrix_judgebench/judgebench_sft_rl/downstream_ci/bootstrap_ci.json)",
+            "[missing] JudgeBench base downstream summary input hash matches budget report (outputs/matrix_judgebench/judgebench_base/downstream/summary.json)",
+            "[missing] JudgeBench base downstream summary input hash matches join output (outputs/matrix_judgebench/judgebench_base/downstream/summary.json)",
+            "[missing] JudgeBench base downstream summary provider hash matches budget report (outputs/matrix_judgebench/judgebench_base/downstream/summary.json)",
+            "[missing] JudgeBench SFT+RL downstream summary input hash matches budget report (outputs/matrix_judgebench/judgebench_sft_rl/downstream/summary.json)",
+            "[missing] JudgeBench SFT+RL downstream summary input hash matches join output (outputs/matrix_judgebench/judgebench_sft_rl/downstream/summary.json)",
+            "[missing] JudgeBench SFT+RL downstream summary provider hash matches budget report (outputs/matrix_judgebench/judgebench_sft_rl/downstream/summary.json)",
+            "[missing] JudgeBench base downstream summary per-item hash matches CI input (outputs/matrix_judgebench/judgebench_base/downstream/summary.json)",
+            "[missing] JudgeBench base downstream summary per-item row count matches CI rows (outputs/matrix_judgebench/judgebench_base/downstream/summary.json)",
+            "[missing] JudgeBench SFT+RL downstream summary per-item hash matches CI input (outputs/matrix_judgebench/judgebench_sft_rl/downstream/summary.json)",
+            "[missing] JudgeBench SFT+RL downstream summary per-item row count matches CI rows (outputs/matrix_judgebench/judgebench_sft_rl/downstream/summary.json)"
+          ],
+          "notes": "This is a separate difficult-case downstream claim. Keep it distinct from RewardBench unless both gates pass. The join report, budget report contract, and downstream summary must bind the exact JudgeBench downstream_eval input, benchmark preferences, criteria predictions, judge provider, benchmark format, criteria unit field, pairwise call count, and paper_claim_eligible=true so stale joins or stale budget reports cannot satisfy this gate."
+        }
+      ],
+      "manifest_gaps": [],
+      "paper_asset_blockers": [
+        {
+          "category": "downstream_utility",
+          "count": 1,
+          "label": "RewardBench/JudgeBench/RewardBench-2 utility table",
+          "claim_ids": [
+            "C4",
+            "C9",
+            "C10"
+          ],
+          "evidence_gate": "C4/C9/C10",
+          "producer": "scripts/export_paper_artifacts.py",
+          "source_artifacts": [
+            "outputs/matrix_real/main_table.csv",
+            "outputs/matrix_judgebench/main_table.csv",
+            "outputs/matrix_rewardbench2/main_table.csv"
+          ],
+          "paper_artifacts": [
+            "downstream_utility_table.tex"
+          ],
+          "action": "Run RewardBench, JudgeBench, and RewardBench-2 downstream API/model scorer matrices, then export the combined utility table."
+        }
+      ],
+      "paper_asset_warnings": [],
+      "readiness_blockers": [
+        "required evidence claim C4 is missing_evidence",
+        "required evidence claim C9 is missing_evidence",
+        "required evidence claim C10 is missing_evidence",
+        "raw gate Meta-Verifier API Budget is missing: report missing",
+        "raw gate RubricBench Model Criteria Verifier API Budget is missing: report missing",
+        "raw gate Downstream Policy RLVR Completion Gate is blocked: 19 blockers, 0 warnings",
+        "required paper tables not synced: tables/main_table.tex, tables/rl_stage_ablation_table.tex, tables/downstream_utility_table.tex, tables/ablation_table.tex, tables/teacher_union_ablation_table.tex, tables/verifier_filter_ablation_table.tex, tables/dimension_transition_table.tex",
+        "artifact is missing or empty: outputs/paper_artifacts/downstream_utility_table.tex"
+      ],
+      "next_actions": [
+        "Run paper-facing API/model scorer evaluations on RewardBench, JudgeBench, and RewardBench-2 holdouts.",
+        "Ensure every downstream summary is paper_claim_eligible and bound to its input/provider/budget SHA256 contract."
+      ],
+      "claim_discipline": "Do not describe BSC coverage changes as supporting judge utility until C4/C9/C10 pass with API/model scorer outputs, paper_claim_eligible summaries, and input/provider/budget SHA256 contracts.",
+      "summary": "blocked: claim_gaps=4, readiness_blockers=8, paper_asset_blockers=1, blocked_by_prior_phases=3"
+    },
+    {
+      "id": "ablations",
+      "name": "Ablations",
+      "status": "blocked",
+      "depends_on": [
+        "data_isolation_hard_gold",
+        "main_hard_gold_bsc",
+        "training_and_serving"
+      ],
+      "blocked_by_prior_phases": [
+        "data_isolation_hard_gold",
+        "main_hard_gold_bsc",
+        "training_and_serving"
+      ],
+      "claim_ids": [
+        "C14",
+        "C5",
+        "C7"
+      ],
+      "claim_gaps": [
+        {
+          "claim_id": "C14",
+          "status": "missing_evidence",
+          "claim": "The GRPO/RLVR stage is tested against SFT-only under matched redundancy and hallucination controls.",
+          "missing_or_failed_checks": [
+            "[missing] Main table (outputs/matrix_real/main_table.csv)",
+            "[missing] SFT/GRPO training completion manifest (outputs/training_commands/training_done.json)",
+            "[missing] SFT-only BSC summary (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL BSC summary (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only BSC bootstrap CI (outputs/matrix_real/sft_only/bsc_ci/bootstrap_ci.json)",
+            "[missing] SFT+RL BSC bootstrap CI (outputs/matrix_real/sft_rl/bsc_ci/bootstrap_ci.json)",
+            "[missing] SFT-only BSC source count for RL-stage comparison (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL BSC source count for RL-stage comparison (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only coverage threshold matches RL-stage protocol (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL coverage threshold matches RL-stage protocol (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only redundancy threshold matches RL-stage protocol (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL redundancy threshold matches RL-stage protocol (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only verifier-backed BSC records (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL verifier-backed BSC records (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only tracks generated criteria count (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL tracks generated criteria count (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only tracks generated-to-gold ratio (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL tracks generated-to-gold ratio (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only tracks length-normalized coverage (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL tracks length-normalized coverage (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only BSC join has no missing predictions (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT-only BSC join has no unmatched predictions (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT-only BSC join has no duplicate gold records (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT-only BSC join has no duplicate prediction records (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join has no missing predictions (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join has no unmatched predictions (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join has no duplicate gold records (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join has no duplicate prediction records (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] Matrix trained-method gate passed (ok=False == True)",
+            "[missing] Training completion serves base, SFT-only, and SFT+RL (outputs/training_commands/training_done.json)",
+            "[missing] Training completion binds SFT config (outputs/training_commands/training_done.json)",
+            "[missing] Training completion binds GRPO config (outputs/training_commands/training_done.json)",
+            "[missing] Training completion binds SFT data (outputs/training_commands/training_done.json)",
+            "[missing] Training completion binds proxy-gold RL data (outputs/training_commands/training_done.json)",
+            "[missing] Training completion binds proxy-gold RL data report (outputs/training_commands/training_done.json)",
+            "[missing] Training completion binds BSC reward function (outputs/training_commands/training_done.json)",
+            "[missing] SFT-only BSC embedding model matches RL-stage protocol (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL BSC embedding model matches RL-stage protocol (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only hallucination source is verifier-backed (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL hallucination source is verifier-backed (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only BSC join uses RubricBench test_main hard-gold (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT-only BSC join output is fixed (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT-only BSC join query alignment is exact (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT-only BSC join output row count matches joined records (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT-only BSC join output is not limit-truncated (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join uses RubricBench test_main hard-gold (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join output is fixed (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join query alignment is exact (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join output row count matches joined records (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join output is not limit-truncated (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] SFT-only BSC summary binds expected eval input (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT-only BSC summary records evaluated input hash (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT-only BSC summary records per-item output (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT-only BSC summary records per-item hash (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT-only BSC summary records per-item row count (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT-only BSC CI binds per-item input (outputs/matrix_real/sft_only/bsc_ci/bootstrap_ci.json)",
+            "[missing] SFT-only BSC CI records per-item input hash (outputs/matrix_real/sft_only/bsc_ci/bootstrap_ci.json)",
+            "[missing] SFT+RL BSC summary binds expected eval input (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL BSC summary records evaluated input hash (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL BSC summary records per-item output (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL BSC summary records per-item hash (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL BSC summary records per-item row count (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL BSC CI binds per-item input (outputs/matrix_real/sft_rl/bsc_ci/bootstrap_ci.json)",
+            "[missing] SFT+RL BSC CI records per-item input hash (outputs/matrix_real/sft_rl/bsc_ci/bootstrap_ci.json)",
+            "[missing] Main table exposes RL-stage length audit columns (outputs/matrix_real/main_table.csv)",
+            "[missing] SFT-only main-table row exposes length audit values (outputs/matrix_real/main_table.csv)",
+            "[missing] SFT+RL main-table row exposes length audit values (outputs/matrix_real/main_table.csv)",
+            "[missing] Training completion SFT config SHA matches file (outputs/training_commands/training_done.json)",
+            "[missing] Training completion GRPO config SHA matches file (outputs/training_commands/training_done.json)",
+            "[missing] Training completion SFT data SHA matches file (outputs/training_commands/training_done.json)",
+            "[missing] Training completion RL data SHA matches file (outputs/training_commands/training_done.json)",
+            "[missing] Training completion RL data report SHA matches file (outputs/training_commands/training_done.json)",
+            "[missing] Training completion reward function SHA matches file (outputs/training_commands/training_done.json)",
+            "[missing] SFT+RL coverage change over SFT-only (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL redundancy increase over SFT-only is bounded (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL hallucination increase over SFT-only is bounded (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL conservative coverage change over SFT-only (outputs/matrix_real/sft_rl/bsc_ci/bootstrap_ci.json)",
+            "[missing] SFT+RL mean generated criteria count is not a length-only expansion over SFT-only (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL generated-to-gold ratio is not a length-only expansion over SFT-only (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL length-normalized coverage is not lower than SFT-only (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT-only BSC summary input hash matches join output (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT-only BSC summary per-item hash matches CI input (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT-only BSC summary per-item row count matches CI rows (outputs/matrix_real/sft_only/bsc/summary.json)",
+            "[missing] SFT+RL BSC summary input hash matches join output (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL BSC summary per-item hash matches CI input (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] SFT+RL BSC summary per-item row count matches CI rows (outputs/matrix_real/sft_rl/bsc/summary.json)"
+          ],
+          "notes": "This gate is the explicit SFT-only vs SFT+GRPO ablation. Do not claim RL-stage support unless it passes. Both rows must use the same BGE embedding model, coverage/redundancy thresholds, verifier-backed hallucination source, bootstrap-CI protocol, exact hard-gold join, bounded generated-criteria count, and non-degraded length-normalized coverage; otherwise the RL-stage comparison is not reportable."
+        },
+        {
+          "claim_id": "C5",
+          "status": "missing_evidence",
+          "claim": "Multi-teacher criteria union is evaluated against the best single teacher for human-gold evaluation-dimension coverage.",
+          "missing_or_failed_checks": [
+            "[missing] Teacher-union ablation (outputs/teacher_union_ablation/teacher_union_ablation.csv)",
+            "[missing] Teacher-union ablation JSON (outputs/teacher_union_ablation/teacher_union_ablation.json)",
+            "[missing] Teacher-union per-item audit (outputs/teacher_union_ablation/teacher_union_per_item.csv)",
+            "[missing] Union coverage delta over best single teacher (outputs/teacher_union_ablation/teacher_union_ablation.json)",
+            "[missing] Teacher-union ablation has RubricBench-scale matched queries (outputs/teacher_union_ablation/teacher_union_ablation.json)",
+            "[missing] Teacher-union compares at least two single teachers (outputs/teacher_union_ablation/teacher_union_ablation.json)",
+            "[missing] Teacher-union coverage threshold matches BSC protocol (outputs/teacher_union_ablation/teacher_union_ablation.json)",
+            "[missing] Teacher-union redundancy threshold matches BSC protocol (outputs/teacher_union_ablation/teacher_union_ablation.json)",
+            "[missing] Teacher-union dedupe threshold matches proxy-gold protocol (outputs/teacher_union_ablation/teacher_union_ablation.json)",
+            "[missing] Teacher-union min teacher gate is at least two (outputs/teacher_union_ablation/teacher_union_ablation.json)",
+            "[missing] Teacher-union row is first (outputs/teacher_union_ablation/teacher_union_ablation.json)",
+            "[missing] Teacher-union uses raw teacher pool (outputs/teacher_union_ablation/teacher_union_ablation.json)",
+            "[missing] Teacher-union uses RubricBench train-seed human-gold evaluation dimensions (outputs/teacher_union_ablation/teacher_union_ablation.json)",
+            "[missing] Teacher-union embedding model matches BSC protocol (outputs/teacher_union_ablation/teacher_union_ablation.json)"
+          ],
+          "notes": "The JSON rows are sorted with multi_teacher_union first. C5 also checks the union row identity, raw-teacher and train-seed human-gold input identities, BGE/tau/dedupe protocol, at least two single-teacher variants, and RubricBench seed-scale matched queries."
+        },
+        {
+          "claim_id": "C7",
+          "status": "missing_evidence",
+          "claim": "Ablations report reward-component variants and the no-verifier-filtering proxy-gold variant.",
+          "missing_or_failed_checks": [
+            "[missing] Reward ablation table (outputs/bsc_ablation/ablation_summary.csv)",
+            "[missing] Full reward variant (outputs/bsc_ablation/variants/full_summary.json)",
+            "[missing] No redundancy variant (outputs/bsc_ablation/variants/no_red_summary.json)",
+            "[missing] No validity variant (outputs/bsc_ablation/variants/no_valid_summary.json)",
+            "[missing] No verifier variant (outputs/bsc_ablation/variants/no_verifier_summary.json)",
+            "[missing] Coverage-only variant (outputs/bsc_ablation/variants/cov_only_summary.json)",
+            "[missing] SFT+RL BSC join report for reward ablation provenance (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] Reward-component ablation training completion gate (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] No-redundancy trained ablation BSC summary (outputs/reward_component_training_ablation/no_red/bsc/summary.json)",
+            "[missing] No-redundancy trained ablation BSC join report (outputs/reward_component_training_ablation/no_red/bsc_join_report.json)",
+            "[missing] No-validity trained ablation BSC summary (outputs/reward_component_training_ablation/no_valid/bsc/summary.json)",
+            "[missing] No-validity trained ablation BSC join report (outputs/reward_component_training_ablation/no_valid/bsc_join_report.json)",
+            "[missing] No-verifier trained ablation BSC summary (outputs/reward_component_training_ablation/no_verifier/bsc/summary.json)",
+            "[missing] No-verifier trained ablation BSC join report (outputs/reward_component_training_ablation/no_verifier/bsc_join_report.json)",
+            "[missing] Coverage-only trained ablation BSC summary (outputs/reward_component_training_ablation/cov_only/bsc/summary.json)",
+            "[missing] Coverage-only trained ablation BSC join report (outputs/reward_component_training_ablation/cov_only/bsc_join_report.json)",
+            "[missing] Verifier-filter ablation table (outputs/verifier_filter_ablation/verifier_filter_ablation.csv)",
+            "[missing] Verifier-filter ablation JSON (outputs/verifier_filter_ablation/verifier_filter_ablation.json)",
+            "[missing] Verifier-filter per-item audit (outputs/verifier_filter_ablation/verifier_filter_per_item.csv)",
+            "[missing] Full reward ablation has RubricBench-scale records (outputs/bsc_ablation/variants/full_summary.json)",
+            "[missing] No-redundancy ablation has RubricBench-scale records (outputs/bsc_ablation/variants/no_red_summary.json)",
+            "[missing] No-validity ablation has RubricBench-scale records (outputs/bsc_ablation/variants/no_valid_summary.json)",
+            "[missing] No-verifier ablation has RubricBench-scale records (outputs/bsc_ablation/variants/no_verifier_summary.json)",
+            "[missing] Coverage-only ablation has RubricBench-scale records (outputs/bsc_ablation/variants/cov_only_summary.json)",
+            "[missing] No-redundancy trained ablation has RubricBench-scale hard-gold records (outputs/reward_component_training_ablation/no_red/bsc/summary.json)",
+            "[missing] No-validity trained ablation has RubricBench-scale hard-gold records (outputs/reward_component_training_ablation/no_valid/bsc/summary.json)",
+            "[missing] No-verifier trained ablation has RubricBench-scale hard-gold records (outputs/reward_component_training_ablation/no_verifier/bsc/summary.json)",
+            "[missing] Coverage-only trained ablation has RubricBench-scale hard-gold records (outputs/reward_component_training_ablation/cov_only/bsc/summary.json)",
+            "[missing] No-redundancy trained ablation uses fixed coverage threshold (outputs/reward_component_training_ablation/no_red/bsc/summary.json)",
+            "[missing] No-validity trained ablation uses fixed coverage threshold (outputs/reward_component_training_ablation/no_valid/bsc/summary.json)",
+            "[missing] No-verifier trained ablation uses fixed coverage threshold (outputs/reward_component_training_ablation/no_verifier/bsc/summary.json)",
+            "[missing] Coverage-only trained ablation uses fixed coverage threshold (outputs/reward_component_training_ablation/cov_only/bsc/summary.json)",
+            "[missing] No-redundancy trained ablation uses fixed redundancy threshold (outputs/reward_component_training_ablation/no_red/bsc/summary.json)",
+            "[missing] No-validity trained ablation uses fixed redundancy threshold (outputs/reward_component_training_ablation/no_valid/bsc/summary.json)",
+            "[missing] No-verifier trained ablation uses fixed redundancy threshold (outputs/reward_component_training_ablation/no_verifier/bsc/summary.json)",
+            "[missing] Coverage-only trained ablation uses fixed redundancy threshold (outputs/reward_component_training_ablation/cov_only/bsc/summary.json)",
+            "[missing] No-redundancy trained ablation has verifier-backed records (outputs/reward_component_training_ablation/no_red/bsc/summary.json)",
+            "[missing] No-validity trained ablation has verifier-backed records (outputs/reward_component_training_ablation/no_valid/bsc/summary.json)",
+            "[missing] No-verifier trained ablation has verifier-backed records (outputs/reward_component_training_ablation/no_verifier/bsc/summary.json)",
+            "[missing] Coverage-only trained ablation has verifier-backed records (outputs/reward_component_training_ablation/cov_only/bsc/summary.json)",
+            "[missing] No-verifier-filtering variant has evaluated records (outputs/verifier_filter_ablation/verifier_filter_ablation.json)",
+            "[missing] Verifier-filtered variant has evaluated records (outputs/verifier_filter_ablation/verifier_filter_ablation.json)",
+            "[missing] Verifier filtering does not increase hallucination (outputs/verifier_filter_ablation/verifier_filter_ablation.json)",
+            "[missing] Verifier filtering does not destroy semantic coverage (outputs/verifier_filter_ablation/verifier_filter_ablation.json)",
+            "[missing] Reward-component training ablation includes all trained variants (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] Full trained reward keeps verifier enabled (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] No-redundancy trained ablation keeps verifier enabled (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] No-validity trained ablation disables validity weight (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] No-validity trained ablation disables verifier reward (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] No-verifier trained ablation keeps validity weight (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] No-verifier trained ablation keeps redundancy weight (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] No-verifier trained ablation disables verifier only (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] Coverage-only trained ablation disables validity weight (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] Coverage-only trained ablation disables redundancy weight (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] Coverage-only trained ablation disables verifier reward (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] No-redundancy trained ablation uses BGE embedding protocol (outputs/reward_component_training_ablation/no_red/bsc/summary.json)",
+            "[missing] No-validity trained ablation uses BGE embedding protocol (outputs/reward_component_training_ablation/no_valid/bsc/summary.json)",
+            "[missing] No-verifier trained ablation uses BGE embedding protocol (outputs/reward_component_training_ablation/no_verifier/bsc/summary.json)",
+            "[missing] Coverage-only trained ablation uses BGE embedding protocol (outputs/reward_component_training_ablation/cov_only/bsc/summary.json)",
+            "[missing] No-redundancy trained ablation uses RubricBench test_main hard-gold (outputs/reward_component_training_ablation/no_red/bsc_join_report.json)",
+            "[missing] No-validity trained ablation uses RubricBench test_main hard-gold (outputs/reward_component_training_ablation/no_valid/bsc_join_report.json)",
+            "[missing] No-verifier trained ablation uses RubricBench test_main hard-gold (outputs/reward_component_training_ablation/no_verifier/bsc_join_report.json)",
+            "[missing] Coverage-only trained ablation uses RubricBench test_main hard-gold (outputs/reward_component_training_ablation/cov_only/bsc_join_report.json)",
+            "[missing] No-redundancy trained ablation output is fixed (outputs/reward_component_training_ablation/no_red/bsc_join_report.json)",
+            "[missing] No-validity trained ablation output is fixed (outputs/reward_component_training_ablation/no_valid/bsc_join_report.json)",
+            "[missing] No-verifier trained ablation output is fixed (outputs/reward_component_training_ablation/no_verifier/bsc_join_report.json)",
+            "[missing] Coverage-only trained ablation output is fixed (outputs/reward_component_training_ablation/cov_only/bsc_join_report.json)",
+            "[missing] Full reward ablation identity (outputs/bsc_ablation/variants/full_summary.json)",
+            "[missing] Reward ablation uses BGE embedding protocol (outputs/bsc_ablation/variants/full_summary.json)",
+            "[missing] Reward ablation uses fixed coverage threshold (outputs/bsc_ablation/variants/full_summary.json)",
+            "[missing] Reward ablation uses fixed redundancy threshold (outputs/bsc_ablation/variants/full_summary.json)",
+            "[missing] Reward ablation input is SFT+RL hard-gold BSC eval (outputs/bsc_ablation/variants/full_summary.json)",
+            "[missing] Reward ablation input has content hash (outputs/bsc_ablation/variants/full_summary.json)",
+            "[missing] Reward ablation input comes from RubricBench test_main hard-gold (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] Reward ablation input matches SFT+RL BSC join output (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] No-redundancy ablation identity (outputs/bsc_ablation/variants/no_red_summary.json)",
+            "[missing] No-redundancy ablation uses same SFT+RL input (outputs/bsc_ablation/variants/no_red_summary.json)",
+            "[missing] No-redundancy ablation input has content hash (outputs/bsc_ablation/variants/no_red_summary.json)",
+            "[missing] No-validity ablation identity (outputs/bsc_ablation/variants/no_valid_summary.json)",
+            "[missing] No-validity ablation uses same SFT+RL input (outputs/bsc_ablation/variants/no_valid_summary.json)",
+            "[missing] No-validity ablation input has content hash (outputs/bsc_ablation/variants/no_valid_summary.json)",
+            "[missing] No-verifier ablation identity (outputs/bsc_ablation/variants/no_verifier_summary.json)",
+            "[missing] No-verifier ablation uses same SFT+RL input (outputs/bsc_ablation/variants/no_verifier_summary.json)",
+            "[missing] No-verifier ablation input has content hash (outputs/bsc_ablation/variants/no_verifier_summary.json)",
+            "[missing] Coverage-only ablation identity (outputs/bsc_ablation/variants/cov_only_summary.json)",
+            "[missing] Coverage-only ablation uses same SFT+RL input (outputs/bsc_ablation/variants/cov_only_summary.json)",
+            "[missing] Coverage-only ablation input has content hash (outputs/bsc_ablation/variants/cov_only_summary.json)",
+            "[missing] Verifier ablation first row is no-verifier-filtering (outputs/verifier_filter_ablation/verifier_filter_ablation.json)",
+            "[missing] Verifier-filter ablation uses BGE embedding protocol (outputs/verifier_filter_ablation/verifier_filter_ablation.json)",
+            "[missing] Verifier-filter ablation uses fixed coverage threshold (outputs/verifier_filter_ablation/verifier_filter_ablation.json)",
+            "[missing] Verifier-filter ablation uses fixed redundancy threshold (outputs/verifier_filter_ablation/verifier_filter_ablation.json)",
+            "[missing] Verifier-filter ablation raw-teacher input has content hash (outputs/verifier_filter_ablation/verifier_filter_ablation.json)",
+            "[missing] Verifier-filter ablation filtered-teacher input has content hash (outputs/verifier_filter_ablation/verifier_filter_ablation.json)",
+            "[missing] Verifier-filter ablation gold input has content hash (outputs/verifier_filter_ablation/verifier_filter_ablation.json)",
+            "[missing] Verifier ablation second row is verifier-filtered (outputs/verifier_filter_ablation/verifier_filter_ablation.json)",
+            "[missing] Full reward coverage weight (outputs/bsc_ablation/variants/full_summary.json)",
+            "[missing] Full reward validity weight (outputs/bsc_ablation/variants/full_summary.json)",
+            "[missing] Full reward redundancy weight (outputs/bsc_ablation/variants/full_summary.json)",
+            "[missing] No-redundancy reward coverage weight (outputs/bsc_ablation/variants/no_red_summary.json)",
+            "[missing] No-redundancy reward validity weight (outputs/bsc_ablation/variants/no_red_summary.json)",
+            "[missing] No-redundancy reward redundancy weight (outputs/bsc_ablation/variants/no_red_summary.json)",
+            "[missing] No-validity reward coverage weight (outputs/bsc_ablation/variants/no_valid_summary.json)",
+            "[missing] No-validity reward validity weight (outputs/bsc_ablation/variants/no_valid_summary.json)",
+            "[missing] No-validity reward redundancy weight (outputs/bsc_ablation/variants/no_valid_summary.json)",
+            "[missing] No-verifier reward coverage weight (outputs/bsc_ablation/variants/no_verifier_summary.json)",
+            "[missing] No-verifier reward validity weight (outputs/bsc_ablation/variants/no_verifier_summary.json)",
+            "[missing] No-verifier reward redundancy weight (outputs/bsc_ablation/variants/no_verifier_summary.json)",
+            "[missing] Full reward uses verifier (outputs/bsc_ablation/variants/full_summary.json)",
+            "[missing] No-redundancy reward uses verifier (outputs/bsc_ablation/variants/no_red_summary.json)",
+            "[missing] No-validity reward disables verifier (outputs/bsc_ablation/variants/no_valid_summary.json)",
+            "[missing] No-verifier reward disables verifier only (outputs/bsc_ablation/variants/no_verifier_summary.json)",
+            "[missing] Coverage-only reward coverage weight (outputs/bsc_ablation/variants/cov_only_summary.json)",
+            "[missing] Coverage-only reward validity weight (outputs/bsc_ablation/variants/cov_only_summary.json)",
+            "[missing] Coverage-only reward redundancy weight (outputs/bsc_ablation/variants/cov_only_summary.json)",
+            "[missing] Coverage-only reward disables verifier (outputs/bsc_ablation/variants/cov_only_summary.json)",
+            "[missing] Reward-component ablation SFT data SHA matches training completion (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] Reward-component ablation RL data SHA matches training completion (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] Reward-component ablation RL data report SHA matches training completion (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] Reward-component ablation reward function SHA matches training completion (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] Full trained reward GRPO config SHA matches training completion (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] Full trained reward RL data SHA matches training completion (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] Full trained reward RL data report SHA matches training completion (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] Full trained reward function SHA matches training completion (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] No-redundancy trained reward GRPO config SHA matches training completion (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] No-redundancy trained reward RL data SHA matches training completion (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] No-redundancy trained reward RL data report SHA matches training completion (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] No-redundancy trained reward function SHA matches training completion (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] No-validity trained reward GRPO config SHA matches training completion (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] No-validity trained reward RL data SHA matches training completion (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] No-validity trained reward RL data report SHA matches training completion (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] No-validity trained reward function SHA matches training completion (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] No-verifier trained reward GRPO config SHA matches training completion (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] No-verifier trained reward RL data SHA matches training completion (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] No-verifier trained reward RL data report SHA matches training completion (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] No-verifier trained reward function SHA matches training completion (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] Coverage-only trained reward GRPO config SHA matches training completion (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] Coverage-only trained reward RL data SHA matches training completion (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] Coverage-only trained reward RL data report SHA matches training completion (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] Coverage-only trained reward function SHA matches training completion (outputs/reward_component_training_ablation/training_done.json)",
+            "[missing] Full trained reward is not more redundant than no-redundancy ablation (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] Full trained reward is not more hallucinated than no-validity ablation (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] Full trained reward is not more hallucinated than no-verifier ablation (outputs/matrix_real/sft_rl/bsc/summary.json)",
+            "[missing] Full trained reward is not more hallucinated than coverage-only ablation (outputs/matrix_real/sft_rl/bsc/summary.json)"
+          ],
+          "notes": "The offline reward re-scoring table is diagnostic only. Paper-facing reward-component ablation requires separately trained no-redundancy, no-validity, no-verifier, and coverage-only variants on the same hard-gold protocol, with training_done.json recording the verifier env for each trained variant. Verifier-filter ablation evidence must show that filtering does not increase hallucination and does not collapse semantic coverage. C7 fails closed if same-output re-scoring is the only reward-component evidence."
+        }
+      ],
+      "manifest_gaps": [],
+      "paper_asset_blockers": [
+        {
+          "category": "rl_stage_ablation",
+          "count": 1,
+          "label": "SFT-only vs SFT+GRPO paper table",
+          "claim_ids": [
+            "C14"
+          ],
+          "evidence_gate": "C14",
+          "producer": "scripts/export_paper_artifacts.py",
+          "source_artifacts": [
+            "outputs/matrix_real/main_table.csv"
+          ],
+          "paper_artifacts": [
+            "rl_stage_ablation_table.tex"
+          ],
+          "action": "Run matrix_real through base, sft_only, and sft_rl BSC/downstream summaries, then export paper artifacts."
+        },
+        {
+          "category": "reward_ablation",
+          "count": 1,
+          "label": "reward-component ablation table",
+          "claim_ids": [
+            "C7"
+          ],
+          "evidence_gate": "C7",
+          "producer": "scripts/export_paper_artifacts.py",
+          "source_artifacts": [
+            "outputs/bsc_ablation/ablation_summary.csv"
+          ],
+          "paper_artifacts": [
+            "ablation_table.tex"
+          ],
+          "action": "Run separately trained reward-component ablations and export the reward ablation table."
+        },
+        {
+          "category": "teacher_union_ablation",
+          "count": 1,
+          "label": "teacher-union ablation table",
+          "claim_ids": [
+            "C5"
+          ],
+          "evidence_gate": "C5",
+          "producer": "scripts/export_paper_artifacts.py",
+          "source_artifacts": [
+            "outputs/teacher_union_ablation/teacher_union_ablation.csv"
+          ],
+          "paper_artifacts": [
+            "teacher_union_ablation_table.tex"
+          ],
+          "action": "Run single-teacher versus multi-teacher union ablation, then export the teacher-union table."
+        },
+        {
+          "category": "verifier_filter_ablation",
+          "count": 1,
+          "label": "verifier-filter ablation table",
+          "claim_ids": [
+            "C7"
+          ],
+          "evidence_gate": "C7",
+          "producer": "scripts/export_paper_artifacts.py",
+          "source_artifacts": [
+            "outputs/verifier_filter_ablation/verifier_filter_ablation.csv"
+          ],
+          "paper_artifacts": [
+            "verifier_filter_ablation_table.tex"
+          ],
+          "action": "Run verifier-filter ablation over raw and filtered teacher criteria outputs, then export the verifier-filter table."
+        }
+      ],
+      "paper_asset_warnings": [],
+      "readiness_blockers": [
+        "required evidence claim C5 is missing_evidence",
+        "required evidence claim C7 is missing_evidence",
+        "raw gate RubricBench Model Criteria Verifier Stats is missing: report missing",
+        "artifact is missing or empty: outputs/paper_artifacts/rl_stage_ablation_table.tex",
+        "artifact is missing or empty: outputs/paper_artifacts/ablation_table.tex",
+        "artifact is missing or empty: outputs/paper_artifacts/teacher_union_ablation_table.tex",
+        "artifact is missing or empty: outputs/paper_artifacts/verifier_filter_ablation_table.tex"
+      ],
+      "next_actions": [
+        "Run separately trained reward-component ablations: no redundancy, no validity, and coverage-only; keep offline reward re-scoring as diagnostic only.",
+        "Run verifier-filter ablation for proxy-gold quality control.",
+        "Run single-teacher versus multi-teacher union and SFT-only versus SFT+GRPO comparisons under the same BGE protocol."
+      ],
+      "claim_discipline": "Do not claim the RL stage is necessary or anti-hacking works from offline re-scoring; paper-facing C7 requires separately trained variants and verifier-filter evidence under the same BGE protocol.",
+      "summary": "blocked: claim_gaps=3, readiness_blockers=7, paper_asset_blockers=4, blocked_by_prior_phases=3"
+    },
+    {
+      "id": "semantic_space",
+      "name": "Semantic-Space Visualization",
+      "status": "blocked",
+      "depends_on": [
+        "data_isolation_hard_gold",
+        "main_hard_gold_bsc",
+        "training_and_serving"
+      ],
+      "blocked_by_prior_phases": [
+        "data_isolation_hard_gold",
+        "main_hard_gold_bsc",
+        "training_and_serving"
+      ],
+      "claim_ids": [
+        "C13"
+      ],
+      "claim_gaps": [
+        {
+          "claim_id": "C13",
+          "status": "missing_evidence",
+          "claim": "A semantic-space audit is planned to test for reportable nearest-gold evaluation-dimension region-coverage change without local collapse.",
+          "missing_or_failed_checks": [
+            "[missing] Semantic-space SVG (outputs/matrix_real/semantic_space/semantic_space.svg)",
+            "[missing] Semantic-space PDF (outputs/matrix_real/semantic_space/semantic_space.pdf)",
+            "[missing] Semantic-space point CSV (outputs/matrix_real/semantic_space/semantic_space_points.csv)",
+            "[missing] Semantic-space summary (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Base BSC join report for semantic-space provenance (outputs/matrix_real/base/bsc_join_report.json)",
+            "[missing] SFT-only BSC join report for semantic-space provenance (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] SFT+RL BSC join report for semantic-space provenance (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] Semantic visualization has human-gold dimensions (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic visualization has generated dimensions (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic visualization has gold semantic clusters (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] SFT+GRPO gold-category coverage delta is reportable (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] SFT+GRPO nearest-gold category coverage delta is reportable (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] SFT+GRPO nearest-gold cluster coverage delta is reportable (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] SFT+GRPO nearest-gold cluster distribution entropy is non-collapsed (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] SFT+GRPO generated-criteria dispersion delta is non-collapsed (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] SFT+GRPO nearest-gold similarity delta is non-degraded (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic visualization requests UMAP projection (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic visualization actual projection is UMAP or audited UMAP fallback (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic visualization uses canonical BSC embedding model (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic gold clusters use BSC coverage threshold (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic point CSV records nearest-gold audit columns (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic summary records exact point CSV schema (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic summary records output artifact hashes (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic summary binds point CSV path (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic point CSV row count matches point count (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic summary binds SVG path (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic summary binds PDF path (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic visualization includes base and trained methods (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic visualization base input is fixed (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic base input records join-report provenance (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic base join report uses hard-gold test_main (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic base join report uses query join key (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic visualization SFT-only input is fixed (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic SFT-only input records join-report provenance (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic SFT-only join report uses hard-gold test_main (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic SFT-only join report uses query join key (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic visualization SFT+RL input is fixed (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic SFT+RL input records join-report provenance (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic SFT+RL join report uses hard-gold test_main (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic SFT+RL join report uses query join key (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic base input comes from RubricBench test_main hard-gold (outputs/matrix_real/base/bsc_join_report.json)",
+            "[missing] Semantic SFT-only input comes from RubricBench test_main hard-gold (outputs/matrix_real/sft_only/bsc_join_report.json)",
+            "[missing] Semantic SFT+RL input comes from RubricBench test_main hard-gold (outputs/matrix_real/sft_rl/bsc_join_report.json)",
+            "[missing] Semantic visualization tracks method-level gold-category coverage (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic visualization tracks nearest-gold category coverage (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic visualization tracks gold cluster counts (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic visualization tracks nearest-gold cluster coverage (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic visualization tracks nearest-gold cluster distributions (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic visualization tracks nearest-gold cluster entropy (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic visualization tracks method-level dispersion (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic base embedded join report has no unmatched gold rows (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic base embedded join report has no unmatched predictions (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic base embedded join report has no duplicate gold keys (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic base embedded join report has no duplicate prediction keys (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic SFT-only embedded join report has no unmatched gold rows (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic SFT-only embedded join report has no unmatched predictions (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic SFT-only embedded join report has no duplicate gold keys (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic SFT-only embedded join report has no duplicate prediction keys (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic SFT+RL embedded join report has no unmatched gold rows (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic SFT+RL embedded join report has no unmatched predictions (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic SFT+RL embedded join report has no duplicate gold keys (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic SFT+RL embedded join report has no duplicate prediction keys (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic point CSV has exact nearest-gold audit schema (outputs/matrix_real/semantic_space/semantic_space_points.csv)",
+            "[missing] Semantic point CSV includes human-gold points (outputs/matrix_real/semantic_space/semantic_space_points.csv)",
+            "[missing] Semantic point CSV includes generated points with nearest-gold audit fields (outputs/matrix_real/semantic_space/semantic_space_points.csv)",
+            "[missing] Semantic point CSV includes SFT+GRPO generated points (outputs/matrix_real/semantic_space/semantic_space_points.csv)",
+            "[missing] Semantic point CSV SHA matches summary (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic SVG SHA matches summary (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic PDF SHA matches summary (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic base input hash matches BSC join output (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic base embedded join-report output hash matches input (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic SFT-only input hash matches BSC join output (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic SFT-only embedded join-report output hash matches input (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic SFT+RL input hash matches BSC join output (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic SFT+RL embedded join-report output hash matches input (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic base embedded join-report output path matches input path (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic base input row count matches BSC joined rows (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic SFT-only embedded join-report output path matches input path (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic SFT-only input row count matches BSC joined rows (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic SFT+RL embedded join-report output path matches input path (outputs/matrix_real/semantic_space/semantic_space_summary.json)",
+            "[missing] Semantic SFT+RL input row count matches BSC joined rows (outputs/matrix_real/semantic_space/semantic_space_summary.json)"
+          ],
+          "notes": "The paper-facing matrix requests UMAP and records any deterministic PCA fallback. C13 is only safe when the summary reports non-negative gold-category, nearest-gold category, and nearest-gold semantic-cluster coverage deltas for SFT+GRPO relative to SFT-only, shows non-collapsed generated-criteria dispersion and nearest-gold cluster-distribution entropy, shows non-degraded nearest-gold similarity, and uses semantic inputs whose hashes match the corresponding hard-gold BSC join outputs."
+        }
+      ],
+      "manifest_gaps": [],
+      "paper_asset_blockers": [
+        {
+          "category": "semantic_space",
+          "count": 4,
+          "label": "semantic-space SVG/PDF/CSV/JSON assets",
+          "claim_ids": [
+            "C13"
+          ],
+          "evidence_gate": "C13",
+          "producer": "scripts/build_semantic_space_visualization.py -> scripts/export_paper_artifacts.py",
+          "source_artifacts": [
+            "outputs/matrix_real/semantic_space/semantic_space.svg",
+            "outputs/matrix_real/semantic_space/semantic_space.pdf",
+            "outputs/matrix_real/semantic_space/semantic_space_points.csv",
+            "outputs/matrix_real/semantic_space/semantic_space_summary.json"
+          ],
+          "paper_artifacts": [
+            "semantic_space.svg",
+            "semantic_space.pdf",
+            "semantic_space_points.csv",
+            "semantic_space_summary.json"
+          ],
+          "action": "Run semantic-space visualization after base, sft_only, and sft_rl hard-gold BSC eval rows exist, then export/copy all four assets."
+        }
+      ],
+      "paper_asset_warnings": [],
+      "readiness_blockers": [
+        "required evidence claim C13 is missing_evidence",
+        "required paper figures not synced: figures/semantic_space.pdf, figures/semantic_space.svg",
+        "required paper reviewer-facing docs not synced: asset_index/semantic_space_points.csv, asset_index/semantic_space_summary.json",
+        "artifact is missing or empty: outputs/paper_artifacts/semantic_space.svg",
+        "artifact is missing or empty: outputs/paper_artifacts/semantic_space.pdf",
+        "artifact is missing or empty: outputs/paper_artifacts/semantic_space_points.csv",
+        "artifact is missing or empty: outputs/paper_artifacts/semantic_space_summary.json"
+      ],
+      "next_actions": [
+        "Build UMAP/PCA semantic-space assets from base, SFT-only, and SFT+GRPO hard-gold BSC eval rows.",
+        "Verify semantic_space_points.csv and semantic_space_summary.json carry nearest-gold audit fields."
+      ],
+      "claim_discipline": "Treat the plot as illustrative until C13 verifies point-level provenance, nearest-gold audit fields, category/cluster coverage, dispersion, and non-empty SVG/PDF/CSV/JSON assets.",
+      "summary": "blocked: claim_gaps=1, readiness_blockers=7, paper_asset_blockers=1, blocked_by_prior_phases=3"
+    },
+    {
+      "id": "paper_readiness",
+      "name": "Paper Assets And AAAI Readiness",
+      "status": "blocked",
+      "depends_on": [
+        "ablations",
+        "data_isolation_hard_gold",
+        "downstream_utility",
+        "main_hard_gold_bsc",
+        "semantic_space",
+        "training_and_serving"
+      ],
+      "blocked_by_prior_phases": [
+        "ablations",
+        "data_isolation_hard_gold",
+        "downstream_utility",
+        "main_hard_gold_bsc",
+        "semantic_space",
+        "training_and_serving"
+      ],
+      "claim_ids": [],
+      "claim_gaps": [],
+      "manifest_gaps": [],
+      "paper_asset_blockers": [],
+      "paper_asset_warnings": [
+        {
+          "category": "api_handoff",
+          "count": 2,
+          "label": "API handoff reviewer-facing docs",
+          "warnings": []
+        }
+      ],
+      "readiness_blockers": [
+        "raw gate Data Readiness Audit is blocked: 10 missing files",
+        "raw gate AAAI LaTeX Compile is blocked: pdf_bytes=0, pages=0, max_pages=0, official_style_active=False, submission_mode_declared=True, bibliography_style_active=False, anonymous_author_declared=True, 3 blockers",
+        "paper asset index is blocked: 11 blockers, 2 warnings, 8 blocker categories, 1 warning categories",
+        "artifact is missing or empty: outputs/paper_artifacts/main_table.tex",
+        "artifact is missing or empty: outputs/paper_artifacts/dimension_transition_table.tex",
+        "raw gate Real Run Preflight is blocked: 33 blockers, 8 warnings",
+        "raw gate Filtered Teacher Evaluation-Criteria Validation is missing: report missing"
+      ],
+      "next_actions": [
+        "Export paper artifacts after real matrices and ablations are complete.",
+        "Sync tables/figures into paper/ and rerun LaTeX plus submission readiness."
+      ],
+      "claim_discipline": "Keep the paper in problem--metric--method framing and write empirical claims only when the relevant evidence rows are safe_to_claim and synced paper assets pass readiness.",
+      "summary": "blocked: readiness_blockers=7, paper_asset_warnings=1, blocked_by_prior_phases=6"
+    },
+    {
+      "id": "reviewer_response_readiness",
+      "name": "Reviewer-Facing Rebuttal Readiness",
+      "status": "blocked",
+      "depends_on": [
+        "paper_readiness"
+      ],
+      "blocked_by_prior_phases": [
+        "paper_readiness"
+      ],
+      "claim_ids": [],
+      "claim_gaps": [],
+      "manifest_gaps": [
+        "rebuttal pack was built while submission readiness was false",
+        "rebuttal pack has no answer_ready entries"
+      ],
+      "paper_asset_blockers": [],
+      "paper_asset_warnings": [],
+      "readiness_blockers": [],
+      "next_actions": [
+        "Regenerate the rebuttal pack after Evidence Matrix rows and submission readiness are refreshed.",
+        "Use only answer_ready rebuttal entries whose matched Evidence Matrix rows are safe_to_claim and whose readiness_ok flag is true."
+      ],
+      "claim_discipline": "Treat rebuttal entries as readiness notes, not new claims; do not use reviewer-facing answers until the pack is generated against the current Evidence Matrix/readiness report, readiness_ok is true, and relevant entries are answer_ready.",
+      "summary": "blocked: manifest_gaps=2, blocked_by_prior_phases=1"
+    }
+  ]
+}

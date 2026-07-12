@@ -1,0 +1,260 @@
+{
+  "method": "base",
+  "model_filter": "base",
+  "gold": "data/processed/rubricbench_gold.jsonl",
+  "queries": "data/processed/rubricbench_queries.jsonl",
+  "providers": "configs/generators_minimal.local.jsonl",
+  "model_rubrics": "data/processed/minimal_claim/base/model_rubrics.jsonl",
+  "processed_root": "data/processed/minimal_claim/base",
+  "output_root": "outputs/minimal_claim/base",
+  "embedding_model": "BAAI/bge-large-en-v1.5",
+  "coverage_tau": 0.75,
+  "redundancy_tau": 0.85,
+  "generation_data_source": "rubricbench_base_generation",
+  "bsc_data_source": "rubricbench",
+  "resume": true,
+  "sleep": 0.5,
+  "local_config_init": {
+    "enabled": true,
+    "template": "configs/data_sources_real.template.json",
+    "output": "configs/data_sources_real.local.json",
+    "report_json": "outputs/data_sources/local_config_init_rubricbench.json",
+    "report_md": "outputs/data_sources/local_config_init_rubricbench.md",
+    "required_datasets": ["rubricbench"],
+    "fill_present_sha256": false,
+    "update_existing": false,
+    "strict": false
+  },
+  "pilot_sample": {
+    "enabled": true,
+    "n": 100,
+    "seed": 13,
+    "stratify_key": "data_source",
+    "dedupe_key": "query"
+  },
+  "preflight": {
+    "enabled": true,
+    "min_records": 1,
+    "providers": ["configs/generators_minimal.local.jsonl", "configs/verifier.local.jsonl"],
+    "required_provider_in": [
+      "configs/generators_minimal.local.jsonl:base",
+      "configs/verifier.local.jsonl:meta-verifier"
+    ],
+    "required_env": ["LOCAL_OPENAI_API_KEY", "OPENAI_API_KEY"],
+    "check_local_provider_health": true,
+    "strict": false
+  },
+  "api_budget": {
+    "enabled": true,
+    "method_key": "method",
+    "calls_per_record_per_provider": 1,
+    "default_qpm": 60,
+    "default_tpm": 60000,
+    "max_calls": 500,
+    "max_total_tokens": 1000000,
+    "max_cost_usd": 200,
+    "max_wallclock_minutes_serial": 500,
+    "strict": true
+  },
+  "model_output_validation": {
+    "enabled": true,
+    "min_rubrics": 1,
+    "max_rubrics": 50,
+    "allow_exact_duplicates": true,
+    "allow_generic_terms": true,
+    "allow_semantic_redundancy": true,
+    "strict": true
+  },
+  "model_verification": {
+    "enabled": true,
+    "provider": "configs/verifier.local.jsonl",
+    "mode": "api",
+    "annotate_only": true,
+    "sleep": 0.2,
+    "calls_per_record_per_provider": 1,
+    "default_qpm": 60,
+    "default_tpm": 60000,
+    "max_calls": 2000,
+    "max_total_tokens": 5000000,
+    "max_cost_usd": 300,
+    "max_wallclock_minutes_serial": 1000,
+    "strict": true
+  },
+  "verified_output_validation": {
+    "enabled": true,
+    "min_rubrics": 1,
+    "max_rubrics": 50,
+    "require_valid_flags": true,
+    "allow_exact_duplicates": true,
+    "allow_generic_terms": true,
+    "allow_semantic_redundancy": true,
+    "strict": true
+  },
+  "paper_sync": {
+    "enabled": true,
+    "paper_dir": "paper"
+  },
+  "readiness": {
+    "enabled": true,
+    "paper_dir": "paper",
+    "strict": false
+  },
+  "gold_validation": {
+    "enabled": true,
+    "input": "data/processed/rubricbench_gold.jsonl",
+    "output_json": "outputs/data_validation/rubricbench_gold.json",
+    "output_md": "outputs/data_validation/rubricbench_gold.md",
+    "min_records": 100,
+    "min_rubrics_per_query": 1,
+    "require_provenance": true,
+    "required_provenance_values": {
+      "paper_url": "https://arxiv.org/abs/2603.01562",
+      "source_url": "https://huggingface.co/datasets/DonJoey/rubricbench/resolve/main/data/train-00000-of-00001.parquet"
+    },
+    "required_data_source": ["rubricbench"],
+    "forbidden_data_source": ["toy", "proxy"],
+    "strict": true
+  },
+  "query_validation": {
+    "enabled": true,
+    "input": "data/processed/rubricbench_queries.jsonl",
+    "output_json": "outputs/data_validation/rubricbench_queries.json",
+    "output_md": "outputs/data_validation/rubricbench_queries.md",
+    "min_records": 100,
+    "require_provenance": true,
+    "required_provenance_values": {
+      "paper_url": "https://arxiv.org/abs/2603.01562",
+      "source_url": "https://huggingface.co/datasets/DonJoey/rubricbench/resolve/main/data/train-00000-of-00001.parquet"
+    },
+    "required_data_source": ["rubricbench"],
+    "forbidden_data_source": ["toy", "proxy"],
+    "strict": true
+  },
+  "bsc_gold_sanity": {
+    "enabled": true,
+    "min_joined": 1147,
+    "data_source": "rubricbench"
+  },
+  "minimal_api_handoff": {
+    "enabled": true,
+    "start_stage": "generate_model_rubrics",
+    "end_stage": "result_card",
+    "strict": false
+  },
+  "result_card": {
+    "enabled": true,
+    "title": "BlindSpot-RL Minimal Motivation Result Card",
+    "data_source_reports": [
+      {
+        "name": "Data Source Report",
+        "config": "configs/data_sources_real.local.json",
+        "path": "outputs/data_sources/source_report_rubricbench.json",
+        "output_md": "outputs/data_sources/source_report_rubricbench.md",
+        "strict": true,
+        "required_datasets": ["rubricbench"]
+      }
+    ],
+    "gold_validations": [
+      {
+        "name": "RubricBench Gold Validation",
+        "path": "outputs/data_validation/rubricbench_gold.json"
+      }
+    ],
+    "query_validations": [
+      {
+        "name": "RubricBench Query Pool Validation",
+        "path": "outputs/data_validation/rubricbench_queries.json"
+      }
+    ],
+    "strict": false,
+    "notes": [
+      "Minimal claim card for the first paper gate: single-model BSC against hard-gold evaluation dimensions.",
+      "Keep the blind-spot magnitude claim deferred unless Raw Audit Gates and evidence gates pass."
+    ]
+  },
+  "claim_gates": {
+    "min_n": 100,
+    "min_blind": 0.2,
+    "min_blind_ci_lower": 0.2,
+    "frozen_diagnostic": {
+      "n": 100,
+      "mean_coverage": 0.36919517010450364,
+      "mean_blind": 0.6308048298954964,
+      "median_blind": 0.6666666567325592,
+      "queries_coverage_le_0_5": 74,
+      "queries_zero_coverage": 21,
+      "mean_redundancy": 0.07675396825396825,
+      "mean_hallucination": 0.12273412698412695,
+      "blind_ci_lower": 0.5784969914257526,
+      "blind_ci_upper": 0.6822689984422177
+    },
+    "frozen_blindspot_attribution": {
+      "total_gold": 569,
+      "uncovered_gold": 367,
+      "mean_blind_over_gold": 0.6449912126537786,
+      "categories": {
+        "completeness": {
+          "total_gold": 283,
+          "coverage": 0.37809187279151946,
+          "blind_rate": 0.6219081272084805
+        },
+        "constraint_following": {
+          "total_gold": 124,
+          "coverage": 0.1774193548387097,
+          "blind_rate": 0.8225806451612904
+        },
+        "intent_reasoning": {
+          "total_gold": 13,
+          "coverage": 0.23076923076923078,
+          "blind_rate": 0.7692307692307693
+        }
+      }
+    },
+    "frozen_budget_curve": {
+      "rows": [
+        {
+          "k": 3,
+          "n": 100,
+          "mean_coverage": 0.2337821100652218,
+          "mean_blind": 0.7662178899347782,
+          "mean_redundancy": 0.019999999999999997,
+          "total_gen": 300
+        },
+        {
+          "k": 10,
+          "n": 100,
+          "mean_coverage": 0.36919517010450364,
+          "mean_blind": 0.6308048298954964,
+          "mean_redundancy": 0.07675396825396825,
+          "total_gen": 842
+        },
+        {
+          "k": 15,
+          "n": 100,
+          "mean_coverage": 0.36919517010450364,
+          "mean_blind": 0.6308048298954964,
+          "mean_redundancy": 0.07675396825396825,
+          "total_gen": 842
+        }
+      ]
+    }
+  },
+  "sweep": {
+    "enabled": true,
+    "coverage_tau": [0.7, 0.75, 0.8],
+    "redundancy_tau": [0.8, 0.85, 0.9]
+  },
+  "human_audit_pack": {
+    "enabled": true,
+    "matched": 25,
+    "unmatched": 25,
+    "seed": 13
+  },
+  "bootstrap_ci": {
+    "enabled": true,
+    "metrics": ["coverage", "blind", "redundancy", "hallucination", "reward"],
+    "n_boot": 1000,
+    "seed": 13,
+    "confidence": 0.95
+  }
+}

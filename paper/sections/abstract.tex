@@ -1,0 +1,26 @@
+\begin{abstract}
+LLM-as-a-Judge research usually asks whether a model assigns the right score or
+preference. We study an earlier failure mode: before any score is produced, the
+judge may omit evaluation dimensions that human evaluators consider essential.
+We call this failure evaluation blind spots. On a hard-gold RubricBench
+diagnostic split, a single-model evaluation-criteria policy covers only 36.9\% of
+human-gold evaluation dimensions, leaving a mean blind-spot rate of 63.1\%
+(95\% CI: 57.9--68.2). To make this phenomenon measurable and optimizable, we
+introduce Blind-Spot Coverage (BSC), a semantic coverage metric over
+human-gold evaluation dimensions with explicit penalties for redundancy and
+invalid or hallucinated criteria. BSC turns open-ended criteria elicitation into a
+verifiable reward: coverage credit requires semantic match to hidden evaluation
+dimensions, while redundancy and fail-closed validity checks penalize duplicate,
+invalid, undecidable, irrelevant, or hallucinated criteria. We
+instantiate this reward in a two-stage training framework, BlindSpot-RL, that
+first constructs proxy-gold criteria through multi-teacher criteria elicitation
+and fail-closed verification, then tests GRPO/RLVR optimization of an
+evaluation-criteria policy under the BSC reward. The contribution is to cast
+open-ended criteria elicitation as verifiable semantic reward
+optimization, rather than as surface-form optimization.
+The evidence-gated experiments then test when the artifacts are sufficient to
+write a dimension-level coverage-change statement about the criteria LLM judges
+consider; any paper-facing dimension-recovery wording is permitted only after
+the hard-gold, downstream, ablation, dimension-transition, and human-audit gates
+support it.
+\end{abstract}

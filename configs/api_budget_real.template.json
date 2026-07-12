@@ -1,0 +1,204 @@
+{
+  "stages": [
+    {
+      "name": "api_budget_model_rubrics",
+      "type": "api_budget",
+      "args": {
+        "input": "data/processed/rubricbench_queries.jsonl",
+        "providers": "configs/generators.local.jsonl",
+        "resume_output": "data/processed/rubricbench_model_rubrics.jsonl",
+        "method_key": "method",
+        "calls_per_record_per_provider": 1,
+        "default_qpm": 60,
+        "default_tpm": 60000,
+        "max_calls": 25000,
+        "max_total_tokens": 75000000,
+        "max_cost_usd": 2500,
+        "max_wallclock_minutes_serial": 5000,
+        "output": "outputs/api_budget/model_rubrics_budget.json",
+        "output_md": "outputs/api_budget/model_rubrics_budget.md",
+        "strict": true
+      }
+    },
+    {
+      "name": "api_budget_rewardbench_model_rubrics",
+      "type": "api_budget",
+      "args": {
+        "input": "data/processed/rewardbench_queries.jsonl",
+        "providers": "configs/generators.local.jsonl",
+        "resume_output": "data/processed/rewardbench_model_rubrics.jsonl",
+        "method_key": "method",
+        "calls_per_record_per_provider": 1,
+        "default_qpm": 60,
+        "default_tpm": 60000,
+        "max_calls": 50000,
+        "max_total_tokens": 150000000,
+        "max_cost_usd": 5000,
+        "max_wallclock_minutes_serial": 10000,
+        "output": "outputs/api_budget/rewardbench_model_rubrics_budget.json",
+        "output_md": "outputs/api_budget/rewardbench_model_rubrics_budget.md",
+        "strict": true
+      }
+    },
+    {
+      "name": "api_budget_healthbench_model_rubrics",
+      "type": "api_budget",
+      "args": {
+        "input": "data/processed/healthbench_queries.jsonl",
+        "providers": "configs/generators.local.jsonl",
+        "resume_output": "data/processed/healthbench_model_rubrics.jsonl",
+        "method_key": "method",
+        "calls_per_record_per_provider": 1,
+        "default_qpm": 60,
+        "default_tpm": 60000,
+        "max_calls": 50000,
+        "max_total_tokens": 150000000,
+        "max_cost_usd": 5000,
+        "max_wallclock_minutes_serial": 10000,
+        "output": "outputs/api_budget/healthbench_model_rubrics_budget.json",
+        "output_md": "outputs/api_budget/healthbench_model_rubrics_budget.md",
+        "strict": true
+      }
+    },
+    {
+      "name": "api_budget_judgebench_model_rubrics",
+      "type": "api_budget",
+      "args": {
+        "input": "data/processed/judgebench_queries.jsonl",
+        "providers": "configs/generators.local.jsonl",
+        "resume_output": "data/processed/judgebench_model_rubrics.jsonl",
+        "method_key": "method",
+        "calls_per_record_per_provider": 1,
+        "default_qpm": 60,
+        "default_tpm": 60000,
+        "max_calls": 25000,
+        "max_total_tokens": 75000000,
+        "max_cost_usd": 2500,
+        "max_wallclock_minutes_serial": 5000,
+        "output": "outputs/api_budget/judgebench_model_rubrics_budget.json",
+        "output_md": "outputs/api_budget/judgebench_model_rubrics_budget.md",
+        "strict": true
+      }
+    },
+    {
+      "name": "api_budget_rewardbench2_model_rubrics",
+      "type": "api_budget",
+      "args": {
+        "input": "data/processed/rewardbench2_queries.clean.jsonl",
+        "providers": "configs/generators.local.jsonl",
+        "resume_output": "data/processed/rewardbench2_model_rubrics.jsonl",
+        "method_key": "method",
+        "calls_per_record_per_provider": 1,
+        "default_qpm": 60,
+        "default_tpm": 60000,
+        "max_calls": 50000,
+        "max_total_tokens": 150000000,
+        "max_cost_usd": 5000,
+        "max_wallclock_minutes_serial": 10000,
+        "output": "outputs/api_budget/rewardbench2_model_rubrics_budget.json",
+        "output_md": "outputs/api_budget/rewardbench2_model_rubrics_budget.md",
+        "strict": true
+      }
+    },
+    {
+      "name": "api_budget_rmbench_model_rubrics",
+      "type": "api_budget",
+      "args": {
+        "input": "data/processed/rmbench_queries.jsonl",
+        "providers": "configs/generators.local.jsonl",
+        "resume_output": "data/processed/rmbench_model_rubrics.jsonl",
+        "method_key": "method",
+        "calls_per_record_per_provider": 1,
+        "default_qpm": 60,
+        "default_tpm": 60000,
+        "max_calls": 50000,
+        "max_total_tokens": 150000000,
+        "max_cost_usd": 5000,
+        "max_wallclock_minutes_serial": 10000,
+        "output": "outputs/api_budget/rmbench_model_rubrics_budget.json",
+        "output_md": "outputs/api_budget/rmbench_model_rubrics_budget.md",
+        "strict": true
+      }
+    },
+    {
+      "name": "api_budget_writingbench_model_rubrics",
+      "type": "api_budget",
+      "args": {
+        "input": "data/processed/writingbench_queries.jsonl",
+        "providers": "configs/generators.local.jsonl",
+        "resume_output": "data/processed/writingbench_model_rubrics.jsonl",
+        "method_key": "method",
+        "calls_per_record_per_provider": 1,
+        "default_qpm": 60,
+        "default_tpm": 60000,
+        "max_calls": 50000,
+        "max_total_tokens": 150000000,
+        "max_cost_usd": 5000,
+        "max_wallclock_minutes_serial": 10000,
+        "output": "outputs/api_budget/writingbench_model_rubrics_budget.json",
+        "output_md": "outputs/api_budget/writingbench_model_rubrics_budget.md",
+        "strict": true
+      }
+    },
+    {
+      "name": "api_budget_teacher_rubrics",
+      "type": "api_budget",
+      "args": {
+        "input": "data/processed/splits/rubricbench_gold_train_seed.jsonl",
+        "providers": "configs/providers.local.jsonl",
+        "resume_output": "data/processed/teacher_rubrics_raw.jsonl",
+        "method_key": "teacher",
+        "calls_per_record_per_provider": 1,
+        "default_qpm": 60,
+        "default_tpm": 60000,
+        "max_calls": 25000,
+        "max_total_tokens": 75000000,
+        "max_cost_usd": 2500,
+        "max_wallclock_minutes_serial": 5000,
+        "output": "outputs/api_budget/teacher_rubrics_budget.json",
+        "output_md": "outputs/api_budget/teacher_rubrics_budget.md",
+        "strict": true
+      }
+    },
+    {
+      "name": "api_budget_healthbench_teacher_rubrics",
+      "type": "api_budget",
+      "args": {
+        "input": "data/processed/healthbench_queries.jsonl",
+        "providers": "configs/providers.local.jsonl",
+        "resume_output": "data/processed/teacher_rubrics_raw.jsonl",
+        "method_key": "teacher",
+        "calls_per_record_per_provider": 1,
+        "default_qpm": 60,
+        "default_tpm": 60000,
+        "max_calls": 50000,
+        "max_total_tokens": 150000000,
+        "max_cost_usd": 5000,
+        "max_wallclock_minutes_serial": 10000,
+        "output": "outputs/api_budget/healthbench_teacher_rubrics_budget.json",
+        "output_md": "outputs/api_budget/healthbench_teacher_rubrics_budget.md",
+        "strict": true
+      }
+    },
+    {
+      "name": "api_budget_writingbench_teacher_rubrics",
+      "type": "api_budget",
+      "args": {
+        "input": "data/processed/writingbench_queries.jsonl",
+        "providers": "configs/providers.local.jsonl",
+        "resume_output": "data/processed/teacher_rubrics_raw.jsonl",
+        "method_key": "teacher",
+        "calls_per_record_per_provider": 1,
+        "default_qpm": 60,
+        "default_tpm": 60000,
+        "max_calls": 50000,
+        "max_total_tokens": 150000000,
+        "max_cost_usd": 5000,
+        "max_wallclock_minutes_serial": 10000,
+        "output": "outputs/api_budget/writingbench_teacher_rubrics_budget.json",
+        "output_md": "outputs/api_budget/writingbench_teacher_rubrics_budget.md",
+        "strict": true
+      }
+    }
+  ]
+}

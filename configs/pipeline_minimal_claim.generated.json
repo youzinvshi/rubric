@@ -1,0 +1,482 @@
+{
+  "stages": [
+    {
+      "name": "init_data_source_local_config",
+      "type": "init_data_source_config",
+      "args": {
+        "template": "configs/data_sources_real.template.json",
+        "output": "configs/data_sources_real.local.json",
+        "report_json": "outputs/data_sources/local_config_init_rubricbench.json",
+        "report_md": "outputs/data_sources/local_config_init_rubricbench.md",
+        "required_dataset": [
+          "rubricbench"
+        ],
+        "fill_present_sha256": false,
+        "update_existing": false,
+        "strict": false
+      }
+    },
+    {
+      "name": "data_source_report",
+      "type": "data_source_report",
+      "args": {
+        "config": "configs/data_sources_real.local.json",
+        "output_json": "outputs/data_sources/source_report_rubricbench.json",
+        "output_md": "outputs/data_sources/source_report_rubricbench.md",
+        "required_dataset": [
+          "rubricbench"
+        ],
+        "strict": true
+      }
+    },
+    {
+      "name": "validate_rubricbench_gold",
+      "type": "validate_gold",
+      "args": {
+        "input": "data/processed/rubricbench_gold.jsonl",
+        "target": "gold",
+        "output_json": "outputs/data_validation/rubricbench_gold.json",
+        "output_md": "outputs/data_validation/rubricbench_gold.md",
+        "min_records": 100,
+        "min_rubrics_per_query": 1,
+        "require_provenance": true,
+        "strict": true,
+        "required_data_source": [
+          "rubricbench"
+        ],
+        "forbidden_data_source": [
+          "toy",
+          "proxy"
+        ],
+        "required_provenance": [
+          "paper_url=https://arxiv.org/abs/2603.01562",
+          "source_url=https://huggingface.co/datasets/DonJoey/rubricbench/resolve/main/data/train-00000-of-00001.parquet"
+        ]
+      }
+    },
+    {
+      "name": "validate_rubricbench_queries",
+      "type": "validate_gold",
+      "args": {
+        "input": "data/processed/rubricbench_queries.jsonl",
+        "target": "query_pool",
+        "output_json": "outputs/data_validation/rubricbench_queries.json",
+        "output_md": "outputs/data_validation/rubricbench_queries.md",
+        "min_records": 100,
+        "min_rubrics_per_query": 1,
+        "require_provenance": true,
+        "strict": true,
+        "required_data_source": [
+          "rubricbench"
+        ],
+        "forbidden_data_source": [
+          "toy",
+          "proxy"
+        ],
+        "required_provenance": [
+          "paper_url=https://arxiv.org/abs/2603.01562",
+          "source_url=https://huggingface.co/datasets/DonJoey/rubricbench/resolve/main/data/train-00000-of-00001.parquet"
+        ]
+      }
+    },
+    {
+      "name": "bsc_gold_sanity",
+      "type": "bsc_gold_sanity",
+      "args": {
+        "gold": "data/processed/rubricbench_gold.jsonl",
+        "output_dir": "outputs/minimal_claim/base/bsc_gold_sanity",
+        "data_source": "rubricbench",
+        "min_joined": 1147
+      }
+    },
+    {
+      "name": "sample_queries",
+      "type": "sample_records",
+      "args": {
+        "input": "data/processed/rubricbench_queries.jsonl",
+        "output": "data/processed/minimal_claim/base/queries_pilot.jsonl",
+        "n": 100,
+        "seed": 13,
+        "stratify_key": "data_source",
+        "dedupe_key": "query",
+        "report": "outputs/minimal_claim/base/sampling/queries_pilot_report.json",
+        "report_md": "outputs/minimal_claim/base/sampling/queries_pilot_report.md"
+      }
+    },
+    {
+      "name": "preflight",
+      "type": "preflight",
+      "args": {
+        "input": [
+          "data/processed/rubricbench_gold.jsonl",
+          "data/processed/minimal_claim/base/queries_pilot.jsonl"
+        ],
+        "min_records": 1,
+        "output": "outputs/minimal_claim/base/preflight/preflight.json",
+        "output_md": "outputs/minimal_claim/base/preflight/preflight.md",
+        "providers": [
+          "configs/generators_minimal.local.jsonl",
+          "configs/verifier.local.jsonl"
+        ],
+        "required_env": [
+          "LOCAL_OPENAI_API_KEY",
+          "OPENAI_API_KEY"
+        ],
+        "required_provider_in": [
+          "configs/generators_minimal.local.jsonl:base",
+          "configs/verifier.local.jsonl:meta-verifier"
+        ],
+        "check_local_provider_health": true
+      }
+    },
+    {
+      "name": "api_budget",
+      "type": "api_budget",
+      "args": {
+        "input": "data/processed/minimal_claim/base/queries_pilot.jsonl",
+        "providers": "configs/generators_minimal.local.jsonl",
+        "resume_output": "data/processed/minimal_claim/base/model_rubrics.jsonl",
+        "method_key": "method",
+        "calls_per_record_per_provider": 1,
+        "default_qpm": 60,
+        "default_tpm": 60000,
+        "output": "outputs/minimal_claim/base/api_budget/model_rubrics_budget.json",
+        "output_md": "outputs/minimal_claim/base/api_budget/model_rubrics_budget.md",
+        "max_calls": 500,
+        "max_total_tokens": 1000000,
+        "max_cost_usd": 200,
+        "max_wallclock_minutes_serial": 500,
+        "strict": true
+      }
+    },
+    {
+      "name": "minimal_api_handoff",
+      "type": "minimal_api_handoff",
+      "args": {
+        "pipeline": "configs/pipeline_minimal_claim.generated.json",
+        "preflight": "outputs/minimal_claim/base/preflight/preflight.json",
+        "api_budget": "outputs/minimal_claim/base/api_budget/model_rubrics_budget.json",
+        "bsc_gold_sanity": "outputs/minimal_claim/base/bsc_gold_sanity/summary.json",
+        "output_json": "outputs/minimal_claim/base/handoff/api_handoff.json",
+        "output_md": "outputs/minimal_claim/base/handoff/api_handoff.md",
+        "start_stage": "generate_model_rubrics",
+        "end_stage": "result_card"
+      }
+    },
+    {
+      "name": "generate_model_rubrics",
+      "type": "generate_model_rubrics",
+      "args": {
+        "input": "data/processed/minimal_claim/base/queries_pilot.jsonl",
+        "providers": "configs/generators_minimal.local.jsonl",
+        "output": "data/processed/minimal_claim/base/model_rubrics.jsonl",
+        "data_source": "rubricbench_base_generation",
+        "sleep": 0.5,
+        "resume": true,
+        "require_budget_report": "outputs/minimal_claim/base/api_budget/model_rubrics_budget.json",
+        "require_preflight_report": "outputs/minimal_claim/base/preflight/preflight.json"
+      }
+    },
+    {
+      "name": "validate_model_rubrics",
+      "type": "validate_rubrics",
+      "args": {
+        "input": "data/processed/minimal_claim/base/model_rubrics.jsonl",
+        "output_dir": "outputs/minimal_claim/base/validation/model_rubrics",
+        "min_rubrics": 1,
+        "max_rubrics": 50,
+        "allow_exact_duplicates": true,
+        "allow_generic_terms": true,
+        "allow_semantic_redundancy": true,
+        "strict": true
+      }
+    },
+    {
+      "name": "verifier_api_budget",
+      "type": "api_budget",
+      "args": {
+        "input": "data/processed/minimal_claim/base/model_rubrics.jsonl",
+        "providers": "configs/verifier.local.jsonl",
+        "unit_field": "rubrics",
+        "calls_per_record_per_provider": 1,
+        "default_qpm": 60,
+        "default_tpm": 60000,
+        "output": "outputs/minimal_claim/base/api_budget/model_rubrics_verifier_budget.json",
+        "output_md": "outputs/minimal_claim/base/api_budget/model_rubrics_verifier_budget.md",
+        "max_calls": 2000,
+        "max_total_tokens": 5000000,
+        "max_cost_usd": 300,
+        "max_wallclock_minutes_serial": 1000,
+        "strict": true
+      }
+    },
+    {
+      "name": "verify_model_rubrics",
+      "type": "filter_verifier",
+      "args": {
+        "input": "data/processed/minimal_claim/base/model_rubrics.jsonl",
+        "output": "data/processed/minimal_claim/base/model_rubrics_verified.jsonl",
+        "stats_output": "outputs/minimal_claim/base/verifier/model_rubrics_stats.jsonl",
+        "mode": "api",
+        "provider": "configs/verifier.local.jsonl",
+        "require_budget_report": "outputs/minimal_claim/base/api_budget/model_rubrics_verifier_budget.json",
+        "sleep": 0.2,
+        "annotate_only": true,
+        "require_preflight_report": "outputs/minimal_claim/base/preflight/preflight.json"
+      }
+    },
+    {
+      "name": "validate_verified_model_rubrics",
+      "type": "validate_rubrics",
+      "args": {
+        "input": "data/processed/minimal_claim/base/model_rubrics_verified.jsonl",
+        "output_dir": "outputs/minimal_claim/base/validation/model_rubrics_verified",
+        "min_rubrics": 1,
+        "max_rubrics": 50,
+        "require_valid_flags": true,
+        "allow_exact_duplicates": true,
+        "allow_generic_terms": true,
+        "allow_semantic_redundancy": true,
+        "strict": true
+      }
+    },
+    {
+      "name": "prepare_bsc",
+      "type": "prepare_bsc",
+      "args": {
+        "gold": "data/processed/rubricbench_gold.jsonl",
+        "predictions": "data/processed/minimal_claim/base/model_rubrics_verified.jsonl",
+        "output": "data/processed/minimal_claim/base/bsc_eval.jsonl",
+        "report": "outputs/minimal_claim/base/bsc_join_report.json",
+        "model": "base",
+        "data_source": "rubricbench",
+        "min_joined": 100
+      }
+    },
+    {
+      "name": "bsc",
+      "type": "bsc",
+      "args": {
+        "input": "data/processed/minimal_claim/base/bsc_eval.jsonl",
+        "embedding_model": "BAAI/bge-large-en-v1.5",
+        "coverage_tau": 0.75,
+        "redundancy_tau": 0.85,
+        "output_dir": "outputs/minimal_claim/base/bsc"
+      }
+    },
+    {
+      "name": "bsc_sweep",
+      "type": "bsc_sweep",
+      "args": {
+        "input": "data/processed/minimal_claim/base/bsc_eval.jsonl",
+        "embedding_model": "BAAI/bge-large-en-v1.5",
+        "coverage_tau": [
+          0.7,
+          0.75,
+          0.8
+        ],
+        "redundancy_tau": [
+          0.8,
+          0.85,
+          0.9
+        ],
+        "output_dir": "outputs/minimal_claim/base/bsc_sweep"
+      }
+    },
+    {
+      "name": "blindspot_map",
+      "type": "blindspot_map",
+      "args": {
+        "input": "data/processed/minimal_claim/base/bsc_eval.jsonl",
+        "embedding_model": "BAAI/bge-large-en-v1.5",
+        "coverage_tau": 0.75,
+        "model": "base",
+        "output_dir": "outputs/minimal_claim/base/blindspot_map"
+      }
+    },
+    {
+      "name": "budget_curve",
+      "type": "budget_curve",
+      "args": {
+        "input": "data/processed/minimal_claim/base/bsc_eval.jsonl",
+        "embedding_model": "BAAI/bge-large-en-v1.5",
+        "coverage_tau": 0.75,
+        "redundancy_tau": 0.85,
+        "k": [
+          3,
+          5,
+          8,
+          10,
+          15
+        ],
+        "output_dir": "outputs/minimal_claim/base/budget_curve"
+      }
+    },
+    {
+      "name": "bsc_human_audit_pack",
+      "type": "bsc_human_audit_pack",
+      "args": {
+        "input": "data/processed/minimal_claim/base/bsc_eval.jsonl",
+        "embedding_model": "BAAI/bge-large-en-v1.5",
+        "coverage_tau": 0.75,
+        "matched": 25,
+        "unmatched": 25,
+        "seed": 13,
+        "output_dir": "outputs/minimal_claim/base/bsc_human_audit_pack"
+      }
+    },
+    {
+      "name": "bsc_bootstrap_ci",
+      "type": "bootstrap_ci",
+      "args": {
+        "input": "outputs/minimal_claim/base/bsc/per_item.csv",
+        "metric": [
+          "coverage",
+          "blind",
+          "redundancy",
+          "hallucination",
+          "reward"
+        ],
+        "n_boot": 1000,
+        "seed": 13,
+        "confidence": 0.95,
+        "output_json": "outputs/minimal_claim/base/bsc_ci/bootstrap_ci.json",
+        "output_csv": "outputs/minimal_claim/base/bsc_ci/bootstrap_ci.csv",
+        "output_md": "outputs/minimal_claim/base/bsc_ci/bootstrap_ci.md"
+      }
+    },
+    {
+      "name": "summarize",
+      "type": "summarize",
+      "args": {
+        "bsc": [
+          "base=outputs/minimal_claim/base/bsc/summary.json"
+        ],
+        "output_csv": "outputs/minimal_claim/base/main_table.csv",
+        "output_md": "outputs/minimal_claim/base/main_table.md",
+        "bsc_ci": [
+          "base=outputs/minimal_claim/base/bsc_ci/bootstrap_ci.json"
+        ]
+      }
+    },
+    {
+      "name": "evidence",
+      "type": "evidence",
+      "args": {
+        "config": "configs/evidence_minimal_claim.generated.json",
+        "output_dir": "outputs/minimal_claim/base/evidence"
+      }
+    },
+    {
+      "name": "audit",
+      "type": "audit",
+      "args": {
+        "manifest": "configs/manifest_minimal_claim.generated.json",
+        "output": "outputs/minimal_claim/base/audit_report.json",
+        "non_strict": true
+      }
+    },
+    {
+      "name": "export",
+      "type": "export",
+      "args": {
+        "main_table_csv": "outputs/minimal_claim/base/main_table.csv",
+        "main_table_md": "outputs/minimal_claim/base/main_table.md",
+        "audit_report": "outputs/minimal_claim/base/audit_report.json",
+        "handoff_json": "outputs/minimal_claim/base/handoff/api_handoff.json",
+        "handoff_md": "outputs/minimal_claim/base/handoff/api_handoff.md",
+        "evidence_json": "outputs/minimal_claim/base/evidence/evidence_matrix.json",
+        "evidence_csv": "outputs/minimal_claim/base/evidence/evidence_matrix.csv",
+        "evidence_md": "outputs/minimal_claim/base/evidence/evidence_matrix.md",
+        "output_dir": "outputs/minimal_claim/base/paper_artifacts"
+      }
+    },
+    {
+      "name": "sync_paper",
+      "type": "sync_paper",
+      "args": {
+        "artifacts_dir": "outputs/minimal_claim/base/paper_artifacts",
+        "paper_dir": "paper",
+        "required_file": [
+          "main_table.tex",
+          "experiment_summary.md"
+        ]
+      }
+    },
+    {
+      "name": "paper_asset_index_check",
+      "type": "paper_asset_index_check",
+      "args": {
+        "asset_index": "paper/asset_index.md",
+        "output": "outputs/minimal_claim/base/paper_artifacts/paper_asset_index_check.json",
+        "output_md": "outputs/minimal_claim/base/paper_artifacts/paper_asset_index_check.md"
+      }
+    },
+    {
+      "name": "submission_readiness",
+      "type": "submission_readiness",
+      "args": {
+        "audit_report": "outputs/minimal_claim/base/audit_report.json",
+        "evidence_matrix": "outputs/minimal_claim/base/evidence/evidence_matrix.json",
+        "paper_dir": "paper",
+        "raw_gate": [
+          "Data Source Local Config|data_source_local_config|outputs/data_sources/local_config_init_rubricbench.json",
+          "Data Source Report|data_source_report[rubricbench]|outputs/data_sources/source_report_rubricbench.json",
+          "RubricBench Gold Validation|gold_validation|outputs/data_validation/rubricbench_gold.json",
+          "RubricBench Query Pool Validation|query_validation|outputs/data_validation/rubricbench_queries.json",
+          "Minimal Claim Preflight|preflight|outputs/minimal_claim/base/preflight/preflight.json",
+          "Minimal Claim API Budget|api_budget|outputs/minimal_claim/base/api_budget/model_rubrics_budget.json",
+          "Minimal Claim API Handoff|minimal_api_handoff|outputs/minimal_claim/base/handoff/api_handoff.json",
+          "Minimal Claim Model Evaluation-Criteria Validation|validation|outputs/minimal_claim/base/validation/model_rubrics/validation_report.json",
+          "Minimal Claim Verifier API Budget|api_budget|outputs/minimal_claim/base/api_budget/model_rubrics_verifier_budget.json",
+          "Minimal Claim Verified Model Evaluation-Criteria|generic|data/processed/minimal_claim/base/model_rubrics_verified.jsonl",
+          "Minimal Claim Verifier Stats|generic|outputs/minimal_claim/base/verifier/model_rubrics_stats.jsonl",
+          "Minimal Claim Verified Evaluation-Criteria Validation|validation|outputs/minimal_claim/base/validation/model_rubrics_verified/validation_report.json",
+          "BSC Gold-as-Prediction Sanity|bsc_gold_sanity|outputs/minimal_claim/base/bsc_gold_sanity/summary.json"
+        ],
+        "output_json": "outputs/minimal_claim/base/readiness/readiness_report.json",
+        "output_md": "outputs/minimal_claim/base/readiness/readiness_report.md"
+      }
+    },
+    {
+      "name": "result_card",
+      "type": "result_card",
+      "args": {
+        "config": "configs/result_card_minimal_claim.generated.json",
+        "output_json": "outputs/minimal_claim/base/paper_artifacts/result_card.json",
+        "output_md": "outputs/minimal_claim/base/paper_artifacts/result_card.md"
+      }
+    },
+    {
+      "name": "sync_result_card",
+      "type": "sync_paper",
+      "args": {
+        "artifacts_dir": "outputs/minimal_claim/base/paper_artifacts",
+        "paper_dir": "paper",
+        "required_file": [
+          "main_table.tex",
+          "experiment_summary.md"
+        ]
+      }
+    },
+    {
+      "name": "paper_asset_index_check_post_sync",
+      "type": "paper_asset_index_check",
+      "args": {
+        "asset_index": "paper/asset_index.md",
+        "output": "outputs/minimal_claim/base/paper_artifacts/paper_asset_index_check.json",
+        "output_md": "outputs/minimal_claim/base/paper_artifacts/paper_asset_index_check.md"
+      }
+    },
+    {
+      "name": "paper_asset_index_check_final",
+      "type": "paper_asset_index_check",
+      "args": {
+        "asset_index": "paper/asset_index.md",
+        "output": "outputs/minimal_claim/base/paper_artifacts/paper_asset_index_check.json",
+        "output_md": "outputs/minimal_claim/base/paper_artifacts/paper_asset_index_check.md",
+        "strict": true
+      }
+    }
+  ]
+}

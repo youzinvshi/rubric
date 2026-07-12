@@ -1,0 +1,1 @@
+{"name":"gpt-5","model":"gpt-5-2025-08-07","base_url":"https://modelhub.example.com/v1/responses","api_key_env":"GPT_AK_2","temperature":0.2,"max_tokens":8000,"qpm":120,"tpm":672000}

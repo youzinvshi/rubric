@@ -1,0 +1,194 @@
+{
+  "stages": [
+    {
+      "name": "normalize_gold",
+      "type": "normalize",
+      "args": {
+        "input": "examples/toy_bsc.jsonl",
+        "output": "data/processed/toy_gold_normalized.jsonl",
+        "target": "gold",
+        "data_source": "toy",
+        "dedupe_query": true
+      }
+    },
+    {
+      "name": "normalize_queries",
+      "type": "normalize",
+      "args": {
+        "input": "examples/toy_bsc.jsonl",
+        "output": "data/processed/toy_query_pool.jsonl",
+        "target": "query_pool",
+        "data_source": "toy",
+        "dedupe_query": true
+      }
+    },
+    {
+      "name": "normalize_preferences",
+      "type": "normalize",
+      "args": {
+        "input": "examples/toy_preference.jsonl",
+        "output": "data/processed/toy_preference_normalized.jsonl",
+        "target": "preference",
+        "data_source": "toy_pref",
+        "dedupe_query": true
+      }
+    },
+    {
+      "name": "filter_verifier",
+      "type": "filter_verifier",
+      "args": {
+        "input": "examples/toy_teacher_rubrics.jsonl",
+        "output": "data/processed/toy_teacher_filtered.jsonl",
+        "stats_output": "outputs/toy_verifier_stats.jsonl",
+        "mode": "rule"
+      }
+    },
+    {
+      "name": "build_sft",
+      "type": "build_sft",
+      "args": {
+        "input": "data/processed/toy_teacher_filtered.jsonl",
+        "sft_output": "data/processed/toy_sft.jsonl",
+        "proxy_gold_output": "data/processed/toy_proxy_gold.jsonl",
+        "stats_output": "outputs/toy_sft_stats.jsonl",
+        "embedding_model": "token-overlap",
+        "dedupe_tau": 0.9,
+        "data_source": "toy_proxy"
+      }
+    },
+    {
+      "name": "register_llamafactory",
+      "type": "register_llamafactory",
+      "args": {
+        "dataset_info": "data/processed/dataset_info.json",
+        "name": "toy_blindspot_sft",
+        "file_name": "toy_sft.jsonl",
+        "overwrite": true
+      }
+    },
+    {
+      "name": "convert_verl",
+      "type": "convert_verl",
+      "args": {
+        "input": "data/processed/toy_proxy_gold.jsonl",
+        "output": "data/processed/toy_verl.jsonl",
+        "data_source": "toy_proxy"
+      }
+    },
+    {
+      "name": "prepare_bsc",
+      "type": "prepare_bsc",
+      "args": {
+        "gold": "data/processed/toy_gold_normalized.jsonl",
+        "predictions": "data/processed/toy_teacher_filtered.jsonl",
+        "output": "data/processed/toy_bsc_eval_joined.jsonl",
+        "report": "outputs/toy_bsc_join_report.json",
+        "data_source": "toy_bsc_joined"
+      }
+    },
+    {
+      "name": "bsc",
+      "type": "bsc",
+      "args": {
+        "input": "data/processed/toy_bsc_eval_joined.jsonl",
+        "embedding_model": "token-overlap",
+        "coverage_tau": 0.5,
+        "redundancy_tau": 0.9,
+        "output_dir": "outputs/toy_bsc"
+      }
+    },
+    {
+      "name": "ablation",
+      "type": "ablation",
+      "args": {
+        "input": "data/processed/toy_bsc_eval_joined.jsonl",
+        "embedding_model": "token-overlap",
+        "coverage_tau": 0.5,
+        "redundancy_tau": 0.9,
+        "output_dir": "outputs/toy_bsc_ablation"
+      }
+    },
+    {
+      "name": "teacher_union_ablation",
+      "type": "teacher_union_ablation",
+      "args": {
+        "teachers": "data/processed/toy_teacher_filtered.jsonl",
+        "gold": "data/processed/toy_gold_normalized.jsonl",
+        "embedding_model": "token-overlap",
+        "coverage_tau": 0.5,
+        "redundancy_tau": 0.9,
+        "dedupe_tau": 0.9,
+        "output_dir": "outputs/toy_teacher_union_ablation"
+      }
+    },
+    {
+      "name": "bsc_sweep",
+      "type": "bsc_sweep",
+      "args": {
+        "input": "data/processed/toy_bsc_eval_joined.jsonl",
+        "embedding_model": "token-overlap",
+        "coverage_tau": [0.5, 0.7],
+        "redundancy_tau": [0.8, 0.9],
+        "output_dir": "outputs/toy_bsc_sweep"
+      }
+    },
+    {
+      "name": "prepare_downstream",
+      "type": "prepare_downstream",
+      "args": {
+        "preferences": "examples/toy_preference.jsonl",
+        "rubrics": "examples/toy_downstream_rubrics.jsonl",
+        "output": "data/processed/toy_downstream_eval_joined.jsonl",
+        "report": "outputs/toy_downstream_join_report.json",
+        "data_source": "toy_downstream_joined"
+      }
+    },
+    {
+      "name": "downstream",
+      "type": "downstream",
+      "args": {
+        "input": "data/processed/toy_downstream_eval_joined.jsonl",
+        "output_dir": "outputs/toy_downstream"
+      }
+    },
+    {
+      "name": "summarize",
+      "type": "summarize",
+      "args": {
+        "bsc": ["toy=outputs/toy_bsc/summary.json"],
+        "downstream": ["toy=outputs/toy_downstream/summary.json"],
+        "output_csv": "outputs/toy_main_table.csv",
+        "output_md": "outputs/toy_main_table.md"
+      }
+    },
+    {
+      "name": "evidence",
+      "type": "evidence",
+      "args": {
+        "config": "configs/evidence_matrix_smoke.example.json",
+        "output_dir": "outputs/toy_evidence"
+      }
+    },
+    {
+      "name": "audit",
+      "type": "audit",
+      "args": {
+        "manifest": "configs/experiment_manifest.example.json",
+        "output": "outputs/toy_audit_report.json"
+      }
+    },
+    {
+      "name": "export",
+      "type": "export",
+      "args": {
+        "main_table_csv": "outputs/toy_main_table.csv",
+        "main_table_md": "outputs/toy_main_table.md",
+        "ablation_csv": "outputs/toy_bsc_ablation/ablation_summary.csv",
+        "teacher_union_csv": "outputs/toy_teacher_union_ablation/teacher_union_ablation.csv",
+        "audit_report": "outputs/toy_audit_report.json",
+        "evidence_md": "outputs/toy_evidence/evidence_matrix.md",
+        "output_dir": "outputs/toy_paper_artifacts"
+      }
+    }
+  ]
+}

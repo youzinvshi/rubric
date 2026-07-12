@@ -1,0 +1,29 @@
+\section{Conclusion}
+
+This paper reframes LLM-as-a-Judge reliability as a question about the
+evaluation dimensions considered before scoring. The hard-gold diagnostic
+shows that a single-model evaluation-criteria policy leaves substantial
+human-gold dimensions uncovered, motivating evaluation blind spots as a
+first-class failure mode rather than a generic criteria-quality issue.
+
+Blind-Spot Coverage makes this failure mode measurable: it rewards semantic
+coverage of human evaluation dimensions while controlling redundancy and
+invalid or hallucinated criteria. The resulting BSC reward gives a concrete
+way to test open-ended criteria elicitation under verifiable-reward
+optimization, despite lacking a single exact target string.
+
+The empirical claims in this manuscript are intentionally evidence-gated. The
+minimal motivation gate supports the hard-gold blind-spot diagnostic and its
+robustness artifacts for Section 2 only; it is separate from the full real-run
+C0--C14 readiness matrix. Statements about whether RLVR/GRPO warrants a
+dimension-level coverage-change or recovery statement, whether a result is supported
+by downstream utility, or whether semantic-space coverage evidence is
+paper-facing are permitted only when the hard-gold, contamination, ablation,
+downstream, dimension-transition, and visualization gates pass.
+In particular, a BSC coverage change alone remains a metric result until redundancy,
+hallucination, and held-out downstream utility evidence support the same
+conclusion.
+This discipline is central to the paper: the contribution is not a claim of a
+better policy by construction, but an auditable framework for discovering,
+measuring, and testing when dimension-level coverage-change or recovery wording
+about evaluation blind spots is supported.

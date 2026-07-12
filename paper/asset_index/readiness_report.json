@@ -1,0 +1,1357 @@
+{
+  "status": "blocked",
+  "ok": false,
+  "summary": {
+    "status": "blocked",
+    "hard_blocker_count": 43,
+    "hard_blocker_category_count": 16,
+    "warning_count": 2,
+    "safe_to_claim": 0,
+    "total_claims": 15
+  },
+  "audit_ok": false,
+  "raw_gates": [
+    {
+      "name": "Data Source Local Config",
+      "type": "data_source_local_config",
+      "path": "outputs/data_sources/local_config_init.json",
+      "status": "pass",
+      "summary": "0 blockers, source_status=pass",
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "name": "Data Source Report",
+      "type": "data_source_report",
+      "required_datasets": [],
+      "path": "outputs/data_sources/source_report.json",
+      "status": "pass",
+      "summary": "10 scoped datasets, 0 blockers",
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "name": "Data Readiness Audit",
+      "type": "audit",
+      "path": "outputs/data_readiness_audit.json",
+      "status": "blocked",
+      "summary": "10 missing files",
+      "blockers": [
+        "data/raw/rmbench_raw.jsonl",
+        "outputs/data_profiles/rmbench_schema.json",
+        "outputs/schema_contracts/rmbench_downstream_schema.json",
+        "data/processed/rmbench_queries.jsonl",
+        "data/raw/healthbench_hard_raw.jsonl",
+        "outputs/data_profiles/healthbench_hard_schema.json",
+        "data/processed/healthbench_hard_queries.jsonl",
+        "data/raw/arenahard_raw.jsonl",
+        "outputs/data_profiles/arenahard_schema.json",
+        "data/processed/arenahard_queries.jsonl"
+      ],
+      "warnings": []
+    },
+    {
+      "name": "Real Run Preflight",
+      "type": "preflight",
+      "path": "outputs/preflight/real_run_preflight.json",
+      "status": "blocked",
+      "summary": "33 blockers, 8 warnings",
+      "blockers": [
+        "missing input file: data/processed/rmbench_queries.jsonl",
+        "missing input file: data/processed/healthbench_hard_queries.jsonl",
+        "missing input file: data/processed/arenahard_queries.jsonl",
+        "missing API env LOCAL_OPENAI_API_KEY for provider base",
+        "missing API env GPT_AK_1 for provider gpt-5.4",
+        "missing API env GPT_AK_2 for provider gpt-5",
+        "missing API env GPT_AK_3 for provider gpt-4o",
+        "missing API env GPT_AK_1 for provider gemini",
+        "missing API env GPT_AK_1 for provider gemini-2.5-pro",
+        "missing API env GPT_AK_1 for provider gpt-5.4",
+        "missing API env GPT_AK_2 for provider gpt-5",
+        "missing API env GPT_AK_3 for provider gpt-4o",
+        "missing API env GPT_AK_3 for provider meta-verifier",
+        "missing provider config: configs/judge_scorer.local.jsonl",
+        "missing required provider: gpt4o",
+        "missing required provider: claude",
+        "missing required provider: sft_only",
+        "missing required provider: sft_rl",
+        "missing required provider: deepseek",
+        "missing required provider: qwen",
+        "missing required provider: judge-scorer",
+        "missing required provider in configs/generators.local.jsonl: gpt4o",
+        "missing required provider in configs/generators.local.jsonl: claude",
+        "missing required provider in configs/generators.local.jsonl: sft_only",
+        "missing required provider in configs/generators.local.jsonl: sft_rl",
+        "missing required provider in configs/providers.local.jsonl: deepseek",
+        "missing required provider in configs/providers.local.jsonl: qwen",
+        "missing required provider in configs/judge_scorer.local.jsonl: judge-scorer",
+        "missing required env var: LOCAL_OPENAI_API_KEY",
+        "missing required env var: OPENAI_API_KEY",
+        "missing required env var: ANTHROPIC_API_KEY",
+        "missing required env var: DEEPSEEK_API_KEY",
+        "missing required env var: DASHSCOPE_API_KEY"
+      ],
+      "warnings": [
+        "sft config does not exist yet: configs/llamafactory_sft.local.yaml",
+        "sft env is not set: TOKENIZERS_PARALLELISM",
+        "grpo env is not set: BSC_EMBEDDING_MODEL",
+        "grpo env is not set: BSC_COVERAGE_TAU",
+        "grpo env is not set: BSC_REDUNDANCY_TAU",
+        "grpo env is not set: BSC_W_COV",
+        "grpo env is not set: BSC_W_VALID",
+        "grpo env is not set: BSC_W_RED"
+      ]
+    },
+    {
+      "name": "SFT Data Preflight",
+      "type": "preflight",
+      "path": "outputs/preflight/sft_data_preflight.json",
+      "status": "blocked",
+      "summary": "8 blockers, 0 warnings",
+      "blockers": [
+        "missing API env GPT_AK_1 for provider gemini-2.5-pro",
+        "missing API env GPT_AK_1 for provider gpt-5.4",
+        "missing API env GPT_AK_2 for provider gpt-5",
+        "missing API env GPT_AK_3 for provider gpt-4o",
+        "missing API env GPT_AK_3 for provider meta-verifier",
+        "missing required env var: GPT_AK_1",
+        "missing required env var: GPT_AK_2",
+        "missing required env var: GPT_AK_3"
+      ],
+      "warnings": []
+    },
+    {
+      "name": "RubricBench Gold Validation",
+      "type": "gold_validation",
+      "path": "outputs/data_validation/rubricbench_gold.json",
+      "status": "pass",
+      "summary": "1147 records, 0 blockers",
+      "blockers": [],
+      "warnings": [
+        "record 45: duplicate query appears in gold data",
+        "record 84: duplicate query appears in gold data",
+        "record 170: duplicate query appears in gold data",
+        "record 293: duplicate query appears in gold data",
+        "record 310: duplicate query appears in gold data",
+        "record 351: duplicate query appears in gold data",
+        "record 359: duplicate query appears in gold data",
+        "record 388: duplicate query appears in gold data",
+        "record 542: duplicate query appears in gold data",
+        "record 656: duplicate query appears in gold data",
+        "record 869: duplicate query appears in gold data",
+        "record 1000: duplicate query appears in gold data",
+        "record 1032: duplicate query appears in gold data",
+        "record 1040: duplicate query appears in gold data"
+      ]
+    },
+    {
+      "name": "ResearchRubrics Gold Validation",
+      "type": "gold_validation",
+      "path": "outputs/data_validation/researchrubrics_gold.json",
+      "status": "pass",
+      "summary": "101 records, 0 blockers",
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "name": "RewardBench Proxy-Train Holdout Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/rewardbench_pref_sft_proxy_train_filter.json",
+      "status": "pass",
+      "summary": "0 blockers, removed=1",
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "name": "RewardBench Proxy-Train vs RewardBench Holdout Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/rewardbench_pref_sft_proxy_train_rewardbench_holdout_filter.json",
+      "status": "pass",
+      "summary": "0 blockers, removed=0",
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "name": "RewardBench Proxy-Train vs JudgeBench Holdout Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/rewardbench_pref_sft_proxy_train_judgebench_holdout_filter.json",
+      "status": "pass",
+      "summary": "0 blockers, removed=0",
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "name": "RewardBench Proxy-Train vs RewardBench-2 Holdout Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/rewardbench_pref_sft_proxy_train_rewardbench2_holdout_filter.json",
+      "status": "pass",
+      "summary": "0 blockers, removed=5",
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "name": "RewardBench-2 Query Pool vs RubricBench Train-Seed Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/rewardbench2_queries_rubricbench_train_seed_filter.json",
+      "status": "pass",
+      "summary": "0 blockers, removed=50",
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "name": "RewardBench-2 Query Pool vs ResearchRubrics Train-Seed Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/rewardbench2_queries_researchrubrics_train_seed_filter.json",
+      "status": "pass",
+      "summary": "0 blockers, removed=0",
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "name": "RewardBench-2 Multicandidate vs RubricBench Train-Seed Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/rewardbench2_multicandidate_rubricbench_train_seed_filter.json",
+      "status": "pass",
+      "summary": "0 blockers, removed=50",
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "name": "RewardBench-2 Multicandidate vs ResearchRubrics Train-Seed Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/rewardbench2_multicandidate_researchrubrics_train_seed_filter.json",
+      "status": "pass",
+      "summary": "0 blockers, removed=0",
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "name": "Pre-SFT Clean Proxy-Train vs Hard-Gold Audit",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/clean_proxy_train_vs_hard_gold_audit.json",
+      "status": "pass",
+      "summary": "0 blockers, artifact_status=complete, overlap_status=clear, overlaps=0",
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "name": "Pre-SFT Clean Proxy-Train vs RewardBench Holdout Audit",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/clean_proxy_train_vs_rewardbench_downstream_audit.json",
+      "status": "pass",
+      "summary": "0 blockers, artifact_status=complete, overlap_status=clear, overlaps=0",
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "name": "Pre-SFT Clean Proxy-Train vs JudgeBench Holdout Audit",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/clean_proxy_train_vs_judgebench_downstream_audit.json",
+      "status": "pass",
+      "summary": "0 blockers, artifact_status=complete, overlap_status=clear, overlaps=0",
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "name": "Pre-SFT Clean Proxy-Train vs RewardBench-2 Holdout Audit",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/clean_proxy_train_vs_rewardbench2_downstream_audit.json",
+      "status": "pass",
+      "summary": "0 blockers, artifact_status=complete, overlap_status=clear, overlaps=0",
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "name": "Hard-Gold Holdout Contamination Audit",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/hard_gold_holdout_contamination.json",
+      "status": "pass",
+      "summary": "0 blockers, artifact_status=complete, overlap_status=clear, overlaps=0",
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "name": "RewardBench Downstream Holdout Contamination Audit",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/rewardbench_downstream_holdout_contamination.json",
+      "status": "pass",
+      "summary": "0 blockers, artifact_status=complete, overlap_status=clear, overlaps=0",
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "name": "JudgeBench Downstream Holdout Contamination Audit",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/judgebench_downstream_holdout_contamination.json",
+      "status": "pass",
+      "summary": "0 blockers, artifact_status=complete, overlap_status=clear, overlaps=0",
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "name": "RewardBench-2 Downstream Holdout Contamination Audit",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/rewardbench2_downstream_holdout_contamination.json",
+      "status": "pass",
+      "summary": "0 blockers, artifact_status=complete, overlap_status=clear, overlaps=0",
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "name": "BlindSpot SFT vs Hard-Gold Holdout Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/blindspot_sft_hard_gold_holdout_filter.json",
+      "status": "pass",
+      "summary": "0 blockers, removed=0",
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "name": "BlindSpot SFT vs RewardBench Holdout Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/blindspot_sft_rewardbench_holdout_filter.json",
+      "status": "pass",
+      "summary": "0 blockers, removed=0",
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "name": "BlindSpot SFT vs JudgeBench Holdout Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/blindspot_sft_judgebench_holdout_filter.json",
+      "status": "pass",
+      "summary": "0 blockers, removed=0",
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "name": "BlindSpot SFT vs RewardBench-2 Holdout Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/blindspot_sft_rewardbench2_holdout_filter.json",
+      "status": "pass",
+      "summary": "0 blockers, removed=1",
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "name": "Proxy-Gold vs Hard-Gold Holdout Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/proxy_gold_hard_gold_holdout_filter.json",
+      "status": "pass",
+      "summary": "0 blockers, removed=0",
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "name": "Proxy-Gold vs RewardBench Holdout Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/proxy_gold_rewardbench_holdout_filter.json",
+      "status": "pass",
+      "summary": "0 blockers, removed=0",
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "name": "Proxy-Gold vs JudgeBench Holdout Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/proxy_gold_judgebench_holdout_filter.json",
+      "status": "pass",
+      "summary": "0 blockers, removed=0",
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "name": "Proxy-Gold vs RewardBench-2 Holdout Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/proxy_gold_rewardbench2_holdout_filter.json",
+      "status": "pass",
+      "summary": "0 blockers, removed=1",
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "name": "RubricBench Model Evaluation-Criteria API Budget",
+      "type": "api_budget",
+      "path": "outputs/api_budget/model_rubrics_budget.json",
+      "status": "pass",
+      "summary": "5735 calls, 0 blockers",
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "name": "Teacher Evaluation-Criteria API Budget",
+      "type": "api_budget",
+      "path": "outputs/api_budget/teacher_rubrics_budget.json",
+      "status": "pass",
+      "summary": "2000 calls, 0 blockers",
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "name": "Meta-Verifier API Budget",
+      "type": "api_budget",
+      "path": "outputs/api_budget/meta_verifier_budget.json",
+      "status": "missing",
+      "summary": "report missing",
+      "blockers": [
+        "missing required report outputs/api_budget/meta_verifier_budget.json"
+      ],
+      "warnings": []
+    },
+    {
+      "name": "RubricBench Model Criteria Verifier API Budget",
+      "type": "api_budget",
+      "path": "outputs/api_budget/rubricbench_model_rubrics_verifier_budget.json",
+      "status": "missing",
+      "summary": "report missing",
+      "blockers": [
+        "missing required report outputs/api_budget/rubricbench_model_rubrics_verifier_budget.json"
+      ],
+      "warnings": []
+    },
+    {
+      "name": "RubricBench Model Criteria Verifier Stats",
+      "type": "generic",
+      "path": "outputs/verifier/rubricbench_model_rubrics_stats.jsonl",
+      "status": "missing",
+      "summary": "report missing",
+      "blockers": [
+        "missing required report outputs/verifier/rubricbench_model_rubrics_stats.jsonl"
+      ],
+      "warnings": []
+    },
+    {
+      "name": "Filtered Teacher Evaluation-Criteria Validation",
+      "type": "validation",
+      "path": "outputs/validation/teacher_rubrics_filtered/validation_report.json",
+      "status": "missing",
+      "summary": "report missing",
+      "blockers": [
+        "missing required report outputs/validation/teacher_rubrics_filtered/validation_report.json"
+      ],
+      "warnings": []
+    },
+    {
+      "name": "Training Completion Gate",
+      "type": "manual_gate",
+      "path": "outputs/training_commands/training_completion_gate.json",
+      "status": "blocked",
+      "summary": "46 blockers, 0 warnings",
+      "blockers": [
+        "missing required path: outputs/checkpoints/evaluation_criteria_policy_sft",
+        "missing required path: outputs/checkpoints/evaluation_criteria_policy_rl",
+        "missing required path: outputs/training_commands/training_done.json",
+        "missing required path: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required path: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required path: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json"
+      ],
+      "warnings": []
+    },
+    {
+      "name": "Matrix Trained Method Gate",
+      "type": "manual_gate",
+      "path": "outputs/matrix_real/trained_method_gate.json",
+      "status": "blocked",
+      "summary": "44 blockers, 0 warnings",
+      "blockers": [
+        "missing required path: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required path: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required path: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json"
+      ],
+      "warnings": []
+    },
+    {
+      "name": "JudgeBench Trained Method Gate",
+      "type": "manual_gate",
+      "path": "outputs/matrix_judgebench/trained_method_gate.json",
+      "status": "blocked",
+      "summary": "44 blockers, 0 warnings",
+      "blockers": [
+        "missing required path: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required path: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required path: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json"
+      ],
+      "warnings": []
+    },
+    {
+      "name": "RewardBench-2 Trained Method Gate",
+      "type": "manual_gate",
+      "path": "outputs/matrix_rewardbench2/trained_method_gate.json",
+      "status": "blocked",
+      "summary": "44 blockers, 0 warnings",
+      "blockers": [
+        "missing required path: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required path: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required path: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json"
+      ],
+      "warnings": []
+    },
+    {
+      "name": "Generalization Trained Method Gate",
+      "type": "manual_gate",
+      "path": "outputs/generalization_matrix/trained_method_gate.json",
+      "status": "blocked",
+      "summary": "44 blockers, 0 warnings",
+      "blockers": [
+        "missing required path: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required path: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required path: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/training_commands/training_done.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/verifier/teacher_rubrics_filtered_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_build_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json",
+        "missing required JSON file: outputs/sft_data/proxy_gold_verl_report.json"
+      ],
+      "warnings": []
+    },
+    {
+      "name": "Downstream Policy RLVR Completion Gate",
+      "type": "manual_gate",
+      "path": "outputs/policy_rlvr/downstream_rlvr_completion_gate.json",
+      "status": "blocked",
+      "summary": "19 blockers, 0 warnings",
+      "blockers": [
+        "missing required path: outputs/downstream_rlvr_commands/downstream_rlvr_manifest.json",
+        "missing required path: outputs/policy_rlvr/healthbench_hard_policy",
+        "missing required path: outputs/policy_rlvr/healthbench_hard_eval.json",
+        "missing required path: outputs/policy_rlvr/arenahard_policy",
+        "missing required path: outputs/policy_rlvr/arenahard_eval.json",
+        "missing required path: outputs/policy_rlvr/downstream_rlvr_done.json",
+        "missing required JSON file: outputs/policy_rlvr/downstream_rlvr_done.json",
+        "missing required JSON file: outputs/policy_rlvr/downstream_rlvr_done.json",
+        "missing required JSON file: outputs/policy_rlvr/downstream_rlvr_done.json",
+        "missing required JSON file: outputs/policy_rlvr/downstream_rlvr_done.json",
+        "missing required JSON file: outputs/policy_rlvr/downstream_rlvr_done.json",
+        "missing required JSON file: outputs/policy_rlvr/downstream_rlvr_done.json",
+        "missing required JSON file: outputs/policy_rlvr/downstream_rlvr_done.json",
+        "missing required JSON file: outputs/policy_rlvr/downstream_rlvr_done.json",
+        "missing required JSON file: outputs/policy_rlvr/downstream_rlvr_done.json",
+        "missing required JSON file: outputs/policy_rlvr/downstream_rlvr_done.json",
+        "missing required JSON file: outputs/policy_rlvr/downstream_rlvr_done.json",
+        "missing required JSON file: outputs/policy_rlvr/downstream_rlvr_done.json",
+        "missing required JSON file: outputs/policy_rlvr/downstream_rlvr_done.json"
+      ],
+      "warnings": []
+    },
+    {
+      "name": "AAAI LaTeX Compile",
+      "type": "latex_compile",
+      "path": "outputs/submission_readiness/latex_compile_report.json",
+      "status": "blocked",
+      "summary": "pdf_bytes=0, pages=0, max_pages=0, official_style_active=False, submission_mode_declared=True, bibliography_style_active=False, anonymous_author_declared=True, 3 blockers",
+      "blockers": [
+        "pdflatex binary is not available",
+        "missing compiled PDF: paper/main.pdf",
+        "missing LaTeX log: paper/main.log"
+      ],
+      "warnings": []
+    }
+  ],
+  "evidence": {
+    "safe_to_claim": 0,
+    "missing_evidence": 15,
+    "contradicted": 0,
+    "not_yet_supported": 0,
+    "total": 15
+  },
+  "required_evidence_claims": [
+    "C0",
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6",
+    "C7",
+    "C9",
+    "C10",
+    "C12",
+    "C13",
+    "C14"
+  ],
+  "claim_ladder": [
+    {
+      "level": "motivation",
+      "required_claim_ids": [
+        "C1",
+        "C6"
+      ],
+      "evidence_required": "Frozen 100-example hard-gold diagnostic with C1 and threshold-robustness C6 gates.",
+      "paper_sentence": "If C1/C6 pass, report systematic evaluation blind spots for the base evaluation-criteria policy.",
+      "downgrade_rule": "Does not support any trained-method claim by itself.",
+      "status": "missing_evidence",
+      "missing_or_non_safe_claims": [
+        "C1: missing_evidence",
+        "C6: missing_evidence"
+      ]
+    },
+    {
+      "level": "metric-support",
+      "required_claim_ids": [
+        "C0",
+        "C2",
+        "C3"
+      ],
+      "evidence_required": "Hard-gold BSC coverage change with stable redundancy and hallucination under the fixed protocol.",
+      "paper_sentence": "If C0/C2/C3 pass, report a hard-gold BSC coverage change as metric evidence.",
+      "downgrade_rule": "Without downstream support, report metric-only BSC evidence.",
+      "status": "missing_evidence",
+      "missing_or_non_safe_claims": [
+        "C0: missing_evidence",
+        "C2: missing_evidence",
+        "C3: missing_evidence"
+      ]
+    },
+    {
+      "level": "method-support",
+      "required_claim_ids": [
+        "C5",
+        "C7",
+        "C14"
+      ],
+      "evidence_required": "SFT-only vs SFT+GRPO and reward-component ablations pass C5/C7/C14.",
+      "paper_sentence": "If C5/C7/C14 pass, attribute the coverage change to the RLVR reward stage.",
+      "downgrade_rule": "Without C14, report proxy-gold supervision evidence rather than RLVR evidence.",
+      "status": "missing_evidence",
+      "missing_or_non_safe_claims": [
+        "C5: missing_evidence",
+        "C7: missing_evidence",
+        "C14: missing_evidence"
+      ]
+    },
+    {
+      "level": "judge-utility support",
+      "required_claim_ids": [
+        "C0",
+        "C4",
+        "C9",
+        "C10",
+        "C12"
+      ],
+      "evidence_required": "RewardBench, RewardBench-2, and JudgeBench API/model scorer rows pass C4/C9/C10.",
+      "paper_sentence": "If C0/C4/C9/C10/C12 pass, report held-out downstream judge-utility support.",
+      "downgrade_rule": "Without C12, write aggregate coverage change rather than dimension-level recovery; without C0, no trained-method row is paper-facing.",
+      "status": "missing_evidence",
+      "missing_or_non_safe_claims": [
+        "C0: missing_evidence",
+        "C4: missing_evidence",
+        "C9: missing_evidence",
+        "C10: missing_evidence",
+        "C12: missing_evidence"
+      ]
+    }
+  ],
+  "claim_discipline": [
+    "Do not treat this package as AAAI-ready while submission readiness is false.",
+    "SFT+GRPO coverage, dimension-level recovery, downstream utility, ablation, and semantic-space claims are permitted only after all required C0-C14 evidence rows are safe_to_claim.",
+    "Do not claim clean hard-gold/proxy/downstream isolation until C0 passes with query-disjoint holdouts and SHA-bound provenance.",
+    "Treat BSC changes as metric evidence only; do not describe them as dimension-level recovery until C3, C12, and C14 pass.",
+    "Do not claim downstream judge-utility support until C4/C9/C10 pass with API/model scorer outputs and paper_claim_eligible summaries.",
+    "Do not claim ablation support until C5/C7 pass with separately trained reward-component variants and verifier-filter evidence.",
+    "Treat semantic-space plots as illustrative until C13 verifies SVG/PDF/CSV/JSON assets and point-level provenance.",
+    "Do not submit the paper package until required paper-facing tables, figures, and reviewer-facing docs are synced and indexed.",
+    "With zero safe_to_claim rows, restrict paper-facing empirical content to planned protocol and clearly marked diagnostic evidence."
+  ],
+  "paper": {
+    "required": [
+      {
+        "path": "main.tex",
+        "present": true,
+        "bytes": 1231,
+        "status": "pass"
+      },
+      {
+        "path": "sections/abstract.tex",
+        "present": true,
+        "bytes": 1782,
+        "status": "pass"
+      },
+      {
+        "path": "sections/introduction.tex",
+        "present": true,
+        "bytes": 4175,
+        "status": "pass"
+      },
+      {
+        "path": "sections/blindspot_phenomenon.tex",
+        "present": true,
+        "bytes": 5576,
+        "status": "pass"
+      },
+      {
+        "path": "sections/related_work.tex",
+        "present": true,
+        "bytes": 4767,
+        "status": "pass"
+      },
+      {
+        "path": "sections/method.tex",
+        "present": true,
+        "bytes": 10879,
+        "status": "pass"
+      },
+      {
+        "path": "sections/experiments.tex",
+        "present": true,
+        "bytes": 18059,
+        "status": "pass"
+      },
+      {
+        "path": "sections/limitations.tex",
+        "present": true,
+        "bytes": 4180,
+        "status": "pass"
+      },
+      {
+        "path": "sections/conclusion.tex",
+        "present": true,
+        "bytes": 1785,
+        "status": "pass"
+      }
+    ],
+    "synced_tables": [
+      {
+        "path": "tables/main_table.tex",
+        "present": false,
+        "bytes": 0,
+        "status": "missing"
+      },
+      {
+        "path": "tables/rl_stage_ablation_table.tex",
+        "present": false,
+        "bytes": 0,
+        "status": "missing"
+      },
+      {
+        "path": "tables/downstream_utility_table.tex",
+        "present": false,
+        "bytes": 0,
+        "status": "missing"
+      },
+      {
+        "path": "tables/ablation_table.tex",
+        "present": false,
+        "bytes": 0,
+        "status": "missing"
+      },
+      {
+        "path": "tables/teacher_union_ablation_table.tex",
+        "present": false,
+        "bytes": 0,
+        "status": "missing"
+      },
+      {
+        "path": "tables/verifier_filter_ablation_table.tex",
+        "present": false,
+        "bytes": 0,
+        "status": "missing"
+      },
+      {
+        "path": "tables/dimension_transition_table.tex",
+        "present": false,
+        "bytes": 0,
+        "status": "missing"
+      }
+    ],
+    "synced_figures": [
+      {
+        "path": "figures/semantic_space.pdf",
+        "present": false,
+        "bytes": 0,
+        "status": "missing"
+      },
+      {
+        "path": "figures/semantic_space.svg",
+        "present": false,
+        "bytes": 0,
+        "status": "missing"
+      }
+    ],
+    "synced_docs": [
+      {
+        "path": "asset_index/real_run_dashboard.json",
+        "present": true,
+        "bytes": 145211,
+        "status": "pass"
+      },
+      {
+        "path": "asset_index/real_run_dashboard.md",
+        "present": true,
+        "bytes": 67743,
+        "status": "pass"
+      },
+      {
+        "path": "asset_index/evidence_matrix.json",
+        "present": true,
+        "bytes": 144755,
+        "status": "pass"
+      },
+      {
+        "path": "asset_index/evidence_matrix.csv",
+        "present": true,
+        "bytes": 143069,
+        "status": "pass"
+      },
+      {
+        "path": "asset_index/evidence_matrix.md",
+        "present": true,
+        "bytes": 138337,
+        "status": "pass"
+      },
+      {
+        "path": "asset_index/semantic_space_points.csv",
+        "present": false,
+        "bytes": 0,
+        "status": "missing"
+      },
+      {
+        "path": "asset_index/semantic_space_summary.json",
+        "present": false,
+        "bytes": 0,
+        "status": "missing"
+      },
+      {
+        "path": "asset_index/result_card.json",
+        "present": true,
+        "bytes": 476077,
+        "status": "pass"
+      },
+      {
+        "path": "asset_index/result_card.md",
+        "present": true,
+        "bytes": 51580,
+        "status": "pass"
+      },
+      {
+        "path": "asset_index/submission_gap_report.json",
+        "present": true,
+        "bytes": 190673,
+        "status": "pass"
+      },
+      {
+        "path": "asset_index/submission_gap_report.md",
+        "present": true,
+        "bytes": 42555,
+        "status": "pass"
+      },
+      {
+        "path": "asset_index/readiness_report.json",
+        "present": true,
+        "bytes": 63047,
+        "status": "pass"
+      },
+      {
+        "path": "asset_index/readiness_report.md",
+        "present": true,
+        "bytes": 15824,
+        "status": "pass"
+      },
+      {
+        "path": "asset_index/rebuttal_pack.json",
+        "present": true,
+        "bytes": 177581,
+        "status": "pass"
+      },
+      {
+        "path": "asset_index/rebuttal_pack.md",
+        "present": true,
+        "bytes": 175572,
+        "status": "pass"
+      },
+      {
+        "path": "asset_index/rebuttal_pack_manifest.json",
+        "present": true,
+        "bytes": 4296,
+        "status": "pass"
+      }
+    ],
+    "asset_index": [
+      {
+        "path": "asset_index.md",
+        "present": true,
+        "bytes": 5095,
+        "status": "blocked",
+        "summary": "11 blockers, 2 warnings, 8 blocker categories, 1 warning categories",
+        "blockers": [
+          "artifact is missing or empty: outputs/paper_artifacts/main_table.tex",
+          "artifact is missing or empty: outputs/paper_artifacts/rl_stage_ablation_table.tex",
+          "artifact is missing or empty: outputs/paper_artifacts/downstream_utility_table.tex",
+          "artifact is missing or empty: outputs/paper_artifacts/ablation_table.tex",
+          "artifact is missing or empty: outputs/paper_artifacts/teacher_union_ablation_table.tex",
+          "artifact is missing or empty: outputs/paper_artifacts/verifier_filter_ablation_table.tex",
+          "artifact is missing or empty: outputs/paper_artifacts/dimension_transition_table.tex",
+          "artifact is missing or empty: outputs/paper_artifacts/semantic_space.svg",
+          "artifact is missing or empty: outputs/paper_artifacts/semantic_space.pdf",
+          "artifact is missing or empty: outputs/paper_artifacts/semantic_space_points.csv",
+          "artifact is missing or empty: outputs/paper_artifacts/semantic_space_summary.json"
+        ],
+        "blocker_summary": [
+          {
+            "category": "main_bsc_table",
+            "count": 1,
+            "label": "main hard-gold BSC paper table"
+          },
+          {
+            "category": "rl_stage_ablation",
+            "count": 1,
+            "label": "SFT-only vs SFT+GRPO paper table"
+          },
+          {
+            "category": "downstream_utility",
+            "count": 1,
+            "label": "RewardBench/JudgeBench/RewardBench-2 utility table"
+          },
+          {
+            "category": "reward_ablation",
+            "count": 1,
+            "label": "reward-component ablation table"
+          },
+          {
+            "category": "teacher_union_ablation",
+            "count": 1,
+            "label": "teacher-union ablation table"
+          },
+          {
+            "category": "verifier_filter_ablation",
+            "count": 1,
+            "label": "verifier-filter ablation table"
+          },
+          {
+            "category": "dimension_transition",
+            "count": 1,
+            "label": "dimension-transition audit paper table"
+          },
+          {
+            "category": "semantic_space",
+            "count": 4,
+            "label": "semantic-space SVG/PDF/CSV/JSON assets"
+          }
+        ],
+        "warnings": [
+          "artifact is missing or empty: outputs/paper_artifacts/api_handoff.json",
+          "artifact is missing or empty: outputs/paper_artifacts/api_handoff.md"
+        ],
+        "warning_summary": [
+          {
+            "category": "api_handoff",
+            "count": 2,
+            "label": "API handoff reviewer-facing docs"
+          }
+        ]
+      }
+    ]
+  },
+  "blockers": [
+    "audit report is not ok",
+    "required evidence claim C0 is missing_evidence",
+    "required evidence claim C1 is missing_evidence",
+    "required evidence claim C2 is missing_evidence",
+    "required evidence claim C3 is missing_evidence",
+    "required evidence claim C4 is missing_evidence",
+    "required evidence claim C5 is missing_evidence",
+    "required evidence claim C6 is missing_evidence",
+    "required evidence claim C7 is missing_evidence",
+    "required evidence claim C9 is missing_evidence",
+    "required evidence claim C10 is missing_evidence",
+    "required evidence claim C12 is missing_evidence",
+    "required evidence claim C13 is missing_evidence",
+    "required evidence claim C14 is missing_evidence",
+    "raw gate Data Readiness Audit is blocked: 10 missing files",
+    "raw gate Real Run Preflight is blocked: 33 blockers, 8 warnings",
+    "raw gate SFT Data Preflight is blocked: 8 blockers, 0 warnings",
+    "raw gate Meta-Verifier API Budget is missing: report missing",
+    "raw gate RubricBench Model Criteria Verifier API Budget is missing: report missing",
+    "raw gate RubricBench Model Criteria Verifier Stats is missing: report missing",
+    "raw gate Filtered Teacher Evaluation-Criteria Validation is missing: report missing",
+    "raw gate Training Completion Gate is blocked: 46 blockers, 0 warnings",
+    "raw gate Matrix Trained Method Gate is blocked: 44 blockers, 0 warnings",
+    "raw gate JudgeBench Trained Method Gate is blocked: 44 blockers, 0 warnings",
+    "raw gate RewardBench-2 Trained Method Gate is blocked: 44 blockers, 0 warnings",
+    "raw gate Generalization Trained Method Gate is blocked: 44 blockers, 0 warnings",
+    "raw gate Downstream Policy RLVR Completion Gate is blocked: 19 blockers, 0 warnings",
+    "raw gate AAAI LaTeX Compile is blocked: pdf_bytes=0, pages=0, max_pages=0, official_style_active=False, submission_mode_declared=True, bibliography_style_active=False, anonymous_author_declared=True, 3 blockers",
+    "required paper tables not synced: tables/main_table.tex, tables/rl_stage_ablation_table.tex, tables/downstream_utility_table.tex, tables/ablation_table.tex, tables/teacher_union_ablation_table.tex, tables/verifier_filter_ablation_table.tex, tables/dimension_transition_table.tex",
+    "required paper figures not synced: figures/semantic_space.pdf, figures/semantic_space.svg",
+    "required paper reviewer-facing docs not synced: asset_index/semantic_space_points.csv, asset_index/semantic_space_summary.json",
+    "paper asset index is blocked: 11 blockers, 2 warnings, 8 blocker categories, 1 warning categories",
+    "artifact is missing or empty: outputs/paper_artifacts/main_table.tex",
+    "artifact is missing or empty: outputs/paper_artifacts/rl_stage_ablation_table.tex",
+    "artifact is missing or empty: outputs/paper_artifacts/downstream_utility_table.tex",
+    "artifact is missing or empty: outputs/paper_artifacts/ablation_table.tex",
+    "artifact is missing or empty: outputs/paper_artifacts/teacher_union_ablation_table.tex",
+    "artifact is missing or empty: outputs/paper_artifacts/verifier_filter_ablation_table.tex",
+    "artifact is missing or empty: outputs/paper_artifacts/dimension_transition_table.tex",
+    "artifact is missing or empty: outputs/paper_artifacts/semantic_space.svg",
+    "artifact is missing or empty: outputs/paper_artifacts/semantic_space.pdf",
+    "artifact is missing or empty: outputs/paper_artifacts/semantic_space_points.csv",
+    "artifact is missing or empty: outputs/paper_artifacts/semantic_space_summary.json"
+  ],
+  "hard_blockers": [
+    "audit report is not ok",
+    "required evidence claim C0 is missing_evidence",
+    "required evidence claim C1 is missing_evidence",
+    "required evidence claim C2 is missing_evidence",
+    "required evidence claim C3 is missing_evidence",
+    "required evidence claim C4 is missing_evidence",
+    "required evidence claim C5 is missing_evidence",
+    "required evidence claim C6 is missing_evidence",
+    "required evidence claim C7 is missing_evidence",
+    "required evidence claim C9 is missing_evidence",
+    "required evidence claim C10 is missing_evidence",
+    "required evidence claim C12 is missing_evidence",
+    "required evidence claim C13 is missing_evidence",
+    "required evidence claim C14 is missing_evidence",
+    "raw gate Data Readiness Audit is blocked: 10 missing files",
+    "raw gate Real Run Preflight is blocked: 33 blockers, 8 warnings",
+    "raw gate SFT Data Preflight is blocked: 8 blockers, 0 warnings",
+    "raw gate Meta-Verifier API Budget is missing: report missing",
+    "raw gate RubricBench Model Criteria Verifier API Budget is missing: report missing",
+    "raw gate RubricBench Model Criteria Verifier Stats is missing: report missing",
+    "raw gate Filtered Teacher Evaluation-Criteria Validation is missing: report missing",
+    "raw gate Training Completion Gate is blocked: 46 blockers, 0 warnings",
+    "raw gate Matrix Trained Method Gate is blocked: 44 blockers, 0 warnings",
+    "raw gate JudgeBench Trained Method Gate is blocked: 44 blockers, 0 warnings",
+    "raw gate RewardBench-2 Trained Method Gate is blocked: 44 blockers, 0 warnings",
+    "raw gate Generalization Trained Method Gate is blocked: 44 blockers, 0 warnings",
+    "raw gate Downstream Policy RLVR Completion Gate is blocked: 19 blockers, 0 warnings",
+    "raw gate AAAI LaTeX Compile is blocked: pdf_bytes=0, pages=0, max_pages=0, official_style_active=False, submission_mode_declared=True, bibliography_style_active=False, anonymous_author_declared=True, 3 blockers",
+    "required paper tables not synced: tables/main_table.tex, tables/rl_stage_ablation_table.tex, tables/downstream_utility_table.tex, tables/ablation_table.tex, tables/teacher_union_ablation_table.tex, tables/verifier_filter_ablation_table.tex, tables/dimension_transition_table.tex",
+    "required paper figures not synced: figures/semantic_space.pdf, figures/semantic_space.svg",
+    "required paper reviewer-facing docs not synced: asset_index/semantic_space_points.csv, asset_index/semantic_space_summary.json",
+    "paper asset index is blocked: 11 blockers, 2 warnings, 8 blocker categories, 1 warning categories",
+    "artifact is missing or empty: outputs/paper_artifacts/main_table.tex",
+    "artifact is missing or empty: outputs/paper_artifacts/rl_stage_ablation_table.tex",
+    "artifact is missing or empty: outputs/paper_artifacts/downstream_utility_table.tex",
+    "artifact is missing or empty: outputs/paper_artifacts/ablation_table.tex",
+    "artifact is missing or empty: outputs/paper_artifacts/teacher_union_ablation_table.tex",
+    "artifact is missing or empty: outputs/paper_artifacts/verifier_filter_ablation_table.tex",
+    "artifact is missing or empty: outputs/paper_artifacts/dimension_transition_table.tex",
+    "artifact is missing or empty: outputs/paper_artifacts/semantic_space.svg",
+    "artifact is missing or empty: outputs/paper_artifacts/semantic_space.pdf",
+    "artifact is missing or empty: outputs/paper_artifacts/semantic_space_points.csv",
+    "artifact is missing or empty: outputs/paper_artifacts/semantic_space_summary.json"
+  ],
+  "hard_blocker_summary": [
+    {
+      "category": "asset_index:dimension_transition",
+      "label": "asset index: dimension-transition audit paper table",
+      "count": 1,
+      "examples": []
+    },
+    {
+      "category": "asset_index:downstream_utility",
+      "label": "asset index: RewardBench/JudgeBench/RewardBench-2 utility table",
+      "count": 1,
+      "examples": []
+    },
+    {
+      "category": "asset_index:main_bsc_table",
+      "label": "asset index: main hard-gold BSC paper table",
+      "count": 1,
+      "examples": []
+    },
+    {
+      "category": "asset_index:reward_ablation",
+      "label": "asset index: reward-component ablation table",
+      "count": 1,
+      "examples": []
+    },
+    {
+      "category": "asset_index:rl_stage_ablation",
+      "label": "asset index: SFT-only vs SFT+GRPO paper table",
+      "count": 1,
+      "examples": []
+    },
+    {
+      "category": "asset_index:semantic_space",
+      "label": "asset index: semantic-space SVG/PDF/CSV/JSON assets",
+      "count": 1,
+      "examples": []
+    },
+    {
+      "category": "asset_index:teacher_union_ablation",
+      "label": "asset index: teacher-union ablation table",
+      "count": 1,
+      "examples": []
+    },
+    {
+      "category": "asset_index:verifier_filter_ablation",
+      "label": "asset index: verifier-filter ablation table",
+      "count": 1,
+      "examples": []
+    },
+    {
+      "category": "audit_report",
+      "label": "experiment audit report is not ready",
+      "count": 1,
+      "examples": [
+        "audit report is not ok"
+      ]
+    },
+    {
+      "category": "evidence_claims",
+      "label": "required Evidence Matrix rows are not safe_to_claim",
+      "count": 13,
+      "examples": [
+        "required evidence claim C0 is missing_evidence",
+        "required evidence claim C1 is missing_evidence",
+        "required evidence claim C2 is missing_evidence"
+      ]
+    },
+    {
+      "category": "other",
+      "label": "other submission-readiness blockers",
+      "count": 1,
+      "examples": [
+        "required paper reviewer-facing docs not synced: asset_index/semantic_space_points.csv, asset_index/semantic_space_summary.json"
+      ]
+    },
+    {
+      "category": "paper_artifacts",
+      "label": "paper artifact files are missing or empty",
+      "count": 11,
+      "examples": [
+        "artifact is missing or empty: outputs/paper_artifacts/main_table.tex",
+        "artifact is missing or empty: outputs/paper_artifacts/rl_stage_ablation_table.tex",
+        "artifact is missing or empty: outputs/paper_artifacts/downstream_utility_table.tex"
+      ]
+    },
+    {
+      "category": "paper_asset_index",
+      "label": "paper asset index is blocked",
+      "count": 1,
+      "examples": [
+        "paper asset index is blocked: 11 blockers, 2 warnings, 8 blocker categories, 1 warning categories"
+      ]
+    },
+    {
+      "category": "paper_figures",
+      "label": "paper-facing figures are not synced",
+      "count": 1,
+      "examples": [
+        "required paper figures not synced: figures/semantic_space.pdf, figures/semantic_space.svg"
+      ]
+    },
+    {
+      "category": "paper_tables",
+      "label": "paper-facing tables are not synced",
+      "count": 1,
+      "examples": [
+        "required paper tables not synced: tables/main_table.tex, tables/rl_stage_ablation_table.tex, tables/downstream_utility_table.tex, tables/ablation_table.tex, tables/teacher_union_ablation_table.tex, tables/verifier_filter_ablation_table.tex, tables/dimension_transition_table.tex"
+      ]
+    },
+    {
+      "category": "raw_gates",
+      "label": "raw audit gates are blocked",
+      "count": 14,
+      "examples": [
+        "raw gate Data Readiness Audit is blocked: 10 missing files",
+        "raw gate Real Run Preflight is blocked: 33 blockers, 8 warnings",
+        "raw gate SFT Data Preflight is blocked: 8 blockers, 0 warnings"
+      ]
+    }
+  ],
+  "warnings": [
+    "no claim is currently safe_to_claim",
+    "some claims still have missing evidence"
+  ]
+}

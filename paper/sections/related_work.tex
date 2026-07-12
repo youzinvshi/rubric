@@ -1,0 +1,73 @@
+\section{Related Work}
+
+\paragraph{LLM-as-a-Judge and reward evaluation.}
+Recent work studies whether LLMs can replace or assist human evaluators in
+open-ended tasks, often by measuring agreement with human preferences or
+benchmark labels. G-Eval uses LLMs with chain-of-thought and form-filling
+prompts for reference-free NLG evaluation~\cite{liu2023geval}. MT-Bench and
+Chatbot Arena popularized strong LLMs as pairwise
+judges~\cite{zheng2023judging}, while RewardBench and related
+benchmarks evaluate reward models and preference-ranking
+behavior~\cite{lambert2024rewardbench}. These works primarily assess the final
+decision layer: whether the judge prefers the right answer. Our work studies
+an earlier layer. We ask whether the judge has generated or considered the
+right evaluation dimensions before making a decision. This makes blind-spot
+coverage complementary to judge accuracy, preference alignment, and
+reward-model ranking metrics: those metrics can be high even when the
+evaluative basis is incomplete for harder neighboring cases.
+The distinction is between evaluating a judge's output and auditing the
+dimension set that supports the judgment. A preference label can certify that a
+decision was correct on one instance, but it does not certify that the judge
+would attend to safety, constraint following, evidence grounding, or other
+human-prioritized dimensions when those dimensions become decisive.
+This is the blind-spot setting: the observable judgment can be acceptable while
+the latent evaluation basis is missing dimensions that would matter under a
+nearby response pair or a stricter human review.
+A high preference-agreement score is therefore evidence about observed
+decisions, not evidence that the judge represented every human-gold evaluation
+dimension needed for robust evaluation.
+
+\paragraph{Evaluation criteria for open-ended evaluation.}
+Explicit criteria make subjective evaluation more structured by decomposing
+quality into decision dimensions. Existing evaluation-criteria elicitation
+systems usually optimize usefulness, specificity, or human preference over
+criteria text. Criteria-conditioned evaluators such as Prometheus show that explicit score criteria can make
+long-form evaluation more fine-grained and controllable~\cite{kim2023prometheus}.
+However, these systems generally assume that the supplied criteria already
+contain the right dimensions. We instead define a dimension-level coverage
+target against human-gold dimensions. The goal is not to make criteria longer or
+more fluent, but to measure which human evaluation dimensions are omitted and
+test when dimension-level coverage-change or recovery wording is supported
+under the evidence gates.
+Thus the unit of analysis is not the rubric text as an artifact, but the
+semantic set of evaluation dimensions it covers. This lets us separate a
+supported dimension-level coverage-change statement from verbosity, paraphrase
+diversity, or stylistic variation in the generated criteria.
+It also changes the optimization target: the objective is not to imitate a
+preferred wording style, but to cover human-prioritized dimensions under a
+fixed semantic matching and validity protocol.
+
+\paragraph{RLVR and GRPO.}
+RLVR has been most successful in domains with externally checkable answers,
+such as mathematics, coding, and tool-use tasks. GRPO-style optimization
+further reduces dependence on learned value models by comparing grouped
+rollouts under verifiable rewards~\cite{shao2024deepseekmath,guo2025deepseekr1}.
+Open-ended criteria elicitation lacks exact answers, so it is not an obvious RLVR target.
+BSC provides the missing bridge: the generated text remains open-ended, but the
+reward is computed from semantic coverage, validity, and redundancy under a
+fixed protocol. This is different from prompt tuning an evaluation-criteria
+policy for surface-form optimization: the reward is tied to whether human evaluation
+dimensions are covered, non-redundant, and decidable.
+The resulting research question is whether verifiable rewards can supervise
+semantic dimension elicitation when exact textual answers are unavailable, not
+whether reinforcement learning can improve a downstream prompt in an
+uncontrolled way.
+
+\paragraph{Data contamination and proxy supervision.}
+Because evaluation criteria can leak directly into training targets, data
+isolation is central to this problem. BlindSpot-RL separates human hard-gold
+evaluation from proxy-gold training. Human-gold RubricBench \texttt{test\_main}
+is reserved for main BSC evaluation; proxy-gold criteria from RewardBench,
+IFBench, WritingBench, HealthBench, and BEIR/NQ are elicited from teachers and
+filtered before training. This separation is part of the scientific claim, not
+just an implementation detail.

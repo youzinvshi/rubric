@@ -1,0 +1,600 @@
+[
+  {
+    "day": 1,
+    "phase": "Data Readiness",
+    "goal": "Generate and inspect the real data pipeline.",
+    "commands": [
+      "python3 scripts/init_data_source_local_config.py --template configs/data_sources_real.template.json --output configs/data_sources_real.local.json --report-json outputs/data_sources/local_config_init.json --report-md outputs/data_sources/local_config_init.md",
+      "python3 scripts/build_data_pipeline.py --config configs/data_sources_real.local.json --pipeline-output configs/pipeline_data_real.generated.json --manifest-output configs/manifest_data_real.generated.json",
+      "python3 scripts/run_experiment_pipeline.py --config configs/pipeline_data_real.generated.json --dry-run"
+    ],
+    "artifacts": [
+      "outputs/data_sources/local_config_init.json",
+      "configs/pipeline_data_real.generated.json",
+      "configs/manifest_data_real.generated.json"
+    ],
+    "evidence_gates": [
+      "data readiness audit has no missing files",
+      "schema profiles exist for every raw source"
+    ],
+    "claim_ladder_levels": [
+      "metric-support",
+      "judge-utility support"
+    ],
+    "paper_claims": [],
+    "claim_discipline": [
+      "Use minimal C1/C2 only for Section 2 motivation and robustness; do not treat them as real-run method-result gates.",
+      "Do not write SFT+GRPO coverage, dimension-level recovery, downstream utility, ablation, or semantic-space claims until the corresponding real C0-C14 evidence rows are safe_to_claim.",
+      "A BSC coverage change alone is metric evidence, not dimension-level recovery or judge-utility evidence."
+    ],
+    "exit_criteria": "RubricBench/RewardBench/JudgeBench processed files exist and schema profiles are reviewed."
+  },
+  {
+    "day": 2,
+    "phase": "Data Readiness",
+    "goal": "Run data download/normalization and inspect schema profiles.",
+    "commands": [
+      "python3 scripts/run_experiment_pipeline.py --config configs/pipeline_data_real.generated.json",
+      "python3 scripts/audit_experiment.py --manifest configs/manifest_data_real.generated.json --output outputs/data_readiness_audit.json"
+    ],
+    "artifacts": [
+      "outputs/data_profiles/*.json",
+      "outputs/data_readiness_audit.json"
+    ],
+    "evidence_gates": [
+      "data readiness audit has no missing files",
+      "schema profiles exist for every raw source"
+    ],
+    "claim_ladder_levels": [
+      "metric-support",
+      "judge-utility support"
+    ],
+    "paper_claims": [],
+    "claim_discipline": [
+      "Use minimal C1/C2 only for Section 2 motivation and robustness; do not treat them as real-run method-result gates.",
+      "Do not write SFT+GRPO coverage, dimension-level recovery, downstream utility, ablation, or semantic-space claims until the corresponding real C0-C14 evidence rows are safe_to_claim.",
+      "A BSC coverage change alone is metric evidence, not dimension-level recovery or judge-utility evidence."
+    ],
+    "exit_criteria": "RubricBench/RewardBench/JudgeBench processed files exist and schema profiles are reviewed."
+  },
+  {
+    "day": 3,
+    "phase": "Data Readiness",
+    "goal": "Fix field mappings and lock processed data paths.",
+    "commands": [
+      "python3 scripts/profile_dataset_schema.py --input data/raw/rubricbench_raw.jsonl --output outputs/data_profiles/rubricbench_schema.json"
+    ],
+    "artifacts": [
+      "data/processed/rubricbench_gold.jsonl",
+      "data/processed/rewardbench_pref.jsonl"
+    ],
+    "evidence_gates": [
+      "data readiness audit has no missing files",
+      "schema profiles exist for every raw source"
+    ],
+    "claim_ladder_levels": [
+      "metric-support",
+      "judge-utility support"
+    ],
+    "paper_claims": [],
+    "claim_discipline": [
+      "Use minimal C1/C2 only for Section 2 motivation and robustness; do not treat them as real-run method-result gates.",
+      "Do not write SFT+GRPO coverage, dimension-level recovery, downstream utility, ablation, or semantic-space claims until the corresponding real C0-C14 evidence rows are safe_to_claim.",
+      "A BSC coverage change alone is metric evidence, not dimension-level recovery or judge-utility evidence."
+    ],
+    "exit_criteria": "RubricBench/RewardBench/JudgeBench processed files exist and schema profiles are reviewed."
+  },
+  {
+    "day": 4,
+    "phase": "Minimal Motivation",
+    "goal": "Generate the minimal claim pipeline.",
+    "commands": [
+      "python3 scripts/build_minimal_claim_pipeline.py --config configs/minimal_claim_real.template.json --pipeline-output configs/pipeline_minimal_claim.generated.json --manifest-output configs/manifest_minimal_claim.generated.json --evidence-output configs/evidence_minimal_claim.generated.json --result-card-output configs/result_card_minimal_claim.generated.json",
+      "python3 scripts/run_experiment_pipeline.py --config configs/pipeline_minimal_claim.generated.json --dry-run"
+    ],
+    "artifacts": [
+      "configs/pipeline_minimal_claim.generated.json",
+      "configs/evidence_minimal_claim.generated.json",
+      "configs/result_card_minimal_claim.generated.json"
+    ],
+    "evidence_gates": [
+      "minimal Evidence Matrix C1 is safe_to_claim",
+      "mean_blind passes the configured motivation threshold"
+    ],
+    "claim_ladder_levels": [
+      "motivation"
+    ],
+    "paper_claims": [],
+    "claim_discipline": [
+      "Use minimal C1/C2 only for Section 2 motivation and robustness; do not treat them as real-run method-result gates.",
+      "Do not write SFT+GRPO coverage, dimension-level recovery, downstream utility, ablation, or semantic-space claims until the corresponding real C0-C14 evidence rows are safe_to_claim.",
+      "A BSC coverage change alone is metric evidence, not dimension-level recovery or judge-utility evidence."
+    ],
+    "exit_criteria": "Single-model Cov/Blind and threshold sweep are exported to paper artifacts."
+  },
+  {
+    "day": 5,
+    "phase": "Minimal Motivation",
+    "goal": "Run base evaluation-criteria elicitation and BSC diagnosis.",
+    "commands": [
+      "python3 scripts/run_experiment_pipeline.py --config configs/pipeline_minimal_claim.generated.json --only init_data_source_local_config --only data_source_report --only validate_rubricbench_gold --only validate_rubricbench_queries --only bsc_gold_sanity --only sample_queries --only preflight --only api_budget --only minimal_api_handoff",
+      "python3 scripts/check_minimal_api_handoff_ready.py --handoff outputs/minimal_claim/base/handoff/api_handoff.json",
+      "python3 scripts/run_experiment_pipeline.py --config configs/pipeline_minimal_claim.generated.json --from-stage audit --to-stage paper_asset_index_check_post_sync",
+      "python3 scripts/run_experiment_pipeline.py --config configs/pipeline_minimal_claim.generated.json --from-stage generate_model_rubrics --to-stage result_card --require-ready-handoff outputs/minimal_claim/base/handoff/api_handoff.json"
+    ],
+    "artifacts": [
+      "outputs/minimal_claim/base/handoff/api_handoff.json",
+      "outputs/minimal_claim/base/bsc/summary.json",
+      "outputs/minimal_claim/base/bsc_sweep/threshold_sweep.csv"
+    ],
+    "evidence_gates": [
+      "minimal Evidence Matrix C1 is safe_to_claim",
+      "mean_blind passes the configured motivation threshold"
+    ],
+    "claim_ladder_levels": [
+      "motivation"
+    ],
+    "paper_claims": [],
+    "claim_discipline": [
+      "Use minimal C1/C2 only for Section 2 motivation and robustness; do not treat them as real-run method-result gates.",
+      "Do not write SFT+GRPO coverage, dimension-level recovery, downstream utility, ablation, or semantic-space claims until the corresponding real C0-C14 evidence rows are safe_to_claim.",
+      "A BSC coverage change alone is metric evidence, not dimension-level recovery or judge-utility evidence."
+    ],
+    "exit_criteria": "Single-model Cov/Blind and threshold sweep are exported to paper artifacts."
+  },
+  {
+    "day": 6,
+    "phase": "Minimal Motivation",
+    "goal": "Review motivation claim and update paper introduction.",
+    "commands": [
+      "python3 scripts/check_submission_readiness.py --audit-report outputs/minimal_claim/base/audit_report.json --evidence-matrix outputs/minimal_claim/base/evidence/evidence_matrix.json --paper-dir paper --output-json outputs/minimal_claim/base/readiness.json --output-md outputs/minimal_claim/base/readiness.md"
+    ],
+    "artifacts": [
+      "outputs/minimal_claim/base/evidence/evidence_matrix.md",
+      "paper/sections/introduction.tex"
+    ],
+    "evidence_gates": [
+      "minimal Evidence Matrix C1 is safe_to_claim",
+      "mean_blind passes the configured motivation threshold"
+    ],
+    "claim_ladder_levels": [
+      "motivation"
+    ],
+    "paper_claims": [],
+    "claim_discipline": [
+      "Use minimal C1/C2 only for Section 2 motivation and robustness; do not treat them as real-run method-result gates.",
+      "Do not write SFT+GRPO coverage, dimension-level recovery, downstream utility, ablation, or semantic-space claims until the corresponding real C0-C14 evidence rows are safe_to_claim.",
+      "A BSC coverage change alone is metric evidence, not dimension-level recovery or judge-utility evidence."
+    ],
+    "exit_criteria": "Single-model Cov/Blind and threshold sweep are exported to paper artifacts."
+  },
+  {
+    "day": 7,
+    "phase": "SFT Data And Training",
+    "goal": "Generate multi-teacher evaluation criteria.",
+    "commands": [
+      "python3 scripts/estimate_api_budget.py --input data/processed/splits/rubricbench_gold_train_seed.jsonl --providers configs/providers.local.jsonl --output outputs/api_budget/teacher_rubrics_budget.json --output-md outputs/api_budget/teacher_rubrics_budget.md --strict",
+      "python3 scripts/generate_teacher_rubrics.py --input data/processed/splits/rubricbench_gold_train_seed.jsonl --providers configs/providers.local.jsonl --output data/processed/teacher_rubrics_raw.jsonl --require-budget-report outputs/api_budget/teacher_rubrics_budget.json --resume --sleep 0.5"
+    ],
+    "artifacts": [
+      "data/processed/teacher_rubrics_raw.jsonl"
+    ],
+    "evidence_gates": [
+      "SFT data stats show non-zero filtered evaluation criteria",
+      "LLaMA-Factory dataset registration is present"
+    ],
+    "claim_ladder_levels": [
+      "method-support"
+    ],
+    "paper_claims": [],
+    "claim_discipline": [
+      "Use minimal C1/C2 only for Section 2 motivation and robustness; do not treat them as real-run method-result gates.",
+      "Do not write SFT+GRPO coverage, dimension-level recovery, downstream utility, ablation, or semantic-space claims until the corresponding real C0-C14 evidence rows are safe_to_claim.",
+      "A BSC coverage change alone is metric evidence, not dimension-level recovery or judge-utility evidence."
+    ],
+    "exit_criteria": "SFT checkpoint is available and registered as sft_only generator."
+  },
+  {
+    "day": 8,
+    "phase": "SFT Data And Training",
+    "goal": "Filter verifier and build SFT/proxy-gold data.",
+    "commands": [
+      "python3 scripts/estimate_api_budget.py --input data/processed/teacher_rubrics_raw.jsonl --providers configs/verifier.local.jsonl --unit-field rubrics --output outputs/api_budget/meta_verifier_budget.json --output-md outputs/api_budget/meta_verifier_budget.md --strict",
+      "python3 scripts/run_experiment_pipeline.py --config configs/pipeline_real_run.generated.json --from-stage filter_teacher_rubrics --to-stage filter_proxy_gold_rewardbench2_downstream_overlap"
+    ],
+    "artifacts": [
+      "data/processed/blindspot_sft.unfiltered.jsonl",
+      "data/processed/blindspot_sft.jsonl",
+      "data/processed/proxy_gold.unfiltered.jsonl",
+      "data/processed/proxy_gold.jsonl",
+      "outputs/sft_stats.jsonl",
+      "outputs/sft_data/proxy_gold_build_report.json",
+      "outputs/contamination_audit/blindspot_sft_rewardbench2_holdout_filter.json",
+      "outputs/contamination_audit/proxy_gold_rewardbench2_holdout_filter.json"
+    ],
+    "evidence_gates": [
+      "SFT data stats show non-zero filtered evaluation criteria",
+      "LLaMA-Factory dataset registration is present"
+    ],
+    "claim_ladder_levels": [
+      "method-support"
+    ],
+    "paper_claims": [],
+    "claim_discipline": [
+      "Use minimal C1/C2 only for Section 2 motivation and robustness; do not treat them as real-run method-result gates.",
+      "Do not write SFT+GRPO coverage, dimension-level recovery, downstream utility, ablation, or semantic-space claims until the corresponding real C0-C14 evidence rows are safe_to_claim.",
+      "A BSC coverage change alone is metric evidence, not dimension-level recovery or judge-utility evidence."
+    ],
+    "exit_criteria": "SFT checkpoint is available and registered as sft_only generator."
+  },
+  {
+    "day": 9,
+    "phase": "SFT Data And Training",
+    "goal": "Register SFT data and generate training commands.",
+    "commands": [
+      "python3 scripts/register_llamafactory_dataset.py --dataset-info data/processed/dataset_info.json --name blindspot_sft --file-name blindspot_sft.jsonl --overwrite",
+      "python3 scripts/make_training_commands.py --config configs/training_commands.example.json --output-dir outputs/training_commands"
+    ],
+    "artifacts": [
+      "outputs/training_commands/run_sft.sh"
+    ],
+    "evidence_gates": [
+      "SFT data stats show non-zero filtered evaluation criteria",
+      "LLaMA-Factory dataset registration is present"
+    ],
+    "claim_ladder_levels": [
+      "method-support"
+    ],
+    "paper_claims": [],
+    "claim_discipline": [
+      "Use minimal C1/C2 only for Section 2 motivation and robustness; do not treat them as real-run method-result gates.",
+      "Do not write SFT+GRPO coverage, dimension-level recovery, downstream utility, ablation, or semantic-space claims until the corresponding real C0-C14 evidence rows are safe_to_claim.",
+      "A BSC coverage change alone is metric evidence, not dimension-level recovery or judge-utility evidence."
+    ],
+    "exit_criteria": "SFT checkpoint is available and registered as sft_only generator."
+  },
+  {
+    "day": 10,
+    "phase": "SFT Data And Training",
+    "goal": "Run SFT and record checkpoint path.",
+    "commands": [
+      "bash outputs/training_commands/run_sft.sh"
+    ],
+    "artifacts": [
+      "outputs/sft/checkpoint-final"
+    ],
+    "evidence_gates": [
+      "SFT data stats show non-zero filtered evaluation criteria",
+      "LLaMA-Factory dataset registration is present"
+    ],
+    "claim_ladder_levels": [
+      "method-support"
+    ],
+    "paper_claims": [],
+    "claim_discipline": [
+      "Use minimal C1/C2 only for Section 2 motivation and robustness; do not treat them as real-run method-result gates.",
+      "Do not write SFT+GRPO coverage, dimension-level recovery, downstream utility, ablation, or semantic-space claims until the corresponding real C0-C14 evidence rows are safe_to_claim.",
+      "A BSC coverage change alone is metric evidence, not dimension-level recovery or judge-utility evidence."
+    ],
+    "exit_criteria": "SFT checkpoint is available and registered as sft_only generator."
+  },
+  {
+    "day": 11,
+    "phase": "GRPO And Main Matrix",
+    "goal": "Convert RL data and run GRPO.",
+    "commands": [
+      "python3 scripts/convert_to_verl_parquet.py --input data/processed/proxy_gold.jsonl --output data/processed/proxy_gold_verl.parquet --data-source multi_teacher_proxy",
+      "bash outputs/training_commands/run_grpo.sh"
+    ],
+    "artifacts": [
+      "outputs/grpo/checkpoint-final"
+    ],
+    "evidence_gates": [
+      "C2/C3/C14 rows are present in the Evidence Matrix and determine whether any SFT+GRPO coverage-change claim is safe_to_claim",
+      "C4/C9/C10 downstream rows are present in the Evidence Matrix and determine whether any judge-utility claim is safe_to_claim"
+    ],
+    "claim_ladder_levels": [
+      "metric-support",
+      "method-support",
+      "judge-utility support"
+    ],
+    "paper_claims": [],
+    "claim_discipline": [
+      "Use minimal C1/C2 only for Section 2 motivation and robustness; do not treat them as real-run method-result gates.",
+      "Do not write SFT+GRPO coverage, dimension-level recovery, downstream utility, ablation, or semantic-space claims until the corresponding real C0-C14 evidence rows are safe_to_claim.",
+      "A BSC coverage change alone is metric evidence, not dimension-level recovery or judge-utility evidence."
+    ],
+    "exit_criteria": "Main table, ablations, downstream summaries, and Evidence Matrix rows are exported with statuses; claims remain deferred unless the relevant rows are safe_to_claim."
+  },
+  {
+    "day": 12,
+    "phase": "GRPO And Main Matrix",
+    "goal": "Generate method evaluation criteria for base/API/SFT/RL methods.",
+    "commands": [
+      "python3 scripts/estimate_api_budget.py --input data/processed/rubricbench_queries.jsonl --providers configs/generators.local.jsonl --output outputs/api_budget/rubricbench_model_rubrics_budget.json --output-md outputs/api_budget/rubricbench_model_rubrics_budget.md --strict",
+      "python3 scripts/generate_model_rubrics.py --input data/processed/rubricbench_queries.jsonl --providers configs/generators.local.jsonl --output data/processed/rubricbench_model_rubrics.jsonl --require-budget-report outputs/api_budget/rubricbench_model_rubrics_budget.json --resume --sleep 0.5",
+      "python3 scripts/estimate_api_budget.py --input data/processed/rewardbench_queries.jsonl --providers configs/generators.local.jsonl --output outputs/api_budget/rewardbench_model_rubrics_budget.json --output-md outputs/api_budget/rewardbench_model_rubrics_budget.md --strict",
+      "python3 scripts/generate_model_rubrics.py --input data/processed/rewardbench_queries.jsonl --providers configs/generators.local.jsonl --output data/processed/rewardbench_model_rubrics.jsonl --require-budget-report outputs/api_budget/rewardbench_model_rubrics_budget.json --resume --sleep 0.5",
+      "python3 scripts/estimate_api_budget.py --input data/processed/judgebench_queries.jsonl --providers configs/generators.local.jsonl --output outputs/api_budget/judgebench_model_rubrics_budget.json --output-md outputs/api_budget/judgebench_model_rubrics_budget.md --strict",
+      "python3 scripts/generate_model_rubrics.py --input data/processed/judgebench_queries.jsonl --providers configs/generators.local.jsonl --output data/processed/judgebench_model_rubrics.jsonl --require-budget-report outputs/api_budget/judgebench_model_rubrics_budget.json --resume --sleep 0.5",
+      "python3 scripts/estimate_api_budget.py --input data/processed/rewardbench2_queries.clean.jsonl --providers configs/generators.local.jsonl --output outputs/api_budget/rewardbench2_model_rubrics_budget.json --output-md outputs/api_budget/rewardbench2_model_rubrics_budget.md --strict",
+      "python3 scripts/generate_model_rubrics.py --input data/processed/rewardbench2_queries.clean.jsonl --providers configs/generators.local.jsonl --output data/processed/rewardbench2_model_rubrics.jsonl --require-budget-report outputs/api_budget/rewardbench2_model_rubrics_budget.json --resume --sleep 0.5",
+      "python3 scripts/estimate_api_budget.py --input data/processed/rmbench_queries.jsonl --providers configs/generators.local.jsonl --output outputs/api_budget/rmbench_model_rubrics_budget.json --output-md outputs/api_budget/rmbench_model_rubrics_budget.md --strict",
+      "python3 scripts/generate_model_rubrics.py --input data/processed/rmbench_queries.jsonl --providers configs/generators.local.jsonl --output data/processed/rmbench_model_rubrics.jsonl --require-budget-report outputs/api_budget/rmbench_model_rubrics_budget.json --resume --sleep 0.5"
+    ],
+    "artifacts": [
+      "data/processed/rubricbench_model_rubrics.jsonl",
+      "data/processed/rewardbench_model_rubrics.jsonl",
+      "data/processed/judgebench_model_rubrics.jsonl",
+      "data/processed/rewardbench2_model_rubrics.jsonl",
+      "data/processed/rmbench_model_rubrics.jsonl"
+    ],
+    "evidence_gates": [
+      "C2/C3/C14 rows are present in the Evidence Matrix and determine whether any SFT+GRPO coverage-change claim is safe_to_claim",
+      "C4/C9/C10 downstream rows are present in the Evidence Matrix and determine whether any judge-utility claim is safe_to_claim"
+    ],
+    "claim_ladder_levels": [
+      "metric-support",
+      "method-support",
+      "judge-utility support"
+    ],
+    "paper_claims": [],
+    "claim_discipline": [
+      "Use minimal C1/C2 only for Section 2 motivation and robustness; do not treat them as real-run method-result gates.",
+      "Do not write SFT+GRPO coverage, dimension-level recovery, downstream utility, ablation, or semantic-space claims until the corresponding real C0-C14 evidence rows are safe_to_claim.",
+      "A BSC coverage change alone is metric evidence, not dimension-level recovery or judge-utility evidence."
+    ],
+    "exit_criteria": "Main table, ablations, downstream summaries, and Evidence Matrix rows are exported with statuses; claims remain deferred unless the relevant rows are safe_to_claim."
+  },
+  {
+    "day": 13,
+    "phase": "GRPO And Main Matrix",
+    "goal": "Build and run the real method matrix.",
+    "commands": [
+      "python3 scripts/build_experiment_matrix.py --methods configs/methods_matrix_real.template.json --pipeline-output configs/pipeline_matrix_real.generated.json --manifest-output configs/manifest_matrix_real.generated.json",
+      "python3 scripts/run_experiment_pipeline.py --config configs/pipeline_matrix_real.generated.json"
+    ],
+    "artifacts": [
+      "outputs/matrix_real/main_table.csv",
+      "outputs/matrix_real/audit_report.json"
+    ],
+    "evidence_gates": [
+      "C2/C3/C14 rows are present in the Evidence Matrix and determine whether any SFT+GRPO coverage-change claim is safe_to_claim",
+      "C4/C9/C10 downstream rows are present in the Evidence Matrix and determine whether any judge-utility claim is safe_to_claim"
+    ],
+    "claim_ladder_levels": [
+      "metric-support",
+      "method-support",
+      "judge-utility support"
+    ],
+    "paper_claims": [],
+    "claim_discipline": [
+      "Use minimal C1/C2 only for Section 2 motivation and robustness; do not treat them as real-run method-result gates.",
+      "Do not write SFT+GRPO coverage, dimension-level recovery, downstream utility, ablation, or semantic-space claims until the corresponding real C0-C14 evidence rows are safe_to_claim.",
+      "A BSC coverage change alone is metric evidence, not dimension-level recovery or judge-utility evidence."
+    ],
+    "exit_criteria": "Main table, ablations, downstream summaries, and Evidence Matrix rows are exported with statuses; claims remain deferred unless the relevant rows are safe_to_claim."
+  },
+  {
+    "day": 14,
+    "phase": "GRPO And Main Matrix",
+    "goal": "Run offline diagnostics plus paper-facing ablations.",
+    "commands": [
+      "python3 scripts/run_bsc_ablation.py --input data/processed/matrix_real/sft_rl/bsc_eval.jsonl --output-dir outputs/bsc_ablation",
+      "run separately trained no_red, no_valid, no_verifier, and cov_only GRPO variants, then generate hard-gold BSC summaries under outputs/reward_component_training_ablation/{variant}/",
+      "bash outputs/training_commands/run_grpo_no_red.sh && bash outputs/training_commands/run_grpo_no_valid.sh && bash outputs/training_commands/run_grpo_no_verifier.sh && bash outputs/training_commands/run_grpo_cov_only.sh",
+      "for variant in no_red no_valid no_verifier cov_only; do python3 scripts/generate_model_rubrics.py --input data/processed/splits/rubricbench_gold_test_main.jsonl --providers configs/generators_reward_ablation.local.jsonl --output data/processed/reward_component_training_ablation/${variant}/model_rubrics.jsonl --data-source rubricbench --resume; done",
+      "for variant in no_red no_valid no_verifier cov_only; do python3 scripts/prepare_bsc_eval.py --gold data/processed/splits/rubricbench_gold_test_main.jsonl --predictions data/processed/reward_component_training_ablation/${variant}/model_rubrics.jsonl --output data/processed/reward_component_training_ablation/${variant}/bsc_eval.jsonl --report outputs/reward_component_training_ablation/${variant}/bsc_join_report.json --model ${variant} --data-source rubricbench --min-joined 100 && python3 scripts/bsc_diagnose.py --input data/processed/reward_component_training_ablation/${variant}/bsc_eval.jsonl --embedding-model BAAI/bge-large-en-v1.5 --coverage-tau 0.75 --redundancy-tau 0.85 --output-dir outputs/reward_component_training_ablation/${variant}/bsc; done",
+      "python3 scripts/run_teacher_union_ablation.py --teachers data/processed/teacher_rubrics_filtered.jsonl --gold data/processed/splits/rubricbench_gold_train_seed.jsonl --output-dir outputs/teacher_union_ablation"
+    ],
+    "artifacts": [
+      "outputs/bsc_ablation/ablation_summary.csv",
+      "outputs/reward_component_training_ablation/training_done.json",
+      "outputs/reward_component_training_ablation/no_red/bsc/summary.json",
+      "outputs/reward_component_training_ablation/no_valid/bsc/summary.json",
+      "outputs/reward_component_training_ablation/no_verifier/bsc/summary.json",
+      "outputs/reward_component_training_ablation/cov_only/bsc/summary.json",
+      "outputs/teacher_union_ablation/teacher_union_ablation.csv"
+    ],
+    "evidence_gates": [
+      "C2/C3/C14 rows are present in the Evidence Matrix and determine whether any SFT+GRPO coverage-change claim is safe_to_claim",
+      "C4/C9/C10 downstream rows are present in the Evidence Matrix and determine whether any judge-utility claim is safe_to_claim"
+    ],
+    "claim_ladder_levels": [
+      "metric-support",
+      "method-support",
+      "judge-utility support"
+    ],
+    "paper_claims": [],
+    "claim_discipline": [
+      "Use minimal C1/C2 only for Section 2 motivation and robustness; do not treat them as real-run method-result gates.",
+      "Do not write SFT+GRPO coverage, dimension-level recovery, downstream utility, ablation, or semantic-space claims until the corresponding real C0-C14 evidence rows are safe_to_claim.",
+      "A BSC coverage change alone is metric evidence, not dimension-level recovery or judge-utility evidence."
+    ],
+    "exit_criteria": "Main table, ablations, downstream summaries, and Evidence Matrix rows are exported with statuses; claims remain deferred unless the relevant rows are safe_to_claim."
+  },
+  {
+    "day": 15,
+    "phase": "GRPO And Main Matrix",
+    "goal": "Build real Evidence Matrix and export paper artifacts.",
+    "commands": [
+      "python3 scripts/build_evidence_matrix.py --config configs/evidence_matrix_real.template.json --output-dir outputs/evidence_real",
+      "python3 scripts/export_paper_artifacts.py --main-table-csv outputs/matrix_real/main_table.csv --main-table-md outputs/matrix_real/main_table.md --downstream-table-csv RewardBench=outputs/matrix_real/main_table.csv --downstream-table-csv JudgeBench=outputs/matrix_judgebench/main_table.csv --downstream-table-csv RewardBench-2=outputs/matrix_rewardbench2/main_table.csv --ablation-csv outputs/bsc_ablation/ablation_summary.csv --teacher-union-csv outputs/teacher_union_ablation/teacher_union_ablation.csv --verifier-filter-csv outputs/verifier_filter_ablation/verifier_filter_ablation.csv --transition-summary-json outputs/matrix_real/dimension_transition/base_to_sft_only/transition_summary.json --transition-summary-json outputs/matrix_real/dimension_transition/base_to_sft_rl/transition_summary.json --semantic-space-dir outputs/matrix_real/semantic_space --audit-report outputs/matrix_real/audit_report.json --evidence-json outputs/evidence_real/evidence_matrix.json --evidence-csv outputs/evidence_real/evidence_matrix.csv --evidence-md outputs/evidence_real/evidence_matrix.md --output-dir outputs/paper_artifacts"
+    ],
+    "artifacts": [
+      "outputs/evidence_real/evidence_matrix.json",
+      "outputs/evidence_real/evidence_matrix.csv",
+      "outputs/evidence_real/evidence_matrix.md",
+      "outputs/paper_artifacts/main_table.tex",
+      "outputs/paper_artifacts/downstream_utility_table.tex",
+      "outputs/paper_artifacts/verifier_filter_ablation_table.tex",
+      "outputs/paper_artifacts/dimension_transition_table.tex",
+      "outputs/paper_artifacts/semantic_space_summary.json",
+      "outputs/paper_artifacts/semantic_space_points.csv"
+    ],
+    "evidence_gates": [
+      "C2/C3/C14 rows are present in the Evidence Matrix and determine whether any SFT+GRPO coverage-change claim is safe_to_claim",
+      "C4/C9/C10 downstream rows are present in the Evidence Matrix and determine whether any judge-utility claim is safe_to_claim"
+    ],
+    "claim_ladder_levels": [
+      "metric-support",
+      "method-support",
+      "judge-utility support"
+    ],
+    "paper_claims": [],
+    "claim_discipline": [
+      "Use minimal C1/C2 only for Section 2 motivation and robustness; do not treat them as real-run method-result gates.",
+      "Do not write SFT+GRPO coverage, dimension-level recovery, downstream utility, ablation, or semantic-space claims until the corresponding real C0-C14 evidence rows are safe_to_claim.",
+      "A BSC coverage change alone is metric evidence, not dimension-level recovery or judge-utility evidence."
+    ],
+    "exit_criteria": "Main table, ablations, downstream summaries, and Evidence Matrix rows are exported with statuses; claims remain deferred unless the relevant rows are safe_to_claim."
+  },
+  {
+    "day": 16,
+    "phase": "Paper And Submission",
+    "goal": "Sync artifacts into the manuscript scaffold.",
+    "commands": [
+      "python3 scripts/sync_paper_artifacts.py --artifacts-dir outputs/paper_artifacts --paper-dir paper",
+      "python3 scripts/check_paper_asset_index.py --asset-index paper/asset_index.md --output outputs/paper_artifacts/paper_asset_index_check.json --output-md outputs/paper_artifacts/paper_asset_index_check.md --strict"
+    ],
+    "artifacts": [
+      "paper/tables/main_table.tex",
+      "paper/asset_index.md",
+      "outputs/paper_artifacts/paper_asset_index_check.json"
+    ],
+    "evidence_gates": [
+      "submission readiness has no hard blockers",
+      "all claims in final draft are safe_to_claim"
+    ],
+    "claim_ladder_levels": [
+      "motivation",
+      "metric-support",
+      "method-support",
+      "judge-utility support"
+    ],
+    "paper_claims": [],
+    "claim_discipline": [
+      "Use minimal C1/C2 only for Section 2 motivation and robustness; do not treat them as real-run method-result gates.",
+      "Do not write SFT+GRPO coverage, dimension-level recovery, downstream utility, ablation, or semantic-space claims until the corresponding real C0-C14 evidence rows are safe_to_claim.",
+      "A BSC coverage change alone is metric evidence, not dimension-level recovery or judge-utility evidence."
+    ],
+    "exit_criteria": "Submission readiness report has ok=true or remaining blockers are explicitly documented."
+  },
+  {
+    "day": 17,
+    "phase": "Paper And Submission",
+    "goal": "Run submission readiness and remove unsupported claims.",
+    "commands": [
+      "python3 scripts/check_submission_readiness.py --audit-report outputs/matrix_real/audit_report.json --evidence-matrix outputs/evidence_real/evidence_matrix.json --paper-dir paper --output-json outputs/submission_readiness/readiness_report.json --output-md outputs/submission_readiness/readiness_report.md"
+    ],
+    "artifacts": [
+      "outputs/submission_readiness/readiness_report.md"
+    ],
+    "evidence_gates": [
+      "submission readiness has no hard blockers",
+      "all claims in final draft are safe_to_claim"
+    ],
+    "claim_ladder_levels": [
+      "motivation",
+      "metric-support",
+      "method-support",
+      "judge-utility support"
+    ],
+    "paper_claims": [],
+    "claim_discipline": [
+      "Use minimal C1/C2 only for Section 2 motivation and robustness; do not treat them as real-run method-result gates.",
+      "Do not write SFT+GRPO coverage, dimension-level recovery, downstream utility, ablation, or semantic-space claims until the corresponding real C0-C14 evidence rows are safe_to_claim.",
+      "A BSC coverage change alone is metric evidence, not dimension-level recovery or judge-utility evidence."
+    ],
+    "exit_criteria": "Submission readiness report has ok=true or remaining blockers are explicitly documented."
+  },
+  {
+    "day": 18,
+    "phase": "Paper And Submission",
+    "goal": "Write Method and Experiments around safe claims only.",
+    "commands": [
+      "python3 scripts/build_evidence_matrix.py --config configs/evidence_matrix_real.template.json --output-dir outputs/evidence_real"
+    ],
+    "artifacts": [
+      "paper/sections/method.tex",
+      "paper/sections/experiments.tex"
+    ],
+    "evidence_gates": [
+      "submission readiness has no hard blockers",
+      "all claims in final draft are safe_to_claim"
+    ],
+    "claim_ladder_levels": [
+      "motivation",
+      "metric-support",
+      "method-support",
+      "judge-utility support"
+    ],
+    "paper_claims": [],
+    "claim_discipline": [
+      "Use minimal C1/C2 only for Section 2 motivation and robustness; do not treat them as real-run method-result gates.",
+      "Do not write SFT+GRPO coverage, dimension-level recovery, downstream utility, ablation, or semantic-space claims until the corresponding real C0-C14 evidence rows are safe_to_claim.",
+      "A BSC coverage change alone is metric evidence, not dimension-level recovery or judge-utility evidence."
+    ],
+    "exit_criteria": "Submission readiness report has ok=true or remaining blockers are explicitly documented."
+  },
+  {
+    "day": 19,
+    "phase": "Paper And Submission",
+    "goal": "Finalize limitations, related-work notes, and rebuttal TODOs.",
+    "commands": [
+      "python3 scripts/check_submission_readiness.py --audit-report outputs/matrix_real/audit_report.json --evidence-matrix outputs/evidence_real/evidence_matrix.json --paper-dir paper --output-json outputs/submission_readiness/readiness_report.json --output-md outputs/submission_readiness/readiness_report.md"
+    ],
+    "artifacts": [
+      "paper/sections/limitations.tex",
+      "outputs/submission_readiness/readiness_report.md"
+    ],
+    "evidence_gates": [
+      "submission readiness has no hard blockers",
+      "all claims in final draft are safe_to_claim"
+    ],
+    "claim_ladder_levels": [
+      "motivation",
+      "metric-support",
+      "method-support",
+      "judge-utility support"
+    ],
+    "paper_claims": [],
+    "claim_discipline": [
+      "Use minimal C1/C2 only for Section 2 motivation and robustness; do not treat them as real-run method-result gates.",
+      "Do not write SFT+GRPO coverage, dimension-level recovery, downstream utility, ablation, or semantic-space claims until the corresponding real C0-C14 evidence rows are safe_to_claim.",
+      "A BSC coverage change alone is metric evidence, not dimension-level recovery or judge-utility evidence."
+    ],
+    "exit_criteria": "Submission readiness report has ok=true or remaining blockers are explicitly documented."
+  },
+  {
+    "day": 20,
+    "phase": "Paper And Submission",
+    "goal": "Final compile/readiness pass.",
+    "commands": [
+      "python3 scripts/check_latex_compile.py --paper-dir paper --output-json outputs/submission_readiness/latex_compile_report.json --output-md outputs/submission_readiness/latex_compile_report.md --compile --require-official-style --require-anonymous --max-pages 8 --strict",
+      "python3 scripts/check_submission_readiness.py --audit-report outputs/matrix_real/audit_report.json --evidence-matrix outputs/evidence_real/evidence_matrix.json --paper-dir paper --output-json outputs/submission_readiness/readiness_report.json --output-md outputs/submission_readiness/readiness_report.md --strict"
+    ],
+    "artifacts": [
+      "paper/main.pdf",
+      "outputs/submission_readiness/latex_compile_report.json",
+      "outputs/submission_readiness/readiness_report.json"
+    ],
+    "evidence_gates": [
+      "submission readiness has no hard blockers",
+      "all claims in final draft are safe_to_claim"
+    ],
+    "claim_ladder_levels": [
+      "motivation",
+      "metric-support",
+      "method-support",
+      "judge-utility support"
+    ],
+    "paper_claims": [],
+    "claim_discipline": [
+      "Use minimal C1/C2 only for Section 2 motivation and robustness; do not treat them as real-run method-result gates.",
+      "Do not write SFT+GRPO coverage, dimension-level recovery, downstream utility, ablation, or semantic-space claims until the corresponding real C0-C14 evidence rows are safe_to_claim.",
+      "A BSC coverage change alone is metric evidence, not dimension-level recovery or judge-utility evidence."
+    ],
+    "exit_criteria": "Submission readiness report has ok=true or remaining blockers are explicitly documented."
+  }
+]

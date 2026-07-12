@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "entry_count": 11,
+  "defense_status_counts": {
+    "answer_ready": 0,
+    "needs_readiness": 0,
+    "needs_evidence": 11,
+    "cannot_claim": 0,
+    "missing_claim_mapping": 0
+  },
+  "readiness_ok": false,
+  "matched_claim_ids": [
+    "C0",
+    "C1",
+    "C10",
+    "C14",
+    "C3",
+    "C4",
+    "C5",
+    "C6",
+    "C7",
+    "C9"
+  ],
+  "claim_ladder": [
+    {
+      "level": "motivation",
+      "required_claim_ids": [
+        "C1",
+        "C6"
+      ],
+      "evidence_required": "Frozen 100-example hard-gold diagnostic with C1 and threshold-robustness C6 gates.",
+      "paper_sentence": "If C1/C6 pass, report systematic evaluation blind spots for the base evaluation-criteria policy.",
+      "downgrade_rule": "Does not support any trained-method claim by itself.",
+      "status": "missing_evidence",
+      "missing_or_non_safe_claims": [
+        "C1: missing_evidence",
+        "C6: missing_evidence"
+      ]
+    },
+    {
+      "level": "metric-support",
+      "required_claim_ids": [
+        "C0",
+        "C2",
+        "C3"
+      ],
+      "evidence_required": "Hard-gold BSC coverage change with stable redundancy and hallucination under the fixed protocol.",
+      "paper_sentence": "If C0/C2/C3 pass, report a hard-gold BSC coverage change as metric evidence.",
+      "downgrade_rule": "Without downstream support, report metric-only BSC evidence.",
+      "status": "missing_evidence",
+      "missing_or_non_safe_claims": [
+        "C0: missing_evidence",
+        "C2: missing_evidence",
+        "C3: missing_evidence"
+      ]
+    },
+    {
+      "level": "method-support",
+      "required_claim_ids": [
+        "C5",
+        "C7",
+        "C14"
+      ],
+      "evidence_required": "SFT-only vs SFT+GRPO and reward-component ablations pass C5/C7/C14.",
+      "paper_sentence": "If C5/C7/C14 pass, attribute the coverage change to the RLVR reward stage.",
+      "downgrade_rule": "Without C14, report proxy-gold supervision evidence rather than RLVR evidence.",
+      "status": "missing_evidence",
+      "missing_or_non_safe_claims": [
+        "C5: missing_evidence",
+        "C7: missing_evidence",
+        "C14: missing_evidence"
+      ]
+    },
+    {
+      "level": "judge-utility support",
+      "required_claim_ids": [
+        "C0",
+        "C4",
+        "C9",
+        "C10",
+        "C12"
+      ],
+      "evidence_required": "RewardBench, RewardBench-2, and JudgeBench API/model scorer rows pass C4/C9/C10.",
+      "paper_sentence": "If C0/C4/C9/C10/C12 pass, report held-out downstream judge-utility support.",
+      "downgrade_rule": "Without C12, write aggregate coverage change rather than dimension-level recovery; without C0, no trained-method row is paper-facing.",
+      "status": "missing_evidence",
+      "missing_or_non_safe_claims": [
+        "C0: missing_evidence",
+        "C4: missing_evidence",
+        "C9: missing_evidence",
+        "C10: missing_evidence",
+        "C12: missing_evidence"
+      ]
+    }
+  ],
+  "concern_templates": {
+    "source": "DEFAULT_CONCERNS",
+    "count": 11,
+    "sha256": "5e5c797c43c0afab29b94c244395147a44dad488ba7f45dd3d8213a53db1a1d7"
+  },
+  "inputs": {
+    "evidence_matrix": {
+      "path": "outputs/evidence_real/evidence_matrix.json",
+      "present": true,
+      "bytes": 144755,
+      "sha256": "b6cc722afc42e5e806f6c5463cd46d1e6e93336102070ff356607f84efdda094"
+    },
+    "readiness_report": {
+      "path": "outputs/submission_readiness/readiness_report.json",
+      "present": true,
+      "bytes": 62795,
+      "sha256": "d556f081eb5d3b034de9030bb791b2453f325c315bdd2db0e137b7d1b58d9cbf"
+    }
+  },
+  "outputs": {
+    "rebuttal_pack_json": {
+      "path": "outputs/rebuttal_pack/rebuttal_pack.json",
+      "present": true,
+      "bytes": 177581,
+      "sha256": "6f1c1ef69c0168b05c81ada6ef1fa40c1eea72703b347f08dcf23b2cdafb4cd3"
+    },
+    "rebuttal_pack_md": {
+      "path": "outputs/rebuttal_pack/rebuttal_pack.md",
+      "present": true,
+      "bytes": 175572,
+      "sha256": "c8cbe1528a42b1adb4f5786bf075946928874b439e0f60af6592315ae9cadae9"
+    }
+  },
+  "claim_discipline": [
+    "Treat rebuttal entries as reviewer-facing readiness notes, not as new paper claims.",
+    "Use an answer only when the matched Evidence Matrix rows are safe_to_claim and submission readiness is ok."
+  ]
+}

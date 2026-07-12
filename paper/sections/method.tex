@@ -1,0 +1,201 @@
+\section{Method}
+
+\subsection{Blind-Spot Coverage as a Verifiable Reward}
+
+Given a query $q$, let $G=\{g_1,\dots,g_m\}$ be a gold
+evaluation-dimension set, and let $\hat{R}=\{r_1,\dots,r_n\}$ be a generated
+criteria set. In paper-facing hard-gold evaluation, $G$ denotes human-gold
+evaluation dimensions; in training-time reward computation, the hidden
+criteria are proxy-gold targets from disjoint query pools. These roles are not
+interchangeable. We
+compute semantic similarity between gold and generated dimensions and define
+coverage as
+\[
+\cov(\gold,\pred) = \frac{1}{|\gold|}\sum_i
+\mathbb{1}\left[\max_j \cos(e(g_i), e(r_j)) \ge \tau\right].
+\]
+The blind-spot rate is $\blind = 1-\cov$. This metric differs from text
+similarity to a reference answer: it asks whether every human evaluation
+dimension is semantically represented somewhere in the generated set, allowing
+lexical variation while preserving dimension-level accountability.
+
+BSC becomes a reward only after adding two controls. First, we penalize
+redundancy within the generated set:
+\[
+\red(\pred) =
+\frac{|\{(r_a,r_b): a<b, \cos(e(r_a), e(r_b)) \ge \tau'\}|}{n},
+\]
+This prevents reward hacking through repeated paraphrases of the same
+dimension. Second, a verifier estimates whether each generated criterion is
+atomic, decidable, relevant, and non-hallucinated. We define
+$\hall(\pred)=1-R_{\mathrm{valid}}$, where $R_{\mathrm{valid}}$ is the
+fraction of generated criteria passing all four checks. Invalid,
+undecidable, irrelevant, hallucinated, or otherwise unverifiable criteria
+receive no validity credit. The resulting scalar reward is
+\[
+R_{\mathrm{BSC}} =
+w_{\mathrm{cov}}\cov(\gold,\pred)
++ w_{\mathrm{valid}}R_{\mathrm{valid}}(\pred,q)
+- w_{\mathrm{red}}\red(\pred).
+\]
+The default implementation uses $w_{\mathrm{cov}}=1.0$,
+$w_{\mathrm{valid}}=0.5$, and $w_{\mathrm{red}}=0.5$, with
+$\tau=0.75$ and $\tau'=0.85$. Unless otherwise stated, semantic similarities
+are computed with the fixed \texttt{BAAI/bge-large-en-v1.5} embedding model
+from the BGE family~\cite{xiao2023cpack}; toy smoke tests use a separate
+token-overlap embedder and are never used for paper-facing BSC claims.
+
+The embedding model, thresholds, and reward weights are fixed by protocol
+before final hard-gold evaluation rather than tuned on
+RubricBench \texttt{test\_main}. Absolute BSC values are accompanied by
+threshold sweeps, matched/unmatched human-audit packs, and bootstrap confidence
+intervals. Method comparisons are reportable only when the compared rows use
+the same embedding model, thresholds, verifier-backed validity source, and
+paired bootstrap protocol.
+
+The key point is that verifiability comes from dimension-level semantic
+coverage, not from matching a single reference string. This lets us apply
+an RLVR-style optimization test to an open-ended task: many different criteria
+wordings can receive credit if they cover the same human evaluation dimension,
+while redundant or unverifiable criteria are penalized. BSC therefore supplies a
+checkable reward for subjective criteria elicitation without reducing the task
+to exact-answer prediction.
+This is not prompt tuning with a downstream preference signal: the reward is
+computed from hidden evaluation dimensions under the relevant evidence role
+(human-gold for hard-gold evaluation and proxy-gold during training),
+intra-output redundancy, and fail-closed validity checks over atomicity,
+decidability, relevance, and non-hallucination, so a policy cannot receive
+paper-facing credit merely by changing surface wording.
+
+\subsection{Blind-Spot Attribution}
+
+BSC identifies missed gold dimensions but does not by itself explain what kind
+of evaluation signal is missing. We therefore construct a Blind-Spot Map by
+attributing each uncovered human-gold dimension to a fixed category such as
+factuality, completeness, constraint following, safety, domain knowledge,
+evidence grounding, or intent and reasoning. For a query $q$, the blind-spot set is
+\[
+B_q=\left\{g_i \in G: \max_j \cos(e(g_i), e(r_j)) < \tau\right\}.
+\]
+Let $c_i = C(g_i)$ be the category assigned to human-gold dimension $g_i$. The
+category-specific blind-spot rate is
+\[
+\blind_k(q) =
+\frac{|\{g_i \in B_q: c_i=k\}|}{|\{g_i \in G: c_i=k\}|},
+\]
+computed only for categories present in the query. This yields an auditable
+model-by-category map of where generated criteria miss human evaluation
+dimensions.
+
+\subsection{Category-Balanced Reward}
+
+Some criteria categories are more frequent than others. Optimizing raw coverage
+alone may cover common dimensions while leaving rare categories unresolved.
+When gold category labels are available, we add a query-local
+category-balanced coverage term:
+\[
+R_{\mathrm{bal\_cov}} =
+\frac{1}{|K_q|}\sum_{k \in K_q}
+\frac{|\{g_i \in \gold: C(g_i)=k,\ \max_j \cos(e(g_i), e(r_j)) \ge \tau\}|}
+{|\{g_i \in \gold: C(g_i)=k\}|}.
+\]
+The balanced reward is
+\[
+R =
+0.7R_{\mathrm{cov}} + 0.3R_{\mathrm{bal\_cov}}
++ 0.5R_{\mathrm{valid}} - 0.5R_{\mathrm{red}}.
+\]
+This turns the blind-spot map into a training signal: the policy is rewarded
+for covering long-tail human dimensions, not merely for increasing average
+criteria length.
+
+\subsection{Fail-Closed Meta-Verification}
+
+Proxy-gold criteria are useful only if low-quality generated criteria are
+prevented from entering training. BlindSpot-RL therefore uses a fail-closed
+meta-verifier. The rule verifier rejects empty, too-short, generic,
+overly-long, or meta-instruction-like criteria. The optional API verifier
+returns structured judgments for atomicity, decidability, relevance, and
+non-hallucination. Items that cannot be parsed, cannot be judged, or trigger
+verifier errors are marked invalid rather than silently accepted; undecidable
+criteria therefore reduce $R_{\mathrm{valid}}$ just like hallucinated or
+irrelevant criteria. A
+domain-aware verifier policy relaxes relevance for source-specific evaluation
+needs, such as medical risk disclosure for HealthBench, search evidence and
+freshness for BEIR/NQ, or instruction constraints for IFBench.
+
+\subsection{Two-Stage Training}
+
+We use a two-stage training recipe. Stage 1 performs supervised fine-tuning on
+criteria elicited by a multi-teacher union pipeline. Teacher outputs are grouped
+by query, merged, semantically deduplicated, verifier-filtered, and converted
+to proxy-gold SFT records. Stage 2 applies GRPO/RLVR using the BSC reward.
+The verl-compatible reward hook reads hidden gold criteria from
+\texttt{ground\_truth} or \texttt{extra\_info}, parses the model response into
+atomic criteria, applies the fail-closed rule verifier for the validity term
+unless response-aligned verifier flags are supplied, and returns the BSC reward.
+Empty or unparsable outputs receive a negative reward, discouraging format
+shortcuts.
+The hidden criteria used by this reward during training are proxy-gold training
+targets, not RubricBench \texttt{test\_main} human-gold dimensions. This
+separation is essential to the research claim: BSC makes an open-ended
+criteria-elicitation task rewardable, while the hard-gold split remains an
+external test of whether the learned policy covers human evaluation dimensions
+it was not trained on. Thus the RLVR transfer is evaluated as a protocol for
+semantic reward optimization under holdout evidence, rather than as direct
+optimization on the final evaluation set.
+
+\subsection{Contamination-Aware Data Protocol}
+
+The method relies on strict separation between evidence roles. Human-gold
+RubricBench is physically split into \texttt{train\_seed} (500 examples),
+\texttt{dev} (150), and \texttt{test\_main} (497 examples; 491 unique
+queries). Only \texttt{test\_main} is
+allowed in the main BSC evaluation; it is not used to choose prompts, tune
+reward weights, calibrate the verifier, select checkpoints, or construct
+proxy-gold targets. ResearchRubrics is split into 60
+\texttt{train\_seed} examples and 41 \texttt{dev\_test} examples for
+generalization analysis. RewardBench is first split by query into
+\texttt{sft\_proxy\_train}, \texttt{dev}, and
+\texttt{downstream\_holdout} partitions (1,791/597/597 records); after
+hard-gold and downstream holdout filtering, the clean proxy-training partition
+contains 1,785 records. RewardBench-2 and JudgeBench are full downstream
+holdouts. The current downstream holdout audits cover 597 RewardBench records
+with 551 normalized unique queries, 620 JudgeBench records with 528 normalized
+unique queries, and 1,815 RewardBench-2 records with 1,814 raw stripped unique
+queries or 1,813 normalized unique queries. IFBench, WritingBench, HealthBench,
+and BEIR/NQ are query pools that
+may enter training only after multi-teacher criteria elicitation and verifier
+filtering. Before any SFT or RL step, we run query-level holdout filtering
+against RubricBench \texttt{test\_main} and the downstream RewardBench,
+JudgeBench, and RewardBench-2 holdouts; any proxy-training example with an exact
+normalized query match is removed. We then run contamination audits against
+\texttt{test\_main} and each downstream holdout, and every audit must report
+\texttt{overlap\_query\_count == 0}. This zero-overlap count is not sufficient
+by itself: if any configured training-side artifact is missing, the audit is
+marked \texttt{artifact\_status=blocked} and
+\texttt{overlap\_status=not\_auditable}, so it cannot support C0. The filtering reports record SHA256
+digests for the holdout, input, and output files, and the final audit reports
+record SHA256 digests for the holdout and each training-side artifact. The
+claim-evidence matrix checks that each filtering stage's output digest matches
+the next stage's input digest, and that the final clean proxy-train digest is
+the same artifact inspected by the hard-gold and downstream audits. It also
+checks that the verifier-filtering report binds the raw teacher criteria, the
+filtered teacher criteria, the Meta-Verifier provider, the SFT-data preflight
+report, and the meta-verifier budget report by SHA256, and that the filtered
+teacher digest is the same input digest consumed by the proxy-gold construction
+report. Finally, it checks that the SFT JSONL, proxy-gold JSONL, and GRPO
+parquet digests recorded by the data-construction reports match the artifacts
+inspected by every final holdout audit. These
+audits inspect both visible prompt
+fields and nested reward metadata such as \texttt{extra\_info.query}, so
+\texttt{proxy\_gold\_verl.parquet} is checked by its original query rather than
+only by the formatted training prompt. This protocol is designed to make the
+main and downstream utility claims resistant to training/evaluation
+contamination concerns.
+
+\subsection{Evidence-Gated Claims}
+
+All paper claims are linked to artifacts through a claim-evidence matrix. A
+claim is draftable only if its required files exist and its metric gates pass.
+This prevents the manuscript from overstating toy or incomplete evidence.

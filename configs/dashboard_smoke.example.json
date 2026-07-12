@@ -1,0 +1,58 @@
+{
+  "title": "BlindSpot-RL Smoke Dashboard",
+  "objective": "Verify the local toy pipeline and evidence-gated paper handoff.",
+  "sections": [
+    {
+      "name": "Toy Preflight",
+      "type": "preflight",
+      "path": "outputs/toy_preflight/preflight.json",
+      "required": false
+    },
+    {
+      "name": "Toy API Budget",
+      "type": "api_budget",
+      "path": "outputs/toy_api_budget/budget.json",
+      "required": false
+    },
+    {
+      "name": "Toy Gold Validation",
+      "type": "gold_validation",
+      "path": "outputs/toy_gold_validation/gold_validation.json",
+      "required": false
+    },
+    {
+      "name": "Toy BSC Bootstrap CI",
+      "type": "confidence_interval",
+      "path": "outputs/toy_bsc_ci/bootstrap_ci.json",
+      "required": false
+    },
+    {
+      "name": "Toy Downstream Bootstrap CI",
+      "type": "confidence_interval",
+      "path": "outputs/toy_downstream_ci/bootstrap_ci.json",
+      "required": false
+    },
+    {
+      "name": "Toy Audit",
+      "type": "audit",
+      "path": "outputs/toy_audit_report.json",
+      "required": true
+    },
+    {
+      "name": "Toy Evidence",
+      "type": "evidence",
+      "path": "outputs/toy_evidence/evidence_matrix.json",
+      "required": true
+    },
+    {
+      "name": "Toy Submission Readiness",
+      "type": "readiness",
+      "path": "outputs/toy_submission_readiness.json",
+      "required": false
+    }
+  ],
+  "next_actions": [
+    "Replace toy evidence with RubricBench-scale reports before making paper claims.",
+    "Use dashboard blockers as the next sprint priority queue."
+  ]
+}

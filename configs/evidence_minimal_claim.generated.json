@@ -1,0 +1,597 @@
+{
+  "claims": [
+    {
+      "id": "C1",
+      "section": "Motivation",
+      "claim": "A single-model evaluation-criteria policy leaves measurable blind spots against human-gold evaluation dimensions.",
+      "artifacts": [
+        {
+          "label": "BSC summary",
+          "path": "outputs/minimal_claim/base/bsc/summary.json"
+        },
+        {
+          "label": "BSC per-item diagnostics",
+          "path": "outputs/minimal_claim/base/bsc/per_item.csv"
+        },
+        {
+          "label": "Blind-spot attribution summary",
+          "path": "outputs/minimal_claim/base/blindspot_map/summary.json"
+        },
+        {
+          "label": "Blind-spot attribution category table",
+          "path": "outputs/minimal_claim/base/blindspot_map/category_summary.csv"
+        },
+        {
+          "label": "Blind-spot attribution per-query map",
+          "path": "outputs/minimal_claim/base/blindspot_map/blindspots.jsonl"
+        },
+        {
+          "label": "Criteria-budget curve JSON",
+          "path": "outputs/minimal_claim/base/budget_curve/coverage_by_k.json"
+        },
+        {
+          "label": "Criteria-budget curve CSV",
+          "path": "outputs/minimal_claim/base/budget_curve/coverage_by_k.csv"
+        },
+        {
+          "label": "BSC bootstrap CI",
+          "path": "outputs/minimal_claim/base/bsc_ci/bootstrap_ci.json"
+        }
+      ],
+      "metrics": [
+        {
+          "label": "Evaluated gold-query count",
+          "path": "outputs/minimal_claim/base/bsc/summary.json",
+          "metric": "n",
+          "op": ">=",
+          "value": 100
+        },
+        {
+          "label": "Blind spot is non-trivial",
+          "path": "outputs/minimal_claim/base/bsc/summary.json",
+          "metric": "mean_blind",
+          "op": ">=",
+          "value": 0.2
+        },
+        {
+          "label": "Median query blind spot is non-trivial",
+          "path": "outputs/minimal_claim/base/bsc/summary.json",
+          "metric": "median_blind",
+          "op": ">=",
+          "value": 0.2
+        },
+        {
+          "label": "Most diagnostic queries have at most half coverage",
+          "path": "outputs/minimal_claim/base/bsc/summary.json",
+          "metric": "queries_coverage_le_0_5",
+          "op": ">=",
+          "value": 50
+        },
+        {
+          "label": "BSC coverage threshold matches protocol",
+          "path": "outputs/minimal_claim/base/bsc/summary.json",
+          "metric": "coverage_tau",
+          "op": "==",
+          "value": 0.75
+        },
+        {
+          "label": "BSC redundancy threshold matches protocol",
+          "path": "outputs/minimal_claim/base/bsc/summary.json",
+          "metric": "redundancy_tau",
+          "op": "==",
+          "value": 0.85
+        },
+        {
+          "label": "Hard-gold source has enough evaluated records (rubricbench)",
+          "path": "outputs/minimal_claim/base/bsc/summary.json",
+          "metric": "data_source_counts.rubricbench",
+          "op": ">=",
+          "value": 100
+        },
+        {
+          "label": "Blind-spot attribution uses diagnostic sample",
+          "path": "outputs/minimal_claim/base/blindspot_map/summary.json",
+          "metric": "n",
+          "op": ">=",
+          "value": 100
+        },
+        {
+          "label": "Blind-spot attribution coverage threshold matches protocol",
+          "path": "outputs/minimal_claim/base/blindspot_map/summary.json",
+          "metric": "coverage_tau",
+          "op": "==",
+          "value": 0.75
+        },
+        {
+          "label": "Blind-spot attribution covers human-gold dimensions",
+          "path": "outputs/minimal_claim/base/blindspot_map/summary.json",
+          "metric": "total_gold",
+          "op": ">",
+          "value": 0
+        },
+        {
+          "label": "Criteria-budget curve coverage threshold matches protocol",
+          "path": "outputs/minimal_claim/base/budget_curve/coverage_by_k.json",
+          "metric": "coverage_tau",
+          "op": "==",
+          "value": 0.75
+        },
+        {
+          "label": "Criteria-budget curve redundancy threshold matches protocol",
+          "path": "outputs/minimal_claim/base/budget_curve/coverage_by_k.json",
+          "metric": "redundancy_tau",
+          "op": "==",
+          "value": 0.85
+        },
+        {
+          "label": "Blind spot CI lower bound is non-trivial",
+          "path": "outputs/minimal_claim/base/bsc_ci/bootstrap_ci.json",
+          "metric": "metrics[metric=blind].ci_lower",
+          "op": ">=",
+          "value": 0.2
+        },
+        {
+          "label": "Frozen diagnostic evaluated gold-query count",
+          "path": "outputs/minimal_claim/base/bsc/summary.json",
+          "metric": "n",
+          "op": "==",
+          "value": 100
+        },
+        {
+          "label": "Frozen diagnostic mean coverage",
+          "path": "outputs/minimal_claim/base/bsc/summary.json",
+          "metric": "mean_coverage",
+          "op": "==",
+          "value": 0.36919517010450364
+        },
+        {
+          "label": "Frozen diagnostic mean blind-spot rate",
+          "path": "outputs/minimal_claim/base/bsc/summary.json",
+          "metric": "mean_blind",
+          "op": "==",
+          "value": 0.6308048298954964
+        },
+        {
+          "label": "Frozen diagnostic median blind-spot rate",
+          "path": "outputs/minimal_claim/base/bsc/summary.json",
+          "metric": "median_blind",
+          "op": "==",
+          "value": 0.6666666567325592
+        },
+        {
+          "label": "Frozen diagnostic queries with at most half coverage",
+          "path": "outputs/minimal_claim/base/bsc/summary.json",
+          "metric": "queries_coverage_le_0_5",
+          "op": "==",
+          "value": 74
+        },
+        {
+          "label": "Frozen diagnostic zero-coverage queries",
+          "path": "outputs/minimal_claim/base/bsc/summary.json",
+          "metric": "queries_zero_coverage",
+          "op": "==",
+          "value": 21
+        },
+        {
+          "label": "Frozen diagnostic mean redundancy",
+          "path": "outputs/minimal_claim/base/bsc/summary.json",
+          "metric": "mean_redundancy",
+          "op": "==",
+          "value": 0.07675396825396825
+        },
+        {
+          "label": "Frozen diagnostic mean hallucination/invalidity",
+          "path": "outputs/minimal_claim/base/bsc/summary.json",
+          "metric": "mean_hallucination",
+          "op": "==",
+          "value": 0.12273412698412695
+        },
+        {
+          "label": "Frozen diagnostic blind CI lower bound",
+          "path": "outputs/minimal_claim/base/bsc_ci/bootstrap_ci.json",
+          "metric": "metrics[metric=blind].ci_lower",
+          "op": "==",
+          "value": 0.5784969914257526
+        },
+        {
+          "label": "Frozen diagnostic blind CI upper bound",
+          "path": "outputs/minimal_claim/base/bsc_ci/bootstrap_ci.json",
+          "metric": "metrics[metric=blind].ci_upper",
+          "op": "==",
+          "value": 0.6822689984422177
+        },
+        {
+          "label": "Minimal BSC verifier-backed records",
+          "path": "outputs/minimal_claim/base/bsc/summary.json",
+          "metric": "verifier_source_counts.valid_flags",
+          "op": ">=",
+          "value": 100
+        },
+        {
+          "label": "Frozen attribution total_gold",
+          "path": "outputs/minimal_claim/base/blindspot_map/summary.json",
+          "metric": "total_gold",
+          "op": "==",
+          "value": 569
+        },
+        {
+          "label": "Frozen attribution uncovered_gold",
+          "path": "outputs/minimal_claim/base/blindspot_map/summary.json",
+          "metric": "uncovered_gold",
+          "op": "==",
+          "value": 367
+        },
+        {
+          "label": "Frozen attribution mean_blind_over_gold",
+          "path": "outputs/minimal_claim/base/blindspot_map/summary.json",
+          "metric": "mean_blind_over_gold",
+          "op": "==",
+          "value": 0.6449912126537786
+        }
+      ],
+      "values": [
+        {
+          "label": "BSC embedding model matches protocol",
+          "path": "outputs/minimal_claim/base/bsc/summary.json",
+          "key": "embedding_model",
+          "op": "==",
+          "value": "BAAI/bge-large-en-v1.5"
+        },
+        {
+          "label": "Criteria-budget curve embedding model matches protocol",
+          "path": "outputs/minimal_claim/base/budget_curve/coverage_by_k.json",
+          "key": "embedding_model",
+          "op": "==",
+          "value": "BAAI/bge-large-en-v1.5"
+        },
+        {
+          "label": "Criteria-budget curve K grid matches Section 2 diagnostic",
+          "path": "outputs/minimal_claim/base/budget_curve/coverage_by_k.json",
+          "key": "budgets",
+          "op": "==",
+          "value": [
+            3,
+            5,
+            8,
+            10,
+            15
+          ]
+        },
+        {
+          "label": "Minimal BSC hallucination source is verifier-backed",
+          "path": "outputs/minimal_claim/base/bsc/summary.json",
+          "key": "verifier_source",
+          "op": "==",
+          "value": "valid_flags"
+        }
+      ],
+      "notes": "This is the first paper gate: run before investing in SFT/GRPO training.",
+      "csv_checks": [
+        {
+          "label": "Blind-spot attribution table has all coarse categories",
+          "path": "outputs/minimal_claim/base/blindspot_map/category_summary.csv",
+          "columns": [
+            "category",
+            "total_gold",
+            "covered_gold",
+            "uncovered_gold",
+            "coverage",
+            "blind_rate"
+          ],
+          "min_rows": 7,
+          "numeric": [
+            "total_gold",
+            "covered_gold",
+            "uncovered_gold",
+            "coverage",
+            "blind_rate"
+          ]
+        },
+        {
+          "label": "Criteria-budget curve has evaluated K rows",
+          "path": "outputs/minimal_claim/base/budget_curve/coverage_by_k.csv",
+          "columns": [
+            "k",
+            "n",
+            "mean_coverage",
+            "mean_blind",
+            "mean_redundancy",
+            "total_gen"
+          ],
+          "min_rows": 5,
+          "numeric": [
+            "k",
+            "n",
+            "mean_coverage",
+            "mean_blind",
+            "mean_redundancy",
+            "total_gen"
+          ]
+        }
+      ],
+      "table_values": [
+        {
+          "label": "Frozen attribution completeness total_gold",
+          "path": "outputs/minimal_claim/base/blindspot_map/category_summary.csv",
+          "row_key": "category",
+          "row_value": "completeness",
+          "key": "total_gold",
+          "op": "==",
+          "value": 283
+        },
+        {
+          "label": "Frozen attribution completeness coverage",
+          "path": "outputs/minimal_claim/base/blindspot_map/category_summary.csv",
+          "row_key": "category",
+          "row_value": "completeness",
+          "key": "coverage",
+          "op": "==",
+          "value": 0.37809187279151946
+        },
+        {
+          "label": "Frozen attribution completeness blind_rate",
+          "path": "outputs/minimal_claim/base/blindspot_map/category_summary.csv",
+          "row_key": "category",
+          "row_value": "completeness",
+          "key": "blind_rate",
+          "op": "==",
+          "value": 0.6219081272084805
+        },
+        {
+          "label": "Frozen attribution constraint_following total_gold",
+          "path": "outputs/minimal_claim/base/blindspot_map/category_summary.csv",
+          "row_key": "category",
+          "row_value": "constraint_following",
+          "key": "total_gold",
+          "op": "==",
+          "value": 124
+        },
+        {
+          "label": "Frozen attribution constraint_following coverage",
+          "path": "outputs/minimal_claim/base/blindspot_map/category_summary.csv",
+          "row_key": "category",
+          "row_value": "constraint_following",
+          "key": "coverage",
+          "op": "==",
+          "value": 0.1774193548387097
+        },
+        {
+          "label": "Frozen attribution constraint_following blind_rate",
+          "path": "outputs/minimal_claim/base/blindspot_map/category_summary.csv",
+          "row_key": "category",
+          "row_value": "constraint_following",
+          "key": "blind_rate",
+          "op": "==",
+          "value": 0.8225806451612904
+        },
+        {
+          "label": "Frozen attribution intent_reasoning total_gold",
+          "path": "outputs/minimal_claim/base/blindspot_map/category_summary.csv",
+          "row_key": "category",
+          "row_value": "intent_reasoning",
+          "key": "total_gold",
+          "op": "==",
+          "value": 13
+        },
+        {
+          "label": "Frozen attribution intent_reasoning coverage",
+          "path": "outputs/minimal_claim/base/blindspot_map/category_summary.csv",
+          "row_key": "category",
+          "row_value": "intent_reasoning",
+          "key": "coverage",
+          "op": "==",
+          "value": 0.23076923076923078
+        },
+        {
+          "label": "Frozen attribution intent_reasoning blind_rate",
+          "path": "outputs/minimal_claim/base/blindspot_map/category_summary.csv",
+          "row_key": "category",
+          "row_value": "intent_reasoning",
+          "key": "blind_rate",
+          "op": "==",
+          "value": 0.7692307692307693
+        },
+        {
+          "label": "Frozen budget curve K=3 n",
+          "path": "outputs/minimal_claim/base/budget_curve/coverage_by_k.csv",
+          "row_key": "k",
+          "row_value": 3,
+          "key": "n",
+          "op": "==",
+          "value": 100
+        },
+        {
+          "label": "Frozen budget curve K=3 mean_coverage",
+          "path": "outputs/minimal_claim/base/budget_curve/coverage_by_k.csv",
+          "row_key": "k",
+          "row_value": 3,
+          "key": "mean_coverage",
+          "op": "==",
+          "value": 0.2337821100652218
+        },
+        {
+          "label": "Frozen budget curve K=3 mean_blind",
+          "path": "outputs/minimal_claim/base/budget_curve/coverage_by_k.csv",
+          "row_key": "k",
+          "row_value": 3,
+          "key": "mean_blind",
+          "op": "==",
+          "value": 0.7662178899347782
+        },
+        {
+          "label": "Frozen budget curve K=3 mean_redundancy",
+          "path": "outputs/minimal_claim/base/budget_curve/coverage_by_k.csv",
+          "row_key": "k",
+          "row_value": 3,
+          "key": "mean_redundancy",
+          "op": "==",
+          "value": 0.019999999999999997
+        },
+        {
+          "label": "Frozen budget curve K=3 total_gen",
+          "path": "outputs/minimal_claim/base/budget_curve/coverage_by_k.csv",
+          "row_key": "k",
+          "row_value": 3,
+          "key": "total_gen",
+          "op": "==",
+          "value": 300
+        },
+        {
+          "label": "Frozen budget curve K=10 n",
+          "path": "outputs/minimal_claim/base/budget_curve/coverage_by_k.csv",
+          "row_key": "k",
+          "row_value": 10,
+          "key": "n",
+          "op": "==",
+          "value": 100
+        },
+        {
+          "label": "Frozen budget curve K=10 mean_coverage",
+          "path": "outputs/minimal_claim/base/budget_curve/coverage_by_k.csv",
+          "row_key": "k",
+          "row_value": 10,
+          "key": "mean_coverage",
+          "op": "==",
+          "value": 0.36919517010450364
+        },
+        {
+          "label": "Frozen budget curve K=10 mean_blind",
+          "path": "outputs/minimal_claim/base/budget_curve/coverage_by_k.csv",
+          "row_key": "k",
+          "row_value": 10,
+          "key": "mean_blind",
+          "op": "==",
+          "value": 0.6308048298954964
+        },
+        {
+          "label": "Frozen budget curve K=10 mean_redundancy",
+          "path": "outputs/minimal_claim/base/budget_curve/coverage_by_k.csv",
+          "row_key": "k",
+          "row_value": 10,
+          "key": "mean_redundancy",
+          "op": "==",
+          "value": 0.07675396825396825
+        },
+        {
+          "label": "Frozen budget curve K=10 total_gen",
+          "path": "outputs/minimal_claim/base/budget_curve/coverage_by_k.csv",
+          "row_key": "k",
+          "row_value": 10,
+          "key": "total_gen",
+          "op": "==",
+          "value": 842
+        },
+        {
+          "label": "Frozen budget curve K=15 n",
+          "path": "outputs/minimal_claim/base/budget_curve/coverage_by_k.csv",
+          "row_key": "k",
+          "row_value": 15,
+          "key": "n",
+          "op": "==",
+          "value": 100
+        },
+        {
+          "label": "Frozen budget curve K=15 mean_coverage",
+          "path": "outputs/minimal_claim/base/budget_curve/coverage_by_k.csv",
+          "row_key": "k",
+          "row_value": 15,
+          "key": "mean_coverage",
+          "op": "==",
+          "value": 0.36919517010450364
+        },
+        {
+          "label": "Frozen budget curve K=15 mean_blind",
+          "path": "outputs/minimal_claim/base/budget_curve/coverage_by_k.csv",
+          "row_key": "k",
+          "row_value": 15,
+          "key": "mean_blind",
+          "op": "==",
+          "value": 0.6308048298954964
+        },
+        {
+          "label": "Frozen budget curve K=15 mean_redundancy",
+          "path": "outputs/minimal_claim/base/budget_curve/coverage_by_k.csv",
+          "row_key": "k",
+          "row_value": 15,
+          "key": "mean_redundancy",
+          "op": "==",
+          "value": 0.07675396825396825
+        },
+        {
+          "label": "Frozen budget curve K=15 total_gen",
+          "path": "outputs/minimal_claim/base/budget_curve/coverage_by_k.csv",
+          "row_key": "k",
+          "row_value": 15,
+          "key": "total_gen",
+          "op": "==",
+          "value": 842
+        }
+      ]
+    },
+    {
+      "id": "C2",
+      "section": "Robustness",
+      "claim": "The blind-spot diagnostic can be audited across semantic threshold settings.",
+      "artifacts": [
+        {
+          "label": "Threshold sweep CSV",
+          "path": "outputs/minimal_claim/base/bsc_sweep/threshold_sweep.csv"
+        },
+        {
+          "label": "Threshold sweep Markdown",
+          "path": "outputs/minimal_claim/base/bsc_sweep/threshold_sweep.md"
+        },
+        {
+          "label": "BSC human audit annotation pack",
+          "path": "outputs/minimal_claim/base/bsc_human_audit_pack/audit_items.csv"
+        }
+      ],
+      "metrics": [
+        {
+          "label": "Threshold sweep has evaluated records",
+          "path": "outputs/minimal_claim/base/bsc_sweep/threshold_sweep.json",
+          "metric": "0.n",
+          "op": ">",
+          "value": 0
+        },
+        {
+          "label": "Loose coverage-threshold blind spot remains non-trivial",
+          "path": "outputs/minimal_claim/base/bsc_sweep/threshold_sweep.json",
+          "metric": "0.mean_blind",
+          "op": ">=",
+          "value": 0.2
+        },
+        {
+          "label": "Strict coverage-threshold blind spot remains non-trivial",
+          "path": "outputs/minimal_claim/base/bsc_sweep/threshold_sweep.json",
+          "metric": "6.mean_blind",
+          "op": ">=",
+          "value": 0.2
+        },
+        {
+          "label": "BSC human audit pack has matched samples",
+          "path": "outputs/minimal_claim/base/bsc_human_audit_pack/summary.json",
+          "metric": "sampled_matched",
+          "op": ">=",
+          "value": 25
+        },
+        {
+          "label": "BSC human audit pack has unmatched samples",
+          "path": "outputs/minimal_claim/base/bsc_human_audit_pack/summary.json",
+          "metric": "sampled_unmatched",
+          "op": ">=",
+          "value": 25
+        }
+      ],
+      "values": [
+        {
+          "label": "BSC human audit pack is annotation-ready",
+          "path": "outputs/minimal_claim/base/bsc_human_audit_pack/summary.json",
+          "key": "status",
+          "op": "==",
+          "value": "annotation_pack_ready"
+        }
+      ]
+    }
+  ]
+}

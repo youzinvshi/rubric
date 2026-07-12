@@ -1,0 +1,1 @@
+{"name":"base","model":"Qwen/Qwen2.5-7B-Instruct","base_url":"http://localhost:8000/v1","api_key_env":"LOCAL_OPENAI_API_KEY","temperature":0.2,"max_tokens":1200}

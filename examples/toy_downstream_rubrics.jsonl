@@ -1,0 +1,2 @@
+{"query":"Evaluate whether an answer explains photosynthesis.","model":"toy-generator","rubrics":["mentions sunlight","mentions carbon dioxide and water","mentions oxygen released"]}
+{"query":"Evaluate a math word problem answer.","model":"toy-generator","rubrics":["shows the equation","explains step by step","gives final answer"]}

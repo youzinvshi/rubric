@@ -1,0 +1,449 @@
+{
+  "local_config_init": {
+    "enabled": true,
+    "template": "configs/data_sources_real.template.json",
+    "output": "configs/data_sources_real.local.json",
+    "report_json": "outputs/data_sources/local_config_init.json",
+    "report_md": "outputs/data_sources/local_config_init.md",
+    "fill_present_sha256": false,
+    "update_existing": false,
+    "strict": false
+  },
+  "post_download_local_config_init": {
+    "enabled": true,
+    "template": "configs/data_sources_real.template.json",
+    "output": "configs/data_sources_real.local.json",
+    "report_json": "outputs/data_sources/local_config_post_download.json",
+    "report_md": "outputs/data_sources/local_config_post_download.md",
+    "fill_present_sha256": true,
+    "update_existing": true,
+    "strict": false
+  },
+  "pre_normalization_source_report": {
+    "enabled": true,
+    "config": "configs/data_sources_real.local.json",
+    "output_json": "outputs/data_sources/source_report_pre_normalization.json",
+    "output_md": "outputs/data_sources/source_report_pre_normalization.md",
+    "strict": true
+  },
+  "source_report": {
+    "enabled": true,
+    "config": "configs/data_sources_real.local.json",
+    "output_json": "outputs/data_sources/source_report.json",
+    "output_md": "outputs/data_sources/source_report.md",
+    "strict": true
+  },
+  "datasets": [
+    {
+      "name": "rubricbench",
+      "source": {
+        "type": "manual",
+        "raw_path": "data/raw/rubricbench_raw.jsonl",
+        "official_url": "https://huggingface.co/datasets/DonJoey/rubricbench/resolve/main/data/train-00000-of-00001.parquet",
+        "download_enabled": true,
+        "require_official_url": true,
+        "raw_sha256": "",
+        "require_raw_sha256": true,
+        "paper_url": "https://arxiv.org/abs/2603.01562",
+        "note": "Official RubricBench data is published as DonJoey/rubricbench train parquet on HuggingFace and linked from arXiv:2603.01562v2. Keep raw_sha256 empty in the template until the downloaded JSONL export is audited locally. Required for the hard-gold BSC motivation claim."
+      },
+      "expected_fields": ["query", "gold_rubrics"],
+      "profile": {
+        "output": "outputs/data_profiles/rubricbench_schema.json",
+        "limit": 100
+      },
+      "normalizations": [
+        {
+          "target": "gold",
+          "output": "data/processed/rubricbench_gold.jsonl",
+          "data_source": "rubricbench",
+          "paper_url": "https://arxiv.org/abs/2603.01562",
+          "dedupe_query": false,
+          "validation": {
+            "enabled": true,
+            "min_records": 100,
+            "min_rubrics_per_query": 1,
+            "require_provenance": true,
+            "required_data_source": ["rubricbench"],
+            "forbidden_data_source": ["toy", "proxy"],
+            "output_json": "outputs/data_validation/rubricbench_gold.json",
+            "output_md": "outputs/data_validation/rubricbench_gold.md",
+            "strict": true
+          },
+          "split": {
+            "enabled": true,
+            "output_dir": "data/processed/splits",
+            "output_prefix": "rubricbench_gold_",
+            "manifest": "outputs/data_splits/rubricbench_gold_split.json",
+            "splits": ["train_seed:500", "dev:150", "test_main:497"],
+            "group_key": "query",
+            "stratify_key": "data_source",
+            "gold_type": "human_gold",
+            "main_eval_split": ["test_main"],
+            "seed": 13,
+            "outputs": [
+              "data/processed/splits/rubricbench_gold_train_seed.jsonl",
+              "data/processed/splits/rubricbench_gold_dev.jsonl",
+              "data/processed/splits/rubricbench_gold_test_main.jsonl"
+            ]
+          }
+        },
+        {
+          "target": "query_pool",
+          "output": "data/processed/rubricbench_queries.jsonl",
+          "data_source": "rubricbench",
+          "dedupe_query": false,
+          "validation": {
+            "enabled": true,
+            "min_records": 100,
+            "require_provenance": true,
+            "required_data_source": ["rubricbench"],
+            "forbidden_data_source": ["toy", "proxy"],
+            "output_json": "outputs/data_validation/rubricbench_queries.json",
+            "output_md": "outputs/data_validation/rubricbench_queries.md",
+            "strict": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "researchrubrics",
+      "source": {
+        "type": "manual",
+        "raw_path": "data/raw/researchrubrics_raw.jsonl",
+        "official_url": "https://huggingface.co/datasets/ScaleAI/researchrubrics/resolve/main/processed_data.jsonl",
+        "download_enabled": true,
+        "require_official_url": true,
+        "raw_sha256": "",
+        "require_raw_sha256": true,
+        "paper_url": "https://arxiv.org/abs/2511.07685",
+        "note": "Official ResearchRubrics data is published as ScaleAI/researchrubrics processed_data.jsonl on HuggingFace. Keep raw_sha256 empty until the downloaded raw file is audited locally. This supports cross-domain/generalization evidence, not the first minimal claim gate."
+      },
+      "expected_fields": ["query", "gold_rubrics"],
+      "profile": {
+        "output": "outputs/data_profiles/researchrubrics_schema.json",
+        "limit": 100
+      },
+      "normalizations": [
+        {
+          "target": "gold",
+          "output": "data/processed/researchrubrics_gold.jsonl",
+          "data_source": "researchrubrics",
+          "paper_url": "https://arxiv.org/abs/2511.07685",
+          "dedupe_query": true,
+          "validation": {
+            "enabled": true,
+            "min_records": 100,
+            "min_rubrics_per_query": 1,
+            "require_provenance": true,
+            "required_data_source": ["researchrubrics"],
+            "forbidden_data_source": ["toy", "proxy"],
+            "output_json": "outputs/data_validation/researchrubrics_gold.json",
+            "output_md": "outputs/data_validation/researchrubrics_gold.md",
+            "strict": true
+          },
+          "split": {
+            "enabled": true,
+            "output_dir": "data/processed/splits",
+            "output_prefix": "researchrubrics_gold_",
+            "manifest": "outputs/data_splits/researchrubrics_gold_split.json",
+            "splits": ["train_seed:60", "dev_test:rest"],
+            "group_key": "query",
+            "stratify_key": "data_source",
+            "gold_type": "human_gold",
+            "main_eval_split": [],
+            "seed": 13,
+            "outputs": [
+              "data/processed/splits/researchrubrics_gold_train_seed.jsonl",
+              "data/processed/splits/researchrubrics_gold_dev_test.jsonl"
+            ]
+          }
+        },
+        {
+          "target": "query_pool",
+          "output": "data/processed/researchrubrics_queries.jsonl",
+          "data_source": "researchrubrics",
+          "dedupe_query": true,
+          "validation": {
+            "enabled": true,
+            "min_records": 100,
+            "require_provenance": true,
+            "required_data_source": ["researchrubrics"],
+            "forbidden_data_source": ["toy", "proxy"],
+            "output_json": "outputs/data_validation/researchrubrics_queries.json",
+            "output_md": "outputs/data_validation/researchrubrics_queries.md",
+            "strict": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "rewardbench",
+      "source": {
+        "type": "hf",
+        "preset": "rewardbench",
+        "output": "data/raw/rewardbench_filtered.jsonl"
+      },
+      "expected_fields": ["prompt", "chosen", "rejected"],
+      "profile": {
+        "output": "outputs/data_profiles/rewardbench_schema.json",
+        "limit": 100
+      },
+      "normalizations": [
+        {
+          "target": "preference",
+          "output": "data/processed/rewardbench_pref.jsonl",
+          "data_source": "rewardbench",
+          "split": {
+            "enabled": true,
+            "output_dir": "data/processed/splits",
+            "output_prefix": "rewardbench_pref_",
+            "manifest": "outputs/data_splits/rewardbench_pref_split.json",
+            "splits": ["sft_proxy_train:0.6", "dev:0.2", "downstream_holdout:rest"],
+            "group_key": "query",
+            "stratify_key": "data_source",
+            "gold_type": "proxy_teacher",
+            "main_eval_split": [],
+            "seed": 13,
+            "outputs": [
+              "data/processed/splits/rewardbench_pref_sft_proxy_train.jsonl",
+              "data/processed/splits/rewardbench_pref_dev.jsonl",
+              "data/processed/splits/rewardbench_pref_downstream_holdout.jsonl"
+            ]
+          }
+        },
+        {
+          "target": "query_pool",
+          "output": "data/processed/rewardbench_queries.jsonl",
+          "data_source": "rewardbench",
+          "dedupe_query": true
+        }
+      ]
+    },
+    {
+      "name": "judgebench",
+      "source": {
+        "type": "hf",
+        "preset": "judgebench",
+        "output": "data/raw/judgebench_test.jsonl"
+      },
+      "expected_fields": ["question", "response_A", "response_B", "label"],
+      "profile": {
+        "output": "outputs/data_profiles/judgebench_schema.json",
+        "limit": 100
+      },
+      "normalizations": [
+        {
+          "target": "preference",
+          "output": "data/processed/judgebench_pref.jsonl",
+          "data_source": "judgebench"
+        },
+        {
+          "target": "query_pool",
+          "output": "data/processed/judgebench_queries.jsonl",
+          "data_source": "judgebench",
+          "dedupe_query": true
+        }
+      ]
+    },
+    {
+      "name": "rewardbench2",
+      "source": {
+        "type": "hf",
+        "preset": "rewardbench2",
+        "output": "data/raw/rewardbench2_test.jsonl"
+      },
+      "expected_fields": ["prompt", "responses"],
+      "profile": {
+        "output": "outputs/data_profiles/rewardbench2_schema.json",
+        "limit": 100
+      },
+      "normalizations": [
+        {
+          "target": "query_pool",
+          "output": "data/processed/rewardbench2_queries.jsonl",
+          "data_source": "rewardbench2",
+          "dedupe_query": true
+        },
+        {
+          "target": "multicandidate",
+          "output": "data/processed/rewardbench2_multicandidate.jsonl",
+          "data_source": "rewardbench2"
+        }
+      ],
+      "notes": "RewardBench-2 is multi-candidate/four-way rather than a simple chosen/rejected pair. Use the multicandidate evaluator instead of the pairwise chosen/rejected evaluator."
+    },
+    {
+      "name": "rmbench",
+      "source": {
+        "type": "manual",
+        "raw_path": "data/raw/rmbench_raw.jsonl",
+        "official_url": "https://github.com/THU-KEG/RM-Bench",
+        "paper_url": "https://arxiv.org/abs/2410.09893",
+        "note": "Use RM-Bench as a style-bias/subtle-difference downstream extension after mapping the official release schema."
+      },
+      "expected_fields": ["prompt"],
+      "profile": {
+        "output": "outputs/data_profiles/rmbench_schema.json",
+        "limit": 100
+      },
+      "schema_contract": {
+        "target": ["preference", "multicandidate"],
+        "output_json": "outputs/schema_contracts/rmbench_downstream_schema.json",
+        "output_md": "outputs/schema_contracts/rmbench_downstream_schema.md",
+        "min_records": 1
+      },
+      "normalizations": [
+        {
+          "target": "query_pool",
+          "output": "data/processed/rmbench_queries.jsonl",
+          "data_source": "rmbench",
+          "dedupe_query": true
+        }
+      ]
+    },
+    {
+      "name": "healthbench",
+      "source": {
+        "type": "hf",
+        "preset": "healthbench",
+        "output": "data/raw/healthbench_raw.jsonl",
+        "official_url": "https://huggingface.co/datasets/openai/healthbench",
+        "paper_url": "https://arxiv.org/abs/2505.08775",
+        "note": "Use HealthBench as a high-risk medical query pool. Preserve the official physician-written rubric benchmark as evaluation data, but derive proxy gold only from audited multi-teacher evaluation-criteria elicitation outputs."
+      },
+      "expected_fields": ["prompt", "rubrics"],
+      "profile": {
+        "output": "outputs/data_profiles/healthbench_schema.json",
+        "limit": 100
+      },
+      "normalizations": [
+        {
+          "target": "query_pool",
+          "output": "data/processed/healthbench_queries.jsonl",
+          "data_source": "healthbench",
+          "query_key": "prompt",
+          "dedupe_query": true
+        }
+      ]
+    },
+    {
+      "name": "ifbench",
+      "source": {
+        "type": "hf",
+        "preset": "ifbench",
+        "output": "data/raw/ifbench_test.jsonl",
+        "official_url": "https://huggingface.co/datasets/allenai/IFBench_test",
+        "paper_url": "https://arxiv.org/abs/2507.02833",
+        "note": "Use IFBench as a hidden-constraint / instruction-following proxy-gold query pool. Keep it outside the human-gold BSC table and derive proxy criteria through multi-teacher elicitation plus verifier filtering."
+      },
+      "expected_fields": ["prompt", "instruction_id_list"],
+      "profile": {
+        "output": "outputs/data_profiles/ifbench_schema.json",
+        "limit": 100
+      },
+      "normalizations": [
+        {
+          "target": "query_pool",
+          "output": "data/processed/ifbench_queries.jsonl",
+          "data_source": "ifbench",
+          "query_key": "prompt",
+          "dedupe_query": true
+        }
+      ]
+    },
+    {
+      "name": "beir_nq",
+      "source": {
+        "type": "hf",
+        "preset": "beir_nq",
+        "output": "data/raw/beir_nq_queries.jsonl",
+        "official_url": "https://huggingface.co/datasets/BeIR/nq",
+        "note": "Use BEIR Natural Questions query pool as a first search-intent / retrieval benchmark entry point. These are real search-style questions and should only provide proxy-gold criteria-training prompts, never main human-gold BSC evidence."
+      },
+      "expected_fields": ["text", "title"],
+      "profile": {
+        "output": "outputs/data_profiles/beir_nq_schema.json",
+        "limit": 100
+      },
+      "normalizations": [
+        {
+          "target": "query_pool",
+          "output": "data/processed/beir_nq_queries.jsonl",
+          "data_source": "beir_nq",
+          "query_key": "text",
+          "dedupe_query": true
+        }
+      ]
+    },
+    {
+      "name": "writingbench",
+      "source": {
+        "type": "url",
+        "preset": "writingbench",
+        "url": "https://raw.githubusercontent.com/X-PLUG/WritingBench/main/benchmark_query/benchmark_all.jsonl",
+        "output": "data/raw/writingbench_raw.jsonl",
+        "official_url": "https://github.com/X-PLUG/WritingBench/blob/main/benchmark_query/benchmark_all.jsonl",
+        "paper_url": "https://arxiv.org/abs/2503.05244",
+        "note": "Use WritingBench as a cross-domain generation/generalization query pool. The public benchmark query file provides writing prompts plus instance-specific criteria; proxy gold should still be derived from audited multi-teacher union outputs, not treated as hard gold."
+      },
+      "expected_fields": ["query"],
+      "profile": {
+        "output": "outputs/data_profiles/writingbench_schema.json",
+        "limit": 100
+      },
+      "normalizations": [
+        {
+          "target": "query_pool",
+          "output": "data/processed/writingbench_queries.jsonl",
+          "data_source": "writingbench",
+          "dedupe_query": true
+        }
+      ]
+    },
+    {
+      "name": "healthbench_hard",
+      "source": {
+        "type": "manual",
+        "raw_path": "data/raw/healthbench_hard_raw.jsonl",
+        "official_url": "https://github.com/openai/simple-evals",
+        "note": "Use HealthBench-Hard query prompts for optional downstream policy-RLVR. These data are policy training prompts, not human-gold evaluation dimensions for main BSC evidence."
+      },
+      "expected_fields": ["query"],
+      "profile": {
+        "output": "outputs/data_profiles/healthbench_hard_schema.json",
+        "limit": 100
+      },
+      "normalizations": [
+        {
+          "target": "query_pool",
+          "output": "data/processed/healthbench_hard_queries.jsonl",
+          "data_source": "healthbench_hard",
+          "dedupe_query": true
+        }
+      ]
+    },
+    {
+      "name": "arenahard",
+      "source": {
+        "type": "manual",
+        "raw_path": "data/raw/arenahard_raw.jsonl",
+        "official_url": "https://github.com/lm-sys/arena-hard-auto",
+        "note": "Use ArenaHard prompts for optional downstream policy-RLVR. Keep ArenaHard claims deferred until official evaluation artifacts exist."
+      },
+      "expected_fields": ["query"],
+      "profile": {
+        "output": "outputs/data_profiles/arenahard_schema.json",
+        "limit": 100
+      },
+      "normalizations": [
+        {
+          "target": "query_pool",
+          "output": "data/processed/arenahard_queries.jsonl",
+          "data_source": "arenahard",
+          "dedupe_query": true
+        }
+      ]
+    }
+  ]
+}

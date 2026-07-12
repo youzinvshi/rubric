@@ -1,0 +1,55 @@
+{
+  "title": "BlindSpot-RL Smoke Result Card",
+  "experiment_id": "smoke",
+  "scope": "toy pipeline validation only; not a paper claim",
+  "safe_claim": "The BSC diagnostic pipeline can compute coverage, blind spots, redundancy, hallucination, and downstream preference accuracy on toy data.",
+  "deferred_claim": "Do not claim real single-model blind spots until RubricBench hard-gold data passes Raw Audit Gates.",
+  "raw_audit_gates": [
+    {
+      "name": "Toy Audit",
+      "type": "audit",
+      "path": "outputs/toy_audit_report.json"
+    }
+  ],
+  "gold_validations": [
+    {
+      "name": "Toy Gold Validation",
+      "path": "outputs/toy_gold_validation/gold_validation.json"
+    }
+  ],
+  "manifests": [
+    {
+      "name": "Smoke Generated Manifest",
+      "path": "configs/pipeline_smoke.example.json"
+    }
+  ],
+  "bsc_summaries": [
+    {
+      "method": "toy_model",
+      "path": "outputs/toy_bsc/summary.json"
+    }
+  ],
+  "downstream_summaries": [
+    {
+      "method": "toy_model",
+      "path": "outputs/toy_downstream/summary.json"
+    }
+  ],
+  "confidence_intervals": [
+    {
+      "name": "Toy BSC Bootstrap CI",
+      "path": "outputs/toy_bsc_ci/bootstrap_ci.json"
+    },
+    {
+      "name": "Toy Downstream Bootstrap CI",
+      "path": "outputs/toy_downstream_ci/bootstrap_ci.json"
+    }
+  ],
+  "evidence_matrix": "outputs/toy_evidence/evidence_matrix.json",
+  "readiness_report": "outputs/toy_submission_readiness.json",
+  "dashboard": "outputs/toy_dashboard/run_dashboard.json",
+  "notes": [
+    "Toy evidence validates wiring only.",
+    "Real claims require RubricBench/ResearchRubrics hard-gold validation and BGE-based diagnostics."
+  ]
+}

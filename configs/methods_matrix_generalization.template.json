@@ -1,0 +1,168 @@
+{
+  "common": {
+    "bsc_gold": "data/processed/splits/rubricbench_gold_test_main.jsonl",
+    "downstream_preferences": "data/processed/rewardbench_pref.jsonl",
+    "processed_root": "data/processed/matrix_generalization",
+    "output_root": "outputs/generalization_matrix",
+    "trained_method_gate": {
+      "enabled": true,
+      "name": "generalization_trained_method_gate",
+      "gate_name": "generalization_trained_method_gate",
+      "model_filters": ["sft_rl"],
+      "served_methods": "outputs/training_commands/training_done.json:served_methods",
+      "served_generators": "outputs/training_commands/training_done.json:served_generators",
+      "required_paths": [
+        "outputs/verifier/teacher_rubrics_filtered_report.json",
+        "outputs/contamination_audit/teacher_rubrics_hard_gold_holdout_filter.json",
+        "outputs/contamination_audit/teacher_rubrics_rewardbench_holdout_filter.json",
+        "outputs/contamination_audit/teacher_rubrics_judgebench_holdout_filter.json",
+        "outputs/contamination_audit/teacher_rubrics_rewardbench2_holdout_filter.json",
+        "outputs/sft_data/proxy_gold_build_report.json",
+        "outputs/sft_data/proxy_gold_verl_report.json"
+      ],
+      "required_json": [
+        "outputs/training_commands/training_done.json:sft_checkpoint,rl_checkpoint,served_methods,served_generators,serving.base,serving.sft_only,serving.sft_rl,operator,date,sft_config,grpo_config,sft_data,rl_data,rl_data_report,reward_function,sft_config_sha256,grpo_config_sha256,sft_data_sha256,rl_data_sha256,rl_data_report_sha256,reward_function_sha256",
+        "outputs/verifier/teacher_rubrics_filtered_report.json:input,input_sha256,output,output_sha256,mode,provider,provider_sha256,budget_report,budget_report_sha256,preflight_report,preflight_report_sha256,n_input_records,n_output_records,n_input_rubrics,n_valid_rubrics",
+        "outputs/contamination_audit/teacher_rubrics_hard_gold_holdout_filter.json:ok,holdout,holdout_sha256,input,input_sha256,output,output_sha256,input_records,output_records,removed_records,blockers",
+        "outputs/contamination_audit/teacher_rubrics_rewardbench_holdout_filter.json:ok,holdout,holdout_sha256,input,input_sha256,output,output_sha256,input_records,output_records,removed_records,blockers",
+        "outputs/contamination_audit/teacher_rubrics_judgebench_holdout_filter.json:ok,holdout,holdout_sha256,input,input_sha256,output,output_sha256,input_records,output_records,removed_records,blockers",
+        "outputs/contamination_audit/teacher_rubrics_rewardbench2_holdout_filter.json:ok,holdout,holdout_sha256,input,input_sha256,output,output_sha256,input_records,output_records,removed_records,blockers",
+        "outputs/sft_data/proxy_gold_build_report.json:input,input_sha256,sft_output,sft_output_sha256,proxy_gold_output,proxy_gold_output_sha256,n_input_records,n_filtered_records,n_sft_records,n_proxy_gold_records,data_source,embedding_model,dedupe_tau,min_teachers,forbidden_data_source_markers,forbidden_splits",
+        "outputs/sft_data/proxy_gold_verl_report.json:input,input_sha256,output,output_sha256,n_records,data_source,forbidden_source_markers,forbidden_splits"
+      ],
+      "required_json_contains": [
+        "outputs/training_commands/training_done.json:served_methods=base,sft_only,sft_rl",
+        "outputs/training_commands/training_done.json:served_generators=base,sft_only,sft_rl",
+        "outputs/sft_data/proxy_gold_build_report.json:forbidden_data_source_markers=test_main",
+        "outputs/sft_data/proxy_gold_build_report.json:forbidden_data_source_markers=holdout",
+        "outputs/sft_data/proxy_gold_build_report.json:forbidden_data_source_markers=downstream",
+        "outputs/sft_data/proxy_gold_build_report.json:forbidden_splits=test_main",
+        "outputs/sft_data/proxy_gold_build_report.json:forbidden_splits=holdout",
+        "outputs/sft_data/proxy_gold_build_report.json:forbidden_splits=downstream",
+        "outputs/sft_data/proxy_gold_build_report.json:forbidden_splits=test",
+        "outputs/sft_data/proxy_gold_verl_report.json:forbidden_source_markers=test_main",
+        "outputs/sft_data/proxy_gold_verl_report.json:forbidden_source_markers=holdout",
+        "outputs/sft_data/proxy_gold_verl_report.json:forbidden_source_markers=downstream",
+        "outputs/sft_data/proxy_gold_verl_report.json:forbidden_splits=test_main",
+        "outputs/sft_data/proxy_gold_verl_report.json:forbidden_splits=holdout",
+        "outputs/sft_data/proxy_gold_verl_report.json:forbidden_splits=downstream",
+        "outputs/sft_data/proxy_gold_verl_report.json:forbidden_splits=test"
+      ],
+      "required_json_equals": [
+        "outputs/training_commands/training_done.json:sft_config=configs/llamafactory_sft.local.yaml",
+        "outputs/training_commands/training_done.json:grpo_config=configs/verl_grpo_bsc.local.yaml",
+        "outputs/training_commands/training_done.json:sft_data=data/processed/blindspot_sft.jsonl",
+        "outputs/training_commands/training_done.json:rl_data=data/processed/proxy_gold_verl.parquet",
+        "outputs/training_commands/training_done.json:rl_data_report=outputs/sft_data/proxy_gold_verl_report.json",
+        "outputs/verifier/teacher_rubrics_filtered_report.json:input=data/processed/teacher_rubrics_raw.jsonl",
+        "outputs/verifier/teacher_rubrics_filtered_report.json:output=data/processed/teacher_rubrics_filtered.jsonl",
+        "outputs/verifier/teacher_rubrics_filtered_report.json:mode=api",
+        "outputs/verifier/teacher_rubrics_filtered_report.json:provider=configs/verifier.local.jsonl",
+        "outputs/verifier/teacher_rubrics_filtered_report.json:budget_report=outputs/api_budget/meta_verifier_budget.json",
+        "outputs/verifier/teacher_rubrics_filtered_report.json:preflight_report=outputs/preflight/sft_data_preflight.json",
+        "outputs/contamination_audit/teacher_rubrics_hard_gold_holdout_filter.json:input=data/processed/teacher_rubrics_filtered.jsonl",
+        "outputs/contamination_audit/teacher_rubrics_hard_gold_holdout_filter.json:output=data/processed/teacher_rubrics_filtered.hard_gold_clean.jsonl",
+        "outputs/contamination_audit/teacher_rubrics_rewardbench_holdout_filter.json:input=data/processed/teacher_rubrics_filtered.hard_gold_clean.jsonl",
+        "outputs/contamination_audit/teacher_rubrics_rewardbench_holdout_filter.json:output=data/processed/teacher_rubrics_filtered.rewardbench_clean.jsonl",
+        "outputs/contamination_audit/teacher_rubrics_judgebench_holdout_filter.json:input=data/processed/teacher_rubrics_filtered.rewardbench_clean.jsonl",
+        "outputs/contamination_audit/teacher_rubrics_judgebench_holdout_filter.json:output=data/processed/teacher_rubrics_filtered.judgebench_clean.jsonl",
+        "outputs/contamination_audit/teacher_rubrics_rewardbench2_holdout_filter.json:input=data/processed/teacher_rubrics_filtered.judgebench_clean.jsonl",
+        "outputs/contamination_audit/teacher_rubrics_rewardbench2_holdout_filter.json:output=data/processed/teacher_rubrics_training_clean.jsonl",
+        "outputs/sft_data/proxy_gold_build_report.json:input=data/processed/teacher_rubrics_training_clean.jsonl",
+        "outputs/sft_data/proxy_gold_build_report.json:sft_output=data/processed/blindspot_sft.unfiltered.jsonl",
+        "outputs/sft_data/proxy_gold_build_report.json:proxy_gold_output=data/processed/proxy_gold.unfiltered.jsonl",
+        "outputs/sft_data/proxy_gold_build_report.json:data_source=multi_teacher_proxy",
+        "outputs/sft_data/proxy_gold_build_report.json:embedding_model=BAAI/bge-large-en-v1.5",
+        "outputs/sft_data/proxy_gold_build_report.json:min_teachers=2",
+        "outputs/sft_data/proxy_gold_verl_report.json:input=data/processed/proxy_gold.jsonl",
+        "outputs/sft_data/proxy_gold_verl_report.json:output=data/processed/proxy_gold_verl.parquet",
+        "outputs/sft_data/proxy_gold_verl_report.json:data_source=multi_teacher_proxy",
+        "outputs/training_commands/training_done.json:reward_function=src/blindspot_rl/verl_reward.py:compute_score"
+      ],
+      "required_json_sha256": [
+        "outputs/training_commands/training_done.json:sft_config_sha256=configs/llamafactory_sft.local.yaml",
+        "outputs/training_commands/training_done.json:grpo_config_sha256=configs/verl_grpo_bsc.local.yaml",
+        "outputs/training_commands/training_done.json:sft_data_sha256=data/processed/blindspot_sft.jsonl",
+        "outputs/training_commands/training_done.json:rl_data_sha256=data/processed/proxy_gold_verl.parquet",
+        "outputs/training_commands/training_done.json:rl_data_report_sha256=outputs/sft_data/proxy_gold_verl_report.json",
+        "outputs/training_commands/training_done.json:reward_function_sha256=src/blindspot_rl/verl_reward.py",
+        "outputs/verifier/teacher_rubrics_filtered_report.json:input_sha256=data/processed/teacher_rubrics_raw.jsonl",
+        "outputs/verifier/teacher_rubrics_filtered_report.json:output_sha256=data/processed/teacher_rubrics_filtered.jsonl",
+        "outputs/verifier/teacher_rubrics_filtered_report.json:provider_sha256=configs/verifier.local.jsonl",
+        "outputs/verifier/teacher_rubrics_filtered_report.json:budget_report_sha256=outputs/api_budget/meta_verifier_budget.json",
+        "outputs/verifier/teacher_rubrics_filtered_report.json:preflight_report_sha256=outputs/preflight/sft_data_preflight.json",
+        "outputs/contamination_audit/teacher_rubrics_hard_gold_holdout_filter.json:input_sha256=data/processed/teacher_rubrics_filtered.jsonl",
+        "outputs/contamination_audit/teacher_rubrics_hard_gold_holdout_filter.json:output_sha256=data/processed/teacher_rubrics_filtered.hard_gold_clean.jsonl",
+        "outputs/contamination_audit/teacher_rubrics_rewardbench_holdout_filter.json:input_sha256=data/processed/teacher_rubrics_filtered.hard_gold_clean.jsonl",
+        "outputs/contamination_audit/teacher_rubrics_rewardbench_holdout_filter.json:output_sha256=data/processed/teacher_rubrics_filtered.rewardbench_clean.jsonl",
+        "outputs/contamination_audit/teacher_rubrics_judgebench_holdout_filter.json:input_sha256=data/processed/teacher_rubrics_filtered.rewardbench_clean.jsonl",
+        "outputs/contamination_audit/teacher_rubrics_judgebench_holdout_filter.json:output_sha256=data/processed/teacher_rubrics_filtered.judgebench_clean.jsonl",
+        "outputs/contamination_audit/teacher_rubrics_rewardbench2_holdout_filter.json:input_sha256=data/processed/teacher_rubrics_filtered.judgebench_clean.jsonl",
+        "outputs/contamination_audit/teacher_rubrics_rewardbench2_holdout_filter.json:output_sha256=data/processed/teacher_rubrics_training_clean.jsonl",
+        "outputs/sft_data/proxy_gold_build_report.json:input_sha256=data/processed/teacher_rubrics_training_clean.jsonl",
+        "outputs/sft_data/proxy_gold_build_report.json:sft_output_sha256=data/processed/blindspot_sft.unfiltered.jsonl",
+        "outputs/sft_data/proxy_gold_build_report.json:proxy_gold_output_sha256=data/processed/proxy_gold.unfiltered.jsonl",
+        "outputs/sft_data/proxy_gold_verl_report.json:input_sha256=data/processed/proxy_gold.jsonl",
+        "outputs/sft_data/proxy_gold_verl_report.json:output_sha256=data/processed/proxy_gold_verl.parquet"
+      ],
+      "instructions": [
+        "Run GRPO/RLVR training before allowing sft_rl methods into generalization claims.",
+        "Write outputs/training_commands/training_done.json with checkpoint paths, base/sft_only/sft_rl serving URLs, operator/date, sft_config, grpo_config, sft_data, rl_data, rl_data_report, reward_function, and the corresponding SHA256 fields."
+      ],
+      "output": "outputs/generalization_matrix/trained_method_gate.json",
+      "output_md": "outputs/generalization_matrix/trained_method_gate.md",
+      "strict": true
+    },
+    "skip_downstream": true,
+    "embedding_model": "BAAI/bge-large-en-v1.5",
+    "coverage_tau": 0.75,
+    "redundancy_tau": 0.85,
+    "downstream_scorer": "api",
+    "judge_provider": "configs/judge_scorer.local.jsonl",
+    "judge_sleep": 0.2,
+    "bootstrap_ci": {
+      "enabled": true,
+      "bsc_metrics": ["coverage", "blind", "redundancy", "hallucination", "reward"],
+      "downstream_metrics": ["correct", "tie", "margin"],
+      "n_boot": 1000,
+      "seed": 17,
+      "confidence": 0.95
+    },
+    "bsc_sweep": {
+      "enabled": true,
+      "methods": ["healthbench_base", "healthbench_sft_rl", "writingbench_base", "writingbench_sft_rl"],
+      "coverage_tau": [0.7, 0.75, 0.8],
+      "redundancy_tau": [0.8, 0.85, 0.9]
+    }
+  },
+  "methods": [
+    {
+      "name": "healthbench_base",
+      "model_filter": "base",
+      "bsc_gold": "data/processed/healthbench_proxy_gold.jsonl",
+      "bsc_rubrics": "data/processed/healthbench_model_rubrics.jsonl",
+      "bsc_data_source": "healthbench"
+    },
+    {
+      "name": "healthbench_sft_rl",
+      "model_filter": "sft_rl",
+      "bsc_gold": "data/processed/healthbench_proxy_gold.jsonl",
+      "bsc_rubrics": "data/processed/healthbench_model_rubrics.jsonl",
+      "bsc_data_source": "healthbench"
+    },
+    {
+      "name": "writingbench_base",
+      "model_filter": "base",
+      "bsc_gold": "data/processed/writingbench_proxy_gold.jsonl",
+      "bsc_rubrics": "data/processed/writingbench_model_rubrics.jsonl",
+      "bsc_data_source": "writingbench"
+    },
+    {
+      "name": "writingbench_sft_rl",
+      "model_filter": "sft_rl",
+      "bsc_gold": "data/processed/writingbench_proxy_gold.jsonl",
+      "bsc_rubrics": "data/processed/writingbench_model_rubrics.jsonl",
+      "bsc_data_source": "writingbench"
+    }
+  ]
+}

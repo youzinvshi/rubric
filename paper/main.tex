@@ -1,0 +1,53 @@
+\documentclass[letterpaper]{article}
+
+\newif\ifaaaisubmission
+\IfFileExists{aaai2026.sty}{
+  \aaaisubmissiontrue
+  \usepackage[submission]{aaai2026}
+}{
+  \aaaisubmissionfalse
+  \usepackage[margin=1in]{geometry}
+}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\ifaaaisubmission
+\else
+  \usepackage{hyperref}
+  \usepackage{xcolor}
+\fi
+
+\title{Evaluation Blind Spots: Verifiable Semantic Rewards for Open-Ended Criteria Elicitation}
+\author{Anonymous Submission}
+\date{}
+
+\newcommand{\bsc}{\mathrm{BSC}}
+\newcommand{\cov}{\mathrm{Cov}}
+\newcommand{\blind}{\mathrm{Blind}}
+\newcommand{\red}{\mathrm{Red}}
+\newcommand{\hall}{\mathrm{Hall}}
+\newcommand{\valid}{\mathrm{Valid}}
+\newcommand{\gold}{\mathcal{G}}
+\newcommand{\pred}{\hat{\mathcal{R}}}
+
+\begin{document}
+\maketitle
+
+\input{sections/abstract}
+\input{sections/introduction}
+\input{sections/blindspot_phenomenon}
+\input{sections/related_work}
+\input{sections/method}
+\input{sections/experiments}
+\input{sections/limitations}
+\input{sections/conclusion}
+
+\ifaaaisubmission
+  \IfFileExists{aaai2026.bst}{\bibliographystyle{aaai2026}}{\bibliographystyle{plain}}
+\else
+  \bibliographystyle{plain}
+\fi
+\bibliography{references}
+
+\end{document}

@@ -1,0 +1,569 @@
+{
+  "title": "BlindSpot-RL Real-Run Dashboard",
+  "objective": "Keep BSC claims evidence-gated from minimal motivation through SFT/GRPO and paper readiness.",
+  "sections": [
+    {
+      "name": "Data Source Report",
+      "type": "data_source_report",
+      "path": "outputs/data_sources/source_report.json",
+      "required": false
+    },
+    {
+      "name": "RubricBench Gold Validation",
+      "type": "gold_validation",
+      "path": "outputs/data_validation/rubricbench_gold.json",
+      "required": false
+    },
+    {
+      "name": "ResearchRubrics Gold Validation",
+      "type": "gold_validation",
+      "path": "outputs/data_validation/researchrubrics_gold.json",
+      "required": false
+    },
+    {
+      "name": "Real Run Preflight",
+      "type": "preflight",
+      "path": "outputs/preflight/real_run_preflight.json",
+      "required": false
+    },
+    {
+      "name": "SFT Data Preflight",
+      "type": "preflight",
+      "path": "outputs/preflight/sft_data_preflight.json",
+      "required": false
+    },
+    {
+      "name": "RewardBench Proxy-Train Holdout Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/rewardbench_pref_sft_proxy_train_filter.json",
+      "required": false
+    },
+    {
+      "name": "Hard-Gold Holdout Contamination Audit",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/hard_gold_holdout_contamination.json",
+      "required": false
+    },
+    {
+      "name": "RewardBench Downstream Holdout Contamination Audit",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/rewardbench_downstream_holdout_contamination.json",
+      "required": false
+    },
+    {
+      "name": "RewardBench Proxy-Train vs RewardBench Holdout Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/rewardbench_pref_sft_proxy_train_rewardbench_holdout_filter.json",
+      "required": false
+    },
+    {
+      "name": "RewardBench Proxy-Train vs JudgeBench Holdout Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/rewardbench_pref_sft_proxy_train_judgebench_holdout_filter.json",
+      "required": false
+    },
+    {
+      "name": "RewardBench Proxy-Train vs RewardBench-2 Holdout Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/rewardbench_pref_sft_proxy_train_rewardbench2_holdout_filter.json",
+      "required": false
+    },
+    {
+      "name": "RewardBench-2 Query Pool vs RubricBench Train-Seed Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/rewardbench2_queries_rubricbench_train_seed_filter.json",
+      "required": false
+    },
+    {
+      "name": "RewardBench-2 Query Pool vs ResearchRubrics Train-Seed Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/rewardbench2_queries_researchrubrics_train_seed_filter.json",
+      "required": false
+    },
+    {
+      "name": "RewardBench-2 Multicandidate vs RubricBench Train-Seed Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/rewardbench2_multicandidate_rubricbench_train_seed_filter.json",
+      "required": false
+    },
+    {
+      "name": "RewardBench-2 Multicandidate vs ResearchRubrics Train-Seed Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/rewardbench2_multicandidate_researchrubrics_train_seed_filter.json",
+      "required": false
+    },
+    {
+      "name": "Pre-SFT Clean Proxy-Train vs Hard-Gold Audit",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/clean_proxy_train_vs_hard_gold_audit.json",
+      "required": false
+    },
+    {
+      "name": "Pre-SFT Clean Proxy-Train vs RewardBench Holdout Audit",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/clean_proxy_train_vs_rewardbench_downstream_audit.json",
+      "required": false
+    },
+    {
+      "name": "Pre-SFT Clean Proxy-Train vs JudgeBench Holdout Audit",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/clean_proxy_train_vs_judgebench_downstream_audit.json",
+      "required": false
+    },
+    {
+      "name": "Pre-SFT Clean Proxy-Train vs RewardBench-2 Holdout Audit",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/clean_proxy_train_vs_rewardbench2_downstream_audit.json",
+      "required": false
+    },
+    {
+      "name": "JudgeBench Downstream Holdout Contamination Audit",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/judgebench_downstream_holdout_contamination.json",
+      "required": false
+    },
+    {
+      "name": "RewardBench-2 Downstream Holdout Contamination Audit",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/rewardbench2_downstream_holdout_contamination.json",
+      "required": false
+    },
+    {
+      "name": "Teacher Rubrics vs Hard-Gold Holdout Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/teacher_rubrics_hard_gold_holdout_filter.json",
+      "required": false
+    },
+    {
+      "name": "Teacher Rubrics vs RewardBench Holdout Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/teacher_rubrics_rewardbench_holdout_filter.json",
+      "required": false
+    },
+    {
+      "name": "Teacher Rubrics vs JudgeBench Holdout Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/teacher_rubrics_judgebench_holdout_filter.json",
+      "required": false
+    },
+    {
+      "name": "Teacher Rubrics vs RewardBench-2 Holdout Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/teacher_rubrics_rewardbench2_holdout_filter.json",
+      "required": false
+    },
+    {
+      "name": "BlindSpot SFT vs Hard-Gold Holdout Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/blindspot_sft_hard_gold_holdout_filter.json",
+      "required": false
+    },
+    {
+      "name": "BlindSpot SFT vs RewardBench Holdout Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/blindspot_sft_rewardbench_holdout_filter.json",
+      "required": false
+    },
+    {
+      "name": "BlindSpot SFT vs JudgeBench Holdout Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/blindspot_sft_judgebench_holdout_filter.json",
+      "required": false
+    },
+    {
+      "name": "BlindSpot SFT vs RewardBench-2 Holdout Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/blindspot_sft_rewardbench2_holdout_filter.json",
+      "required": false
+    },
+    {
+      "name": "Proxy-Gold vs Hard-Gold Holdout Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/proxy_gold_hard_gold_holdout_filter.json",
+      "required": false
+    },
+    {
+      "name": "Proxy-Gold vs RewardBench Holdout Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/proxy_gold_rewardbench_holdout_filter.json",
+      "required": false
+    },
+    {
+      "name": "Proxy-Gold vs JudgeBench Holdout Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/proxy_gold_judgebench_holdout_filter.json",
+      "required": false
+    },
+    {
+      "name": "Proxy-Gold vs RewardBench-2 Holdout Filter",
+      "type": "contamination_audit",
+      "path": "outputs/contamination_audit/proxy_gold_rewardbench2_holdout_filter.json",
+      "required": false
+    },
+    {
+      "name": "Model Evaluation-Criteria API Budget",
+      "type": "api_budget",
+      "path": "outputs/api_budget/model_rubrics_budget.json",
+      "required": false
+    },
+    {
+      "name": "RewardBench Model Evaluation-Criteria API Budget",
+      "type": "api_budget",
+      "path": "outputs/api_budget/rewardbench_model_rubrics_budget.json",
+      "required": false
+    },
+    {
+      "name": "JudgeBench Model Evaluation-Criteria API Budget",
+      "type": "api_budget",
+      "path": "outputs/api_budget/judgebench_model_rubrics_budget.json",
+      "required": false
+    },
+    {
+      "name": "RewardBench-2 Model Evaluation-Criteria API Budget",
+      "type": "api_budget",
+      "path": "outputs/api_budget/rewardbench2_model_rubrics_budget.json",
+      "required": false
+    },
+    {
+      "name": "RM-Bench Model Evaluation-Criteria API Budget",
+      "type": "api_budget",
+      "path": "outputs/api_budget/rmbench_model_rubrics_budget.json",
+      "required": false
+    },
+    {
+      "name": "Teacher Evaluation-Criteria API Budget",
+      "type": "api_budget",
+      "path": "outputs/api_budget/teacher_rubrics_budget.json",
+      "required": false
+    },
+    {
+      "name": "HealthBench Model Evaluation-Criteria API Budget",
+      "type": "api_budget",
+      "path": "outputs/api_budget/healthbench_model_rubrics_budget.json",
+      "required": false
+    },
+    {
+      "name": "WritingBench Model Evaluation-Criteria API Budget",
+      "type": "api_budget",
+      "path": "outputs/api_budget/writingbench_model_rubrics_budget.json",
+      "required": false
+    },
+    {
+      "name": "HealthBench Teacher Evaluation-Criteria API Budget",
+      "type": "api_budget",
+      "path": "outputs/api_budget/healthbench_teacher_rubrics_budget.json",
+      "required": false
+    },
+    {
+      "name": "WritingBench Teacher Evaluation-Criteria API Budget",
+      "type": "api_budget",
+      "path": "outputs/api_budget/writingbench_teacher_rubrics_budget.json",
+      "required": false
+    },
+    {
+      "name": "Meta-Verifier API Budget",
+      "type": "api_budget",
+      "path": "outputs/api_budget/meta_verifier_budget.json",
+      "required": false
+    },
+    {
+      "name": "RubricBench Model Criteria Verifier API Budget",
+      "type": "api_budget",
+      "path": "outputs/api_budget/rubricbench_model_rubrics_verifier_budget.json",
+      "required": false
+    },
+    {
+      "name": "RewardBench Model Verifier API Budget",
+      "type": "api_budget",
+      "path": "outputs/api_budget/rewardbench_model_rubrics_verifier_budget.json",
+      "required": false
+    },
+    {
+      "name": "JudgeBench Model Verifier API Budget",
+      "type": "api_budget",
+      "path": "outputs/api_budget/judgebench_model_rubrics_verifier_budget.json",
+      "required": false
+    },
+    {
+      "name": "RewardBench-2 Model Verifier API Budget",
+      "type": "api_budget",
+      "path": "outputs/api_budget/rewardbench2_model_rubrics_verifier_budget.json",
+      "required": false
+    },
+    {
+      "name": "RM-Bench Model Verifier API Budget",
+      "type": "api_budget",
+      "path": "outputs/api_budget/rmbench_model_rubrics_verifier_budget.json",
+      "required": false
+    },
+    {
+      "name": "HealthBench Model Verifier API Budget",
+      "type": "api_budget",
+      "path": "outputs/api_budget/healthbench_model_rubrics_verifier_budget.json",
+      "required": false
+    },
+    {
+      "name": "WritingBench Model Verifier API Budget",
+      "type": "api_budget",
+      "path": "outputs/api_budget/writingbench_model_rubrics_verifier_budget.json",
+      "required": false
+    },
+    {
+      "name": "RM-Bench Downstream Schema Contract",
+      "type": "schema_contract",
+      "path": "outputs/schema_contracts/rmbench_downstream_schema.json",
+      "required": false
+    },
+    {
+      "name": "RubricBench Model Evaluation-Criteria Validation",
+      "type": "validation",
+      "path": "outputs/validation/rubricbench_model_rubrics/validation_report.json",
+      "required": false
+    },
+    {
+      "name": "RewardBench Model Evaluation-Criteria Validation",
+      "type": "validation",
+      "path": "outputs/validation/rewardbench_model_rubrics/validation_report.json",
+      "required": false
+    },
+    {
+      "name": "HealthBench Model Evaluation-Criteria Validation",
+      "type": "validation",
+      "path": "outputs/validation/healthbench_model_rubrics/validation_report.json",
+      "required": false
+    },
+    {
+      "name": "JudgeBench Model Evaluation-Criteria Validation",
+      "type": "validation",
+      "path": "outputs/validation/judgebench_model_rubrics/validation_report.json",
+      "required": false
+    },
+    {
+      "name": "RewardBench-2 Model Evaluation-Criteria Validation",
+      "type": "validation",
+      "path": "outputs/validation/rewardbench2_model_rubrics/validation_report.json",
+      "required": false
+    },
+    {
+      "name": "RM-Bench Model Evaluation-Criteria Validation",
+      "type": "validation",
+      "path": "outputs/validation/rmbench_model_rubrics/validation_report.json",
+      "required": false
+    },
+    {
+      "name": "WritingBench Model Evaluation-Criteria Validation",
+      "type": "validation",
+      "path": "outputs/validation/writingbench_model_rubrics/validation_report.json",
+      "required": false
+    },
+    {
+      "name": "Teacher Evaluation-Criteria Validation",
+      "type": "validation",
+      "path": "outputs/validation/teacher_rubrics/validation_report.json",
+      "required": false
+    },
+    {
+      "name": "Filtered Teacher Evaluation-Criteria Validation",
+      "type": "validation",
+      "path": "outputs/validation/teacher_rubrics_filtered/validation_report.json",
+      "required": false
+    },
+    {
+      "name": "RubricBench Model Criteria Verifier Stats",
+      "type": "generic",
+      "path": "outputs/verifier/rubricbench_model_rubrics_stats.jsonl",
+      "required": false
+    },
+    {
+      "name": "Minimal Claim BSC Bootstrap CI",
+      "type": "confidence_interval",
+      "path": "outputs/minimal_claim/base/bsc_ci/bootstrap_ci.json",
+      "required": false
+    },
+    {
+      "name": "Minimal Claim Audit",
+      "type": "audit",
+      "path": "outputs/minimal_claim/base/audit_report.json",
+      "required": true
+    },
+    {
+      "name": "Minimal Claim Evidence",
+      "type": "evidence",
+      "path": "outputs/minimal_claim/base/evidence/evidence_matrix.json",
+      "required": true
+    },
+    {
+      "name": "Main Matrix Audit",
+      "type": "audit",
+      "path": "outputs/matrix_real/audit_report.json",
+      "required": false
+    },
+    {
+      "name": "Main Matrix Evidence",
+      "type": "evidence",
+      "path": "outputs/evidence_real/evidence_matrix.json",
+      "required": false
+    },
+    {
+      "name": "C5 Teacher-Union Ablation JSON",
+      "type": "generic",
+      "path": "outputs/teacher_union_ablation/teacher_union_ablation.json",
+      "required": false
+    },
+    {
+      "name": "C5 Teacher-Union Ablation Table",
+      "type": "generic",
+      "path": "outputs/teacher_union_ablation/teacher_union_ablation.csv",
+      "required": false
+    },
+    {
+      "name": "C5 Teacher-Union Per-Item Audit",
+      "type": "generic",
+      "path": "outputs/teacher_union_ablation/teacher_union_per_item.csv",
+      "required": false
+    },
+    {
+      "name": "Base BSC Bootstrap CI",
+      "type": "confidence_interval",
+      "path": "outputs/matrix_real/base/bsc_ci/bootstrap_ci.json",
+      "required": false
+    },
+    {
+      "name": "Base Downstream Bootstrap CI",
+      "type": "confidence_interval",
+      "path": "outputs/matrix_real/base/downstream_ci/bootstrap_ci.json",
+      "required": false
+    },
+    {
+      "name": "GPT-4o BSC Bootstrap CI",
+      "type": "confidence_interval",
+      "path": "outputs/matrix_real/gpt4o/bsc_ci/bootstrap_ci.json",
+      "required": false
+    },
+    {
+      "name": "GPT-4o Downstream Bootstrap CI",
+      "type": "confidence_interval",
+      "path": "outputs/matrix_real/gpt4o/downstream_ci/bootstrap_ci.json",
+      "required": false
+    },
+    {
+      "name": "Claude BSC Bootstrap CI",
+      "type": "confidence_interval",
+      "path": "outputs/matrix_real/claude/bsc_ci/bootstrap_ci.json",
+      "required": false
+    },
+    {
+      "name": "Claude Downstream Bootstrap CI",
+      "type": "confidence_interval",
+      "path": "outputs/matrix_real/claude/downstream_ci/bootstrap_ci.json",
+      "required": false
+    },
+    {
+      "name": "SFT-only BSC Bootstrap CI",
+      "type": "confidence_interval",
+      "path": "outputs/matrix_real/sft_only/bsc_ci/bootstrap_ci.json",
+      "required": false
+    },
+    {
+      "name": "SFT-only Downstream Bootstrap CI",
+      "type": "confidence_interval",
+      "path": "outputs/matrix_real/sft_only/downstream_ci/bootstrap_ci.json",
+      "required": false
+    },
+    {
+      "name": "SFT+RL BSC Bootstrap CI",
+      "type": "confidence_interval",
+      "path": "outputs/matrix_real/sft_rl/bsc_ci/bootstrap_ci.json",
+      "required": false
+    },
+    {
+      "name": "SFT+RL Downstream Bootstrap CI",
+      "type": "confidence_interval",
+      "path": "outputs/matrix_real/sft_rl/downstream_ci/bootstrap_ci.json",
+      "required": false
+    },
+    {
+      "name": "JudgeBench Base Downstream Bootstrap CI",
+      "type": "confidence_interval",
+      "path": "outputs/matrix_judgebench/judgebench_base/downstream_ci/bootstrap_ci.json",
+      "required": false
+    },
+    {
+      "name": "JudgeBench SFT+RL Downstream Bootstrap CI",
+      "type": "confidence_interval",
+      "path": "outputs/matrix_judgebench/judgebench_sft_rl/downstream_ci/bootstrap_ci.json",
+      "required": false
+    },
+    {
+      "name": "RewardBench-2 Base Multi-Candidate Bootstrap CI",
+      "type": "confidence_interval",
+      "path": "outputs/matrix_rewardbench2/rewardbench2_base/downstream_ci/bootstrap_ci.json",
+      "required": false
+    },
+    {
+      "name": "RewardBench-2 SFT+RL Multi-Candidate Bootstrap CI",
+      "type": "confidence_interval",
+      "path": "outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream_ci/bootstrap_ci.json",
+      "required": false
+    },
+    {
+      "name": "Matrix Trained Method Gate",
+      "type": "manual_gate",
+      "path": "outputs/matrix_real/trained_method_gate.json",
+      "required": false
+    },
+    {
+      "name": "JudgeBench Trained Method Gate",
+      "type": "manual_gate",
+      "path": "outputs/matrix_judgebench/trained_method_gate.json",
+      "required": false
+    },
+    {
+      "name": "RewardBench-2 Trained Method Gate",
+      "type": "manual_gate",
+      "path": "outputs/matrix_rewardbench2/trained_method_gate.json",
+      "required": false
+    },
+    {
+      "name": "Generalization Trained Method Gate",
+      "type": "manual_gate",
+      "path": "outputs/generalization_matrix/trained_method_gate.json",
+      "required": false
+    },
+    {
+      "name": "Downstream Policy RLVR Completion Gate",
+      "type": "manual_gate",
+      "path": "outputs/policy_rlvr/downstream_rlvr_completion_gate.json",
+      "required": false
+    },
+    {
+      "name": "Submission Readiness",
+      "type": "readiness",
+      "path": "outputs/submission_readiness/readiness_report.json",
+      "required": false
+    },
+    {
+      "name": "Submission Gap Report",
+      "type": "submission_gap_report",
+      "path": "outputs/submission_readiness/gap_report/submission_gap_report.json",
+      "required": false
+    },
+    {
+      "name": "Rebuttal Pack Manifest",
+      "type": "rebuttal_manifest",
+      "path": "outputs/rebuttal_pack/rebuttal_pack_manifest.json",
+      "required": false
+    },
+    {
+      "name": "AAAI LaTeX Compile",
+      "type": "latex_compile",
+      "path": "outputs/submission_readiness/latex_compile_report.json",
+      "required": false
+    }
+  ],
+  "next_actions": [
+    "Run minimal-claim pipeline on RubricBench before investing in SFT/GRPO.",
+    "Only upgrade manuscript claims whose Evidence Matrix status is safe_to_claim.",
+    "Keep every claim with a non-safe Evidence Matrix row out of the paper claim surface."
+  ]
+}

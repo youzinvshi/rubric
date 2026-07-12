@@ -1,0 +1,51 @@
+# verl GRPO template for HealthBench-Hard downstream policy RLVR.
+# Copy to configs/verl_policy_grpo_healthbench_hard.local.yaml and set the
+# policy base model path before running generated downstream RLVR scripts.
+
+algorithm:
+  adv_estimator: grpo
+
+data:
+  train_files:
+    - data/processed/healthbench_hard_policy_rlvr.parquet
+  val_files:
+    - data/processed/healthbench_hard_policy_rlvr.parquet
+  prompt_key: prompt
+  max_prompt_length: 4096
+  max_response_length: 2048
+
+actor_rollout_ref:
+  model:
+    path: PATH_TO_POLICY_BASE_MODEL
+  actor:
+    optim:
+      lr: 1.0e-6
+    ppo_mini_batch_size: 32
+    ppo_micro_batch_size_per_gpu: 2
+  rollout:
+    n: 4
+    temperature: 0.7
+    top_p: 0.95
+  ref:
+    log_prob_micro_batch_size_per_gpu: 2
+
+reward_model:
+  enable: false
+  reward_manager: naive
+  criteria_policy_checkpoint: outputs/checkpoints/evaluation_criteria_policy_rl
+  rubric_file: data/processed/healthbench_model_rubrics.jsonl
+  custom_reward_function:
+    path: src/blindspot_rl/policy_reward.py
+    name: compute_score
+
+trainer:
+  project_name: blindspot_rl
+  experiment_name: healthbench_hard_policy_rlvr
+  total_epochs: 1
+  logger:
+    - console
+  default_local_dir: outputs/policy_rlvr/healthbench_hard_policy
+
+# Generated command scripts also export:
+# BSC_POLICY_CRITERIA_POLICY_CHECKPOINT=outputs/checkpoints/evaluation_criteria_policy_rl
+# BSC_POLICY_RUBRIC_FILE=data/processed/healthbench_model_rubrics.jsonl

@@ -1,0 +1,13 @@
+{
+  "stages": [
+    {
+      "name": "result_card",
+      "type": "result_card",
+      "args": {
+        "config": "configs/result_card_smoke.example.json",
+        "output_json": "outputs/toy_result_card/result_card.json",
+        "output_md": "outputs/toy_result_card/result_card.md"
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "stages": [
+    {
+      "name": "rebuttal_pack",
+      "type": "rebuttal_pack",
+      "args": {
+        "evidence_matrix": "outputs/evidence_real/evidence_matrix.json",
+        "readiness_report": "outputs/submission_readiness/readiness_report.json",
+        "output_dir": "outputs/rebuttal_pack"
+      }
+    }
+  ]
+}

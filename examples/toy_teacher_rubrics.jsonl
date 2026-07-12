@@ -1,0 +1,4 @@
+{"query":"Evaluate whether an answer explains how photosynthesis works.","teacher":"gpt-4o","rubrics":["Mentions that plants use sunlight as an energy source","Explains that carbon dioxide and water are converted into glucose"]}
+{"query":"Evaluate whether an answer explains how photosynthesis works.","teacher":"claude","response":"- Mentions that plants use sunlight as an energy source\n- Mentions oxygen is released as a byproduct"}
+{"query":"Evaluate a response to a math word problem.","teacher":"deepseek","rubrics":["Shows the equation used to model the problem","Computes the final numeric answer correctly"]}
+{"query":"Evaluate a response to a math word problem.","teacher":"qwen","rubrics":["Shows the equation used to model the problem","Explains the reasoning step by step"]}

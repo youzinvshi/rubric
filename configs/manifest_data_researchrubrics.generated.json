@@ -1,0 +1,19 @@
+{
+  "required_files": [
+    "configs/data_sources_real.local.json",
+    "outputs/data_sources/local_config_init_researchrubrics.json",
+    "configs/data_sources_real.local.json",
+    "outputs/data_sources/local_config_post_download_researchrubrics.json",
+    "outputs/data_sources/source_report_pre_normalization_researchrubrics.json",
+    "outputs/data_sources/source_report_researchrubrics.json",
+    "data/raw/researchrubrics_raw.jsonl",
+    "outputs/data_profiles/researchrubrics_schema.json",
+    "data/processed/researchrubrics_gold.jsonl",
+    "outputs/data_validation/researchrubrics_gold.json",
+    "outputs/data_validation/researchrubrics_gold.md",
+    "data/processed/researchrubrics_queries.jsonl",
+    "outputs/data_validation/researchrubrics_queries.json",
+    "outputs/data_validation/researchrubrics_queries.md"
+  ],
+  "summaries": []
+}

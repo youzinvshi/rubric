@@ -1,0 +1,215 @@
+{
+  "required_files": [
+    "outputs/matrix_rewardbench2/trained_method_gate.json",
+    "outputs/matrix_rewardbench2/trained_method_gate.md",
+    "data/processed/matrix_rewardbench2/rewardbench2_base/bsc_eval.jsonl",
+    "outputs/matrix_rewardbench2/rewardbench2_base/bsc_join_report.json",
+    "outputs/matrix_rewardbench2/rewardbench2_base/bsc/summary.json",
+    "data/processed/matrix_rewardbench2/rewardbench2_base/downstream_eval.jsonl",
+    "outputs/matrix_rewardbench2/rewardbench2_base/downstream_join_report.json",
+    "outputs/matrix_rewardbench2/rewardbench2_base/downstream/summary.json",
+    "outputs/matrix_rewardbench2/rewardbench2_base/downstream_api_budget/budget.json",
+    "outputs/matrix_rewardbench2/rewardbench2_base/downstream_api_budget/budget.md",
+    "outputs/matrix_rewardbench2/rewardbench2_base/bsc_ci/bootstrap_ci.json",
+    "outputs/matrix_rewardbench2/rewardbench2_base/bsc_ci/bootstrap_ci.csv",
+    "outputs/matrix_rewardbench2/rewardbench2_base/bsc_ci/bootstrap_ci.md",
+    "outputs/matrix_rewardbench2/rewardbench2_base/downstream_ci/bootstrap_ci.json",
+    "outputs/matrix_rewardbench2/rewardbench2_base/downstream_ci/bootstrap_ci.csv",
+    "outputs/matrix_rewardbench2/rewardbench2_base/downstream_ci/bootstrap_ci.md",
+    "data/processed/matrix_rewardbench2/rewardbench2_gpt4o/bsc_eval.jsonl",
+    "outputs/matrix_rewardbench2/rewardbench2_gpt4o/bsc_join_report.json",
+    "outputs/matrix_rewardbench2/rewardbench2_gpt4o/bsc/summary.json",
+    "data/processed/matrix_rewardbench2/rewardbench2_gpt4o/downstream_eval.jsonl",
+    "outputs/matrix_rewardbench2/rewardbench2_gpt4o/downstream_join_report.json",
+    "outputs/matrix_rewardbench2/rewardbench2_gpt4o/downstream/summary.json",
+    "outputs/matrix_rewardbench2/rewardbench2_gpt4o/downstream_api_budget/budget.json",
+    "outputs/matrix_rewardbench2/rewardbench2_gpt4o/downstream_api_budget/budget.md",
+    "outputs/matrix_rewardbench2/rewardbench2_gpt4o/bsc_ci/bootstrap_ci.json",
+    "outputs/matrix_rewardbench2/rewardbench2_gpt4o/bsc_ci/bootstrap_ci.csv",
+    "outputs/matrix_rewardbench2/rewardbench2_gpt4o/bsc_ci/bootstrap_ci.md",
+    "outputs/matrix_rewardbench2/rewardbench2_gpt4o/downstream_ci/bootstrap_ci.json",
+    "outputs/matrix_rewardbench2/rewardbench2_gpt4o/downstream_ci/bootstrap_ci.csv",
+    "outputs/matrix_rewardbench2/rewardbench2_gpt4o/downstream_ci/bootstrap_ci.md",
+    "data/processed/matrix_rewardbench2/rewardbench2_claude/bsc_eval.jsonl",
+    "outputs/matrix_rewardbench2/rewardbench2_claude/bsc_join_report.json",
+    "outputs/matrix_rewardbench2/rewardbench2_claude/bsc/summary.json",
+    "data/processed/matrix_rewardbench2/rewardbench2_claude/downstream_eval.jsonl",
+    "outputs/matrix_rewardbench2/rewardbench2_claude/downstream_join_report.json",
+    "outputs/matrix_rewardbench2/rewardbench2_claude/downstream/summary.json",
+    "outputs/matrix_rewardbench2/rewardbench2_claude/downstream_api_budget/budget.json",
+    "outputs/matrix_rewardbench2/rewardbench2_claude/downstream_api_budget/budget.md",
+    "outputs/matrix_rewardbench2/rewardbench2_claude/bsc_ci/bootstrap_ci.json",
+    "outputs/matrix_rewardbench2/rewardbench2_claude/bsc_ci/bootstrap_ci.csv",
+    "outputs/matrix_rewardbench2/rewardbench2_claude/bsc_ci/bootstrap_ci.md",
+    "outputs/matrix_rewardbench2/rewardbench2_claude/downstream_ci/bootstrap_ci.json",
+    "outputs/matrix_rewardbench2/rewardbench2_claude/downstream_ci/bootstrap_ci.csv",
+    "outputs/matrix_rewardbench2/rewardbench2_claude/downstream_ci/bootstrap_ci.md",
+    "data/processed/matrix_rewardbench2/rewardbench2_sft_only/bsc_eval.jsonl",
+    "outputs/matrix_rewardbench2/rewardbench2_sft_only/bsc_join_report.json",
+    "outputs/matrix_rewardbench2/rewardbench2_sft_only/bsc/summary.json",
+    "data/processed/matrix_rewardbench2/rewardbench2_sft_only/downstream_eval.jsonl",
+    "outputs/matrix_rewardbench2/rewardbench2_sft_only/downstream_join_report.json",
+    "outputs/matrix_rewardbench2/rewardbench2_sft_only/downstream/summary.json",
+    "outputs/matrix_rewardbench2/rewardbench2_sft_only/downstream_api_budget/budget.json",
+    "outputs/matrix_rewardbench2/rewardbench2_sft_only/downstream_api_budget/budget.md",
+    "outputs/matrix_rewardbench2/rewardbench2_sft_only/bsc_ci/bootstrap_ci.json",
+    "outputs/matrix_rewardbench2/rewardbench2_sft_only/bsc_ci/bootstrap_ci.csv",
+    "outputs/matrix_rewardbench2/rewardbench2_sft_only/bsc_ci/bootstrap_ci.md",
+    "outputs/matrix_rewardbench2/rewardbench2_sft_only/downstream_ci/bootstrap_ci.json",
+    "outputs/matrix_rewardbench2/rewardbench2_sft_only/downstream_ci/bootstrap_ci.csv",
+    "outputs/matrix_rewardbench2/rewardbench2_sft_only/downstream_ci/bootstrap_ci.md",
+    "data/processed/matrix_rewardbench2/rewardbench2_sft_rl/bsc_eval.jsonl",
+    "outputs/matrix_rewardbench2/rewardbench2_sft_rl/bsc_join_report.json",
+    "outputs/matrix_rewardbench2/rewardbench2_sft_rl/bsc/summary.json",
+    "data/processed/matrix_rewardbench2/rewardbench2_sft_rl/downstream_eval.jsonl",
+    "outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream_join_report.json",
+    "outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream/summary.json",
+    "outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream_api_budget/budget.json",
+    "outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream_api_budget/budget.md",
+    "outputs/matrix_rewardbench2/rewardbench2_sft_rl/bsc_ci/bootstrap_ci.json",
+    "outputs/matrix_rewardbench2/rewardbench2_sft_rl/bsc_ci/bootstrap_ci.csv",
+    "outputs/matrix_rewardbench2/rewardbench2_sft_rl/bsc_ci/bootstrap_ci.md",
+    "outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream_ci/bootstrap_ci.json",
+    "outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream_ci/bootstrap_ci.csv",
+    "outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream_ci/bootstrap_ci.md",
+    "outputs/matrix_rewardbench2/main_table.csv",
+    "outputs/matrix_rewardbench2/main_table.md"
+  ],
+  "summaries": [
+    {
+      "name": "rewardbench2_base_bsc",
+      "path": "outputs/matrix_rewardbench2/rewardbench2_base/bsc/summary.json",
+      "required_keys": [
+        "n",
+        "input",
+        "embedding_model",
+        "coverage_tau",
+        "redundancy_tau",
+        "data_source_counts",
+        "verifier_source",
+        "verifier_source_counts",
+        "mean_coverage",
+        "mean_blind",
+        "mean_redundancy",
+        "mean_hallucination"
+      ]
+    },
+    {
+      "name": "rewardbench2_base_downstream",
+      "path": "outputs/matrix_rewardbench2/rewardbench2_base/downstream/summary.json",
+      "required_keys": [
+        "accuracy",
+        "tie_rate",
+        "mean_margin"
+      ]
+    },
+    {
+      "name": "rewardbench2_gpt4o_bsc",
+      "path": "outputs/matrix_rewardbench2/rewardbench2_gpt4o/bsc/summary.json",
+      "required_keys": [
+        "n",
+        "input",
+        "embedding_model",
+        "coverage_tau",
+        "redundancy_tau",
+        "data_source_counts",
+        "verifier_source",
+        "verifier_source_counts",
+        "mean_coverage",
+        "mean_blind",
+        "mean_redundancy",
+        "mean_hallucination"
+      ]
+    },
+    {
+      "name": "rewardbench2_gpt4o_downstream",
+      "path": "outputs/matrix_rewardbench2/rewardbench2_gpt4o/downstream/summary.json",
+      "required_keys": [
+        "accuracy",
+        "tie_rate",
+        "mean_margin"
+      ]
+    },
+    {
+      "name": "rewardbench2_claude_bsc",
+      "path": "outputs/matrix_rewardbench2/rewardbench2_claude/bsc/summary.json",
+      "required_keys": [
+        "n",
+        "input",
+        "embedding_model",
+        "coverage_tau",
+        "redundancy_tau",
+        "data_source_counts",
+        "verifier_source",
+        "verifier_source_counts",
+        "mean_coverage",
+        "mean_blind",
+        "mean_redundancy",
+        "mean_hallucination"
+      ]
+    },
+    {
+      "name": "rewardbench2_claude_downstream",
+      "path": "outputs/matrix_rewardbench2/rewardbench2_claude/downstream/summary.json",
+      "required_keys": [
+        "accuracy",
+        "tie_rate",
+        "mean_margin"
+      ]
+    },
+    {
+      "name": "rewardbench2_sft_only_bsc",
+      "path": "outputs/matrix_rewardbench2/rewardbench2_sft_only/bsc/summary.json",
+      "required_keys": [
+        "n",
+        "input",
+        "embedding_model",
+        "coverage_tau",
+        "redundancy_tau",
+        "data_source_counts",
+        "verifier_source",
+        "verifier_source_counts",
+        "mean_coverage",
+        "mean_blind",
+        "mean_redundancy",
+        "mean_hallucination"
+      ]
+    },
+    {
+      "name": "rewardbench2_sft_only_downstream",
+      "path": "outputs/matrix_rewardbench2/rewardbench2_sft_only/downstream/summary.json",
+      "required_keys": [
+        "accuracy",
+        "tie_rate",
+        "mean_margin"
+      ]
+    },
+    {
+      "name": "rewardbench2_sft_rl_bsc",
+      "path": "outputs/matrix_rewardbench2/rewardbench2_sft_rl/bsc/summary.json",
+      "required_keys": [
+        "n",
+        "input",
+        "embedding_model",
+        "coverage_tau",
+        "redundancy_tau",
+        "data_source_counts",
+        "verifier_source",
+        "verifier_source_counts",
+        "mean_coverage",
+        "mean_blind",
+        "mean_redundancy",
+        "mean_hallucination"
+      ]
+    },
+    {
+      "name": "rewardbench2_sft_rl_downstream",
+      "path": "outputs/matrix_rewardbench2/rewardbench2_sft_rl/downstream/summary.json",
+      "required_keys": [
+        "accuracy",
+        "tie_rate",
+        "mean_margin"
+      ]
+    }
+  ]
+}

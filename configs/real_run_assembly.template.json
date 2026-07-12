@@ -1,0 +1,668 @@
+{
+  "data_pipeline": "configs/pipeline_data_real.generated.json",
+  "data_manifest": "configs/manifest_data_real.generated.json",
+  "data_audit": {
+    "enabled": true,
+    "manifest": "configs/manifest_data_real.generated.json",
+    "output": "outputs/data_readiness_audit.json"
+  },
+  "holdout_contamination_filters": [
+    {
+      "enabled": true,
+      "name": "filter_rewardbench_sft_proxy_train_holdout_overlap",
+      "holdout": "data/processed/splits/rubricbench_gold_test_main.jsonl",
+      "input": "data/processed/splits/rewardbench_pref_sft_proxy_train.jsonl",
+      "output": "data/processed/splits/rewardbench_pref_sft_proxy_train.hard_gold_clean.jsonl",
+      "report": "outputs/contamination_audit/rewardbench_pref_sft_proxy_train_filter.json",
+      "query_keys": ["query", "prompt", "input", "question", "instruction"],
+      "strict": true
+    },
+    {
+      "enabled": true,
+      "name": "filter_rewardbench_sft_proxy_train_rewardbench_downstream_overlap",
+      "holdout": "data/processed/splits/rewardbench_pref_downstream_holdout.jsonl",
+      "input": "data/processed/splits/rewardbench_pref_sft_proxy_train.hard_gold_clean.jsonl",
+      "output": "data/processed/splits/rewardbench_pref_sft_proxy_train.rewardbench_clean.jsonl",
+      "report": "outputs/contamination_audit/rewardbench_pref_sft_proxy_train_rewardbench_holdout_filter.json",
+      "query_keys": ["query", "prompt", "input", "question", "instruction"],
+      "strict": true
+    },
+    {
+      "enabled": true,
+      "name": "filter_rewardbench_sft_proxy_train_judgebench_downstream_overlap",
+      "holdout": "data/processed/judgebench_pref.jsonl",
+      "input": "data/processed/splits/rewardbench_pref_sft_proxy_train.rewardbench_clean.jsonl",
+      "output": "data/processed/splits/rewardbench_pref_sft_proxy_train.judgebench_clean.jsonl",
+      "report": "outputs/contamination_audit/rewardbench_pref_sft_proxy_train_judgebench_holdout_filter.json",
+      "query_keys": ["query", "prompt", "input", "question", "instruction"],
+      "strict": true
+    },
+    {
+      "enabled": true,
+      "name": "filter_rewardbench2_queries_rubricbench_train_seed_overlap",
+      "holdout": "data/processed/splits/rubricbench_gold_train_seed.jsonl",
+      "input": "data/processed/rewardbench2_queries.jsonl",
+      "output": "data/processed/rewardbench2_queries.rubricbench_seed_clean.jsonl",
+      "report": "outputs/contamination_audit/rewardbench2_queries_rubricbench_train_seed_filter.json",
+      "query_keys": ["query", "prompt", "input", "question", "instruction"],
+      "strict": true
+    },
+    {
+      "enabled": true,
+      "name": "filter_rewardbench2_queries_researchrubrics_train_seed_overlap",
+      "holdout": "data/processed/splits/researchrubrics_gold_train_seed.jsonl",
+      "input": "data/processed/rewardbench2_queries.rubricbench_seed_clean.jsonl",
+      "output": "data/processed/rewardbench2_queries.clean.jsonl",
+      "report": "outputs/contamination_audit/rewardbench2_queries_researchrubrics_train_seed_filter.json",
+      "query_keys": ["query", "prompt", "input", "question", "instruction"],
+      "strict": true
+    },
+    {
+      "enabled": true,
+      "name": "filter_rewardbench2_multicandidate_rubricbench_train_seed_overlap",
+      "holdout": "data/processed/splits/rubricbench_gold_train_seed.jsonl",
+      "input": "data/processed/rewardbench2_multicandidate.jsonl",
+      "output": "data/processed/rewardbench2_multicandidate.rubricbench_seed_clean.jsonl",
+      "report": "outputs/contamination_audit/rewardbench2_multicandidate_rubricbench_train_seed_filter.json",
+      "query_keys": ["query", "prompt", "input", "question", "instruction"],
+      "strict": true
+    },
+    {
+      "enabled": true,
+      "name": "filter_rewardbench2_multicandidate_researchrubrics_train_seed_overlap",
+      "holdout": "data/processed/splits/researchrubrics_gold_train_seed.jsonl",
+      "input": "data/processed/rewardbench2_multicandidate.rubricbench_seed_clean.jsonl",
+      "output": "data/processed/rewardbench2_multicandidate.clean.jsonl",
+      "report": "outputs/contamination_audit/rewardbench2_multicandidate_researchrubrics_train_seed_filter.json",
+      "query_keys": ["query", "prompt", "input", "question", "instruction"],
+      "strict": true
+    },
+    {
+      "enabled": true,
+      "name": "filter_rewardbench_sft_proxy_train_rewardbench2_downstream_overlap",
+      "holdout": "data/processed/rewardbench2_multicandidate.clean.jsonl",
+      "input": "data/processed/splits/rewardbench_pref_sft_proxy_train.judgebench_clean.jsonl",
+      "output": "data/processed/splits/rewardbench_pref_sft_proxy_train.clean.jsonl",
+      "report": "outputs/contamination_audit/rewardbench_pref_sft_proxy_train_rewardbench2_holdout_filter.json",
+      "query_keys": ["query", "prompt", "input", "question", "instruction"],
+      "strict": true
+    }
+  ],
+  "pre_sft_holdout_contamination_audits": [
+    {
+      "enabled": true,
+      "name": "audit_clean_proxy_train_vs_hard_gold",
+      "holdout": "data/processed/splits/rubricbench_gold_test_main.jsonl",
+      "training": [
+        "rewardbench_sft_proxy_train_clean=data/processed/splits/rewardbench_pref_sft_proxy_train.clean.jsonl"
+      ],
+      "query_keys": ["query", "prompt", "input", "question", "instruction"],
+      "output": "outputs/contamination_audit/clean_proxy_train_vs_hard_gold_audit.json",
+      "output_csv": "outputs/contamination_audit/clean_proxy_train_vs_hard_gold_overlaps.csv",
+      "strict": true
+    },
+    {
+      "enabled": true,
+      "name": "audit_clean_proxy_train_vs_rewardbench_downstream",
+      "holdout": "data/processed/splits/rewardbench_pref_downstream_holdout.jsonl",
+      "training": [
+        "rewardbench_sft_proxy_train_clean=data/processed/splits/rewardbench_pref_sft_proxy_train.clean.jsonl"
+      ],
+      "query_keys": ["query", "prompt", "input", "question", "instruction"],
+      "output": "outputs/contamination_audit/clean_proxy_train_vs_rewardbench_downstream_audit.json",
+      "output_csv": "outputs/contamination_audit/clean_proxy_train_vs_rewardbench_downstream_overlaps.csv",
+      "strict": true
+    },
+    {
+      "enabled": true,
+      "name": "audit_clean_proxy_train_vs_judgebench_downstream",
+      "holdout": "data/processed/judgebench_pref.jsonl",
+      "training": [
+        "rewardbench_sft_proxy_train_clean=data/processed/splits/rewardbench_pref_sft_proxy_train.clean.jsonl"
+      ],
+      "query_keys": ["query", "prompt", "input", "question", "instruction"],
+      "output": "outputs/contamination_audit/clean_proxy_train_vs_judgebench_downstream_audit.json",
+      "output_csv": "outputs/contamination_audit/clean_proxy_train_vs_judgebench_downstream_overlaps.csv",
+      "strict": true
+    },
+    {
+      "enabled": true,
+      "name": "audit_clean_proxy_train_vs_rewardbench2_downstream",
+      "holdout": "data/processed/rewardbench2_multicandidate.clean.jsonl",
+      "training": [
+        "rewardbench_sft_proxy_train_clean=data/processed/splits/rewardbench_pref_sft_proxy_train.clean.jsonl"
+      ],
+      "query_keys": ["query", "prompt", "input", "question", "instruction"],
+      "output": "outputs/contamination_audit/clean_proxy_train_vs_rewardbench2_downstream_audit.json",
+      "output_csv": "outputs/contamination_audit/clean_proxy_train_vs_rewardbench2_downstream_overlaps.csv",
+      "strict": true
+    }
+  ],
+  "preflight_pipeline": "configs/preflight_real.template.json",
+  "api_budget_pipeline": "configs/api_budget_real.template.json",
+  "sft_data_pipeline": "configs/sft_data_real.template.json",
+  "sft_data_manifest": "configs/manifest_sft_data_real.template.json",
+  "holdout_contamination_audit": {
+    "enabled": true,
+    "name": "audit_hard_gold_holdout_contamination",
+    "holdout": "data/processed/splits/rubricbench_gold_test_main.jsonl",
+    "training": [
+      "rubricbench_train_seed=data/processed/splits/rubricbench_gold_train_seed.jsonl",
+      "researchrubrics_train_seed=data/processed/splits/researchrubrics_gold_train_seed.jsonl",
+      "rewardbench_sft_proxy_train=data/processed/splits/rewardbench_pref_sft_proxy_train.clean.jsonl",
+      "blindspot_sft=data/processed/blindspot_sft.jsonl",
+      "proxy_gold=data/processed/proxy_gold.jsonl",
+      "proxy_gold_verl=data/processed/proxy_gold_verl.parquet"
+    ],
+    "query_keys": ["query", "prompt", "input", "question", "instruction"],
+    "output": "outputs/contamination_audit/hard_gold_holdout_contamination.json",
+    "output_csv": "outputs/contamination_audit/hard_gold_holdout_overlaps.csv",
+    "strict": true
+  },
+  "holdout_contamination_audits": [
+    {
+      "enabled": true,
+      "name": "audit_rewardbench_downstream_holdout_contamination",
+      "holdout": "data/processed/splits/rewardbench_pref_downstream_holdout.jsonl",
+      "training": [
+        "rubricbench_train_seed=data/processed/splits/rubricbench_gold_train_seed.jsonl",
+        "researchrubrics_train_seed=data/processed/splits/researchrubrics_gold_train_seed.jsonl",
+        "rewardbench_sft_proxy_train=data/processed/splits/rewardbench_pref_sft_proxy_train.clean.jsonl",
+        "blindspot_sft=data/processed/blindspot_sft.jsonl",
+        "proxy_gold=data/processed/proxy_gold.jsonl",
+        "proxy_gold_verl=data/processed/proxy_gold_verl.parquet"
+      ],
+      "query_keys": ["query", "prompt", "input", "question", "instruction"],
+      "output": "outputs/contamination_audit/rewardbench_downstream_holdout_contamination.json",
+      "output_csv": "outputs/contamination_audit/rewardbench_downstream_holdout_overlaps.csv",
+      "strict": true
+    },
+    {
+      "enabled": true,
+      "name": "audit_judgebench_downstream_holdout_contamination",
+      "holdout": "data/processed/judgebench_pref.jsonl",
+      "training": [
+        "rubricbench_train_seed=data/processed/splits/rubricbench_gold_train_seed.jsonl",
+        "researchrubrics_train_seed=data/processed/splits/researchrubrics_gold_train_seed.jsonl",
+        "rewardbench_sft_proxy_train=data/processed/splits/rewardbench_pref_sft_proxy_train.clean.jsonl",
+        "blindspot_sft=data/processed/blindspot_sft.jsonl",
+        "proxy_gold=data/processed/proxy_gold.jsonl",
+        "proxy_gold_verl=data/processed/proxy_gold_verl.parquet"
+      ],
+      "query_keys": ["query", "prompt", "input", "question", "instruction"],
+      "output": "outputs/contamination_audit/judgebench_downstream_holdout_contamination.json",
+      "output_csv": "outputs/contamination_audit/judgebench_downstream_holdout_overlaps.csv",
+      "strict": true
+    },
+    {
+      "enabled": true,
+      "name": "audit_rewardbench2_downstream_holdout_contamination",
+      "holdout": "data/processed/rewardbench2_multicandidate.clean.jsonl",
+      "training": [
+        "rubricbench_train_seed=data/processed/splits/rubricbench_gold_train_seed.jsonl",
+        "researchrubrics_train_seed=data/processed/splits/researchrubrics_gold_train_seed.jsonl",
+        "rewardbench_sft_proxy_train=data/processed/splits/rewardbench_pref_sft_proxy_train.clean.jsonl",
+        "blindspot_sft=data/processed/blindspot_sft.jsonl",
+        "proxy_gold=data/processed/proxy_gold.jsonl",
+        "proxy_gold_verl=data/processed/proxy_gold_verl.parquet"
+      ],
+      "query_keys": ["query", "prompt", "input", "question", "instruction"],
+      "output": "outputs/contamination_audit/rewardbench2_downstream_holdout_contamination.json",
+      "output_csv": "outputs/contamination_audit/rewardbench2_downstream_holdout_overlaps.csv",
+      "strict": true
+    }
+  ],
+  "model_generation": {
+    "enabled": true,
+    "providers": "configs/generators.local.jsonl",
+    "output": "data/processed/rubricbench_model_rubrics.jsonl",
+    "sleep": 0.5,
+    "resume": true,
+    "domains": [
+      {
+        "name": "generate_model_rubrics_rubricbench",
+        "input": "data/processed/rubricbench_queries.jsonl",
+        "output": "data/processed/rubricbench_model_rubrics.jsonl",
+        "data_source": "rubricbench_model_evaluation_criteria_elicitation",
+        "require_budget_report": "outputs/api_budget/model_rubrics_budget.json"
+      },
+      {
+        "name": "generate_model_rubrics_rewardbench",
+        "input": "data/processed/rewardbench_queries.jsonl",
+        "output": "data/processed/rewardbench_model_rubrics.jsonl",
+        "data_source": "rewardbench_model_evaluation_criteria_elicitation",
+        "require_budget_report": "outputs/api_budget/rewardbench_model_rubrics_budget.json"
+      },
+      {
+        "name": "generate_model_rubrics_judgebench",
+        "input": "data/processed/judgebench_queries.jsonl",
+        "output": "data/processed/judgebench_model_rubrics.jsonl",
+        "data_source": "judgebench_model_evaluation_criteria_elicitation",
+        "require_budget_report": "outputs/api_budget/judgebench_model_rubrics_budget.json"
+      },
+      {
+        "name": "generate_model_rubrics_rewardbench2",
+        "input": "data/processed/rewardbench2_queries.clean.jsonl",
+        "output": "data/processed/rewardbench2_model_rubrics.jsonl",
+        "data_source": "rewardbench2_model_evaluation_criteria_elicitation",
+        "require_budget_report": "outputs/api_budget/rewardbench2_model_rubrics_budget.json"
+      },
+      {
+        "name": "generate_model_rubrics_rmbench",
+        "input": "data/processed/rmbench_queries.jsonl",
+        "output": "data/processed/rmbench_model_rubrics.jsonl",
+        "data_source": "rmbench_model_evaluation_criteria_elicitation",
+        "require_budget_report": "outputs/api_budget/rmbench_model_rubrics_budget.json"
+      },
+      {
+        "name": "generate_model_rubrics_healthbench",
+        "input": "data/processed/healthbench_queries.jsonl",
+        "output": "data/processed/healthbench_model_rubrics.jsonl",
+        "data_source": "healthbench_model_evaluation_criteria_elicitation",
+        "require_budget_report": "outputs/api_budget/healthbench_model_rubrics_budget.json"
+      },
+      {
+        "name": "generate_model_rubrics_writingbench",
+        "input": "data/processed/writingbench_queries.jsonl",
+        "output": "data/processed/writingbench_model_rubrics.jsonl",
+        "data_source": "writingbench_model_evaluation_criteria_elicitation",
+        "require_budget_report": "outputs/api_budget/writingbench_model_rubrics_budget.json"
+      }
+    ]
+  },
+  "model_verification": {
+    "enabled": true,
+    "provider": "configs/verifier.local.jsonl",
+    "mode": "api",
+    "annotate_only": true,
+    "sleep": 0.2,
+    "budget_output_template": "outputs/api_budget/{stem}_verifier_budget.json",
+    "budget_output_md_template": "outputs/api_budget/{stem}_verifier_budget.md",
+    "stats_output_template": "outputs/verifier/{stem}_stats.jsonl",
+    "default_qpm": 60,
+    "default_tpm": 60000,
+    "max_calls": 50000,
+    "max_total_tokens": 150000000,
+    "max_cost_usd": 5000,
+    "max_wallclock_minutes_serial": 10000,
+    "strict_budget": true
+  },
+  "rubric_validation_pipeline": "configs/validate_rubrics_real.template.json",
+  "training_commands": {
+    "enabled": true,
+    "config": "configs/training_commands.example.json",
+    "output_dir": "outputs/training_commands"
+  },
+  "training_completion_gate": {
+    "enabled": true,
+    "name": "training_completion_gate",
+    "gate_name": "SFT/GRPO training and serving readiness",
+    "required_paths": [
+      "outputs/checkpoints/evaluation_criteria_policy_sft",
+      "outputs/checkpoints/evaluation_criteria_policy_rl",
+      "outputs/training_commands/training_done.json",
+      "outputs/verifier/teacher_rubrics_filtered_report.json",
+      "outputs/contamination_audit/teacher_rubrics_hard_gold_holdout_filter.json",
+      "outputs/contamination_audit/teacher_rubrics_rewardbench_holdout_filter.json",
+      "outputs/contamination_audit/teacher_rubrics_judgebench_holdout_filter.json",
+      "outputs/contamination_audit/teacher_rubrics_rewardbench2_holdout_filter.json",
+      "outputs/sft_data/proxy_gold_build_report.json",
+      "outputs/contamination_audit/blindspot_sft_hard_gold_holdout_filter.json",
+      "outputs/contamination_audit/blindspot_sft_rewardbench_holdout_filter.json",
+      "outputs/contamination_audit/blindspot_sft_judgebench_holdout_filter.json",
+      "outputs/contamination_audit/blindspot_sft_rewardbench2_holdout_filter.json",
+      "outputs/contamination_audit/proxy_gold_hard_gold_holdout_filter.json",
+      "outputs/contamination_audit/proxy_gold_rewardbench_holdout_filter.json",
+      "outputs/contamination_audit/proxy_gold_judgebench_holdout_filter.json",
+      "outputs/contamination_audit/proxy_gold_rewardbench2_holdout_filter.json",
+      "outputs/sft_data/proxy_gold_verl_report.json"
+    ],
+    "required_json": [
+      "outputs/training_commands/training_done.json:sft_checkpoint,rl_checkpoint,served_methods,served_generators,serving.base,serving.sft_only,serving.sft_rl,operator,date,sft_config,grpo_config,sft_data,rl_data,rl_data_report,reward_function,sft_config_sha256,grpo_config_sha256,sft_data_sha256,rl_data_sha256,rl_data_report_sha256,reward_function_sha256",
+      "outputs/verifier/teacher_rubrics_filtered_report.json:input,input_sha256,output,output_sha256,mode,provider,provider_sha256,budget_report,budget_report_sha256,preflight_report,preflight_report_sha256,n_input_records,n_output_records,n_input_rubrics,n_valid_rubrics",
+      "outputs/contamination_audit/teacher_rubrics_hard_gold_holdout_filter.json:ok,holdout,holdout_sha256,input,input_sha256,output,output_sha256,input_records,output_records,removed_records,blockers",
+      "outputs/contamination_audit/teacher_rubrics_rewardbench_holdout_filter.json:ok,holdout,holdout_sha256,input,input_sha256,output,output_sha256,input_records,output_records,removed_records,blockers",
+      "outputs/contamination_audit/teacher_rubrics_judgebench_holdout_filter.json:ok,holdout,holdout_sha256,input,input_sha256,output,output_sha256,input_records,output_records,removed_records,blockers",
+      "outputs/contamination_audit/teacher_rubrics_rewardbench2_holdout_filter.json:ok,holdout,holdout_sha256,input,input_sha256,output,output_sha256,input_records,output_records,removed_records,blockers",
+      "outputs/sft_data/proxy_gold_build_report.json:input,input_sha256,sft_output,sft_output_sha256,proxy_gold_output,proxy_gold_output_sha256,n_input_records,n_filtered_records,n_sft_records,n_proxy_gold_records,data_source,embedding_model,dedupe_tau,min_teachers,forbidden_data_source_markers,forbidden_splits",
+      "outputs/contamination_audit/blindspot_sft_hard_gold_holdout_filter.json:ok,holdout,holdout_sha256,input,input_sha256,output,output_sha256,input_records,output_records,removed_records,blockers",
+      "outputs/contamination_audit/blindspot_sft_rewardbench_holdout_filter.json:ok,holdout,holdout_sha256,input,input_sha256,output,output_sha256,input_records,output_records,removed_records,blockers",
+      "outputs/contamination_audit/blindspot_sft_judgebench_holdout_filter.json:ok,holdout,holdout_sha256,input,input_sha256,output,output_sha256,input_records,output_records,removed_records,blockers",
+      "outputs/contamination_audit/blindspot_sft_rewardbench2_holdout_filter.json:ok,holdout,holdout_sha256,input,input_sha256,output,output_sha256,input_records,output_records,removed_records,blockers",
+      "outputs/contamination_audit/proxy_gold_hard_gold_holdout_filter.json:ok,holdout,holdout_sha256,input,input_sha256,output,output_sha256,input_records,output_records,removed_records,blockers",
+      "outputs/contamination_audit/proxy_gold_rewardbench_holdout_filter.json:ok,holdout,holdout_sha256,input,input_sha256,output,output_sha256,input_records,output_records,removed_records,blockers",
+      "outputs/contamination_audit/proxy_gold_judgebench_holdout_filter.json:ok,holdout,holdout_sha256,input,input_sha256,output,output_sha256,input_records,output_records,removed_records,blockers",
+      "outputs/contamination_audit/proxy_gold_rewardbench2_holdout_filter.json:ok,holdout,holdout_sha256,input,input_sha256,output,output_sha256,input_records,output_records,removed_records,blockers",
+      "outputs/sft_data/proxy_gold_verl_report.json:input,input_sha256,output,output_sha256,n_records,data_source,forbidden_source_markers,forbidden_splits"
+    ],
+    "required_json_contains": [
+      "outputs/training_commands/training_done.json:served_methods=base,sft_only,sft_rl",
+      "outputs/training_commands/training_done.json:served_generators=base,sft_only,sft_rl",
+      "outputs/sft_data/proxy_gold_build_report.json:forbidden_data_source_markers=test_main",
+      "outputs/sft_data/proxy_gold_build_report.json:forbidden_data_source_markers=holdout",
+      "outputs/sft_data/proxy_gold_build_report.json:forbidden_data_source_markers=downstream",
+      "outputs/sft_data/proxy_gold_build_report.json:forbidden_splits=test_main",
+      "outputs/sft_data/proxy_gold_build_report.json:forbidden_splits=holdout",
+      "outputs/sft_data/proxy_gold_build_report.json:forbidden_splits=downstream",
+      "outputs/sft_data/proxy_gold_build_report.json:forbidden_splits=test",
+      "outputs/sft_data/proxy_gold_verl_report.json:forbidden_source_markers=test_main",
+      "outputs/sft_data/proxy_gold_verl_report.json:forbidden_source_markers=holdout",
+      "outputs/sft_data/proxy_gold_verl_report.json:forbidden_source_markers=downstream",
+      "outputs/sft_data/proxy_gold_verl_report.json:forbidden_splits=test_main",
+      "outputs/sft_data/proxy_gold_verl_report.json:forbidden_splits=holdout",
+      "outputs/sft_data/proxy_gold_verl_report.json:forbidden_splits=downstream",
+      "outputs/sft_data/proxy_gold_verl_report.json:forbidden_splits=test"
+    ],
+    "required_json_equals": [
+      "outputs/training_commands/training_done.json:sft_config=configs/llamafactory_sft.local.yaml",
+      "outputs/training_commands/training_done.json:grpo_config=configs/verl_grpo_bsc.local.yaml",
+      "outputs/training_commands/training_done.json:sft_data=data/processed/blindspot_sft.jsonl",
+      "outputs/training_commands/training_done.json:rl_data=data/processed/proxy_gold_verl.parquet",
+      "outputs/training_commands/training_done.json:rl_data_report=outputs/sft_data/proxy_gold_verl_report.json",
+      "outputs/verifier/teacher_rubrics_filtered_report.json:input=data/processed/teacher_rubrics_raw.jsonl",
+      "outputs/verifier/teacher_rubrics_filtered_report.json:output=data/processed/teacher_rubrics_filtered.jsonl",
+      "outputs/verifier/teacher_rubrics_filtered_report.json:mode=api",
+      "outputs/verifier/teacher_rubrics_filtered_report.json:provider=configs/verifier.local.jsonl",
+      "outputs/verifier/teacher_rubrics_filtered_report.json:budget_report=outputs/api_budget/meta_verifier_budget.json",
+      "outputs/verifier/teacher_rubrics_filtered_report.json:preflight_report=outputs/preflight/sft_data_preflight.json",
+      "outputs/contamination_audit/teacher_rubrics_hard_gold_holdout_filter.json:input=data/processed/teacher_rubrics_filtered.jsonl",
+      "outputs/contamination_audit/teacher_rubrics_hard_gold_holdout_filter.json:output=data/processed/teacher_rubrics_filtered.hard_gold_clean.jsonl",
+      "outputs/contamination_audit/teacher_rubrics_rewardbench_holdout_filter.json:input=data/processed/teacher_rubrics_filtered.hard_gold_clean.jsonl",
+      "outputs/contamination_audit/teacher_rubrics_rewardbench_holdout_filter.json:output=data/processed/teacher_rubrics_filtered.rewardbench_clean.jsonl",
+      "outputs/contamination_audit/teacher_rubrics_judgebench_holdout_filter.json:input=data/processed/teacher_rubrics_filtered.rewardbench_clean.jsonl",
+      "outputs/contamination_audit/teacher_rubrics_judgebench_holdout_filter.json:output=data/processed/teacher_rubrics_filtered.judgebench_clean.jsonl",
+      "outputs/contamination_audit/teacher_rubrics_rewardbench2_holdout_filter.json:input=data/processed/teacher_rubrics_filtered.judgebench_clean.jsonl",
+      "outputs/contamination_audit/teacher_rubrics_rewardbench2_holdout_filter.json:output=data/processed/teacher_rubrics_training_clean.jsonl",
+      "outputs/sft_data/proxy_gold_build_report.json:input=data/processed/teacher_rubrics_training_clean.jsonl",
+      "outputs/sft_data/proxy_gold_build_report.json:sft_output=data/processed/blindspot_sft.unfiltered.jsonl",
+      "outputs/sft_data/proxy_gold_build_report.json:proxy_gold_output=data/processed/proxy_gold.unfiltered.jsonl",
+      "outputs/contamination_audit/blindspot_sft_hard_gold_holdout_filter.json:input=data/processed/blindspot_sft.unfiltered.jsonl",
+      "outputs/contamination_audit/blindspot_sft_rewardbench2_holdout_filter.json:output=data/processed/blindspot_sft.jsonl",
+      "outputs/contamination_audit/proxy_gold_hard_gold_holdout_filter.json:input=data/processed/proxy_gold.unfiltered.jsonl",
+      "outputs/contamination_audit/proxy_gold_rewardbench2_holdout_filter.json:output=data/processed/proxy_gold.jsonl",
+      "outputs/sft_data/proxy_gold_build_report.json:data_source=multi_teacher_proxy",
+      "outputs/sft_data/proxy_gold_build_report.json:embedding_model=BAAI/bge-large-en-v1.5",
+      "outputs/sft_data/proxy_gold_build_report.json:min_teachers=2",
+      "outputs/sft_data/proxy_gold_verl_report.json:input=data/processed/proxy_gold.jsonl",
+      "outputs/sft_data/proxy_gold_verl_report.json:output=data/processed/proxy_gold_verl.parquet",
+      "outputs/sft_data/proxy_gold_verl_report.json:data_source=multi_teacher_proxy",
+      "outputs/training_commands/training_done.json:reward_function=src/blindspot_rl/verl_reward.py:compute_score"
+    ],
+    "required_json_sha256": [
+      "outputs/training_commands/training_done.json:sft_config_sha256=configs/llamafactory_sft.local.yaml",
+      "outputs/training_commands/training_done.json:grpo_config_sha256=configs/verl_grpo_bsc.local.yaml",
+      "outputs/training_commands/training_done.json:sft_data_sha256=data/processed/blindspot_sft.jsonl",
+      "outputs/training_commands/training_done.json:rl_data_sha256=data/processed/proxy_gold_verl.parquet",
+      "outputs/training_commands/training_done.json:rl_data_report_sha256=outputs/sft_data/proxy_gold_verl_report.json",
+      "outputs/training_commands/training_done.json:reward_function_sha256=src/blindspot_rl/verl_reward.py",
+      "outputs/verifier/teacher_rubrics_filtered_report.json:input_sha256=data/processed/teacher_rubrics_raw.jsonl",
+      "outputs/verifier/teacher_rubrics_filtered_report.json:output_sha256=data/processed/teacher_rubrics_filtered.jsonl",
+      "outputs/verifier/teacher_rubrics_filtered_report.json:provider_sha256=configs/verifier.local.jsonl",
+      "outputs/verifier/teacher_rubrics_filtered_report.json:budget_report_sha256=outputs/api_budget/meta_verifier_budget.json",
+      "outputs/verifier/teacher_rubrics_filtered_report.json:preflight_report_sha256=outputs/preflight/sft_data_preflight.json",
+      "outputs/contamination_audit/teacher_rubrics_hard_gold_holdout_filter.json:input_sha256=data/processed/teacher_rubrics_filtered.jsonl",
+      "outputs/contamination_audit/teacher_rubrics_hard_gold_holdout_filter.json:output_sha256=data/processed/teacher_rubrics_filtered.hard_gold_clean.jsonl",
+      "outputs/contamination_audit/teacher_rubrics_rewardbench_holdout_filter.json:input_sha256=data/processed/teacher_rubrics_filtered.hard_gold_clean.jsonl",
+      "outputs/contamination_audit/teacher_rubrics_rewardbench_holdout_filter.json:output_sha256=data/processed/teacher_rubrics_filtered.rewardbench_clean.jsonl",
+      "outputs/contamination_audit/teacher_rubrics_judgebench_holdout_filter.json:input_sha256=data/processed/teacher_rubrics_filtered.rewardbench_clean.jsonl",
+      "outputs/contamination_audit/teacher_rubrics_judgebench_holdout_filter.json:output_sha256=data/processed/teacher_rubrics_filtered.judgebench_clean.jsonl",
+      "outputs/contamination_audit/teacher_rubrics_rewardbench2_holdout_filter.json:input_sha256=data/processed/teacher_rubrics_filtered.judgebench_clean.jsonl",
+      "outputs/contamination_audit/teacher_rubrics_rewardbench2_holdout_filter.json:output_sha256=data/processed/teacher_rubrics_training_clean.jsonl",
+      "outputs/sft_data/proxy_gold_build_report.json:input_sha256=data/processed/teacher_rubrics_training_clean.jsonl",
+      "outputs/sft_data/proxy_gold_build_report.json:sft_output_sha256=data/processed/blindspot_sft.unfiltered.jsonl",
+      "outputs/sft_data/proxy_gold_build_report.json:proxy_gold_output_sha256=data/processed/proxy_gold.unfiltered.jsonl",
+      "outputs/contamination_audit/blindspot_sft_hard_gold_holdout_filter.json:input_sha256=data/processed/blindspot_sft.unfiltered.jsonl",
+      "outputs/contamination_audit/blindspot_sft_rewardbench2_holdout_filter.json:output_sha256=data/processed/blindspot_sft.jsonl",
+      "outputs/contamination_audit/proxy_gold_hard_gold_holdout_filter.json:input_sha256=data/processed/proxy_gold.unfiltered.jsonl",
+      "outputs/contamination_audit/proxy_gold_rewardbench2_holdout_filter.json:output_sha256=data/processed/proxy_gold.jsonl",
+      "outputs/sft_data/proxy_gold_verl_report.json:input_sha256=data/processed/proxy_gold.jsonl",
+      "outputs/sft_data/proxy_gold_verl_report.json:output_sha256=data/processed/proxy_gold_verl.parquet"
+    ],
+    "instructions": [
+      "Run outputs/training_commands/run_sft.sh on the training machine.",
+      "Run outputs/training_commands/run_grpo.sh after SFT finishes.",
+      "Serve the base, sft_only, and sft_rl checkpoints according to configs/generators.local.jsonl.",
+      "Write outputs/training_commands/training_done.json with checkpoint paths, serving URLs, operator/date, sft_config, grpo_config, sft_data, rl_data, rl_data_report, reward_function, and the corresponding SHA256 fields before continuing model generation.",
+      "Keep outputs/sft_data/proxy_gold_build_report.json bound to the holdout-clean teacher input and .unfiltered SFT/proxy-gold outputs; keep outputs/sft_data/proxy_gold_verl_report.json bound to the final post-SFT clean proxy-gold file."
+    ],
+    "output": "outputs/training_commands/training_completion_gate.json",
+    "output_md": "outputs/training_commands/training_completion_gate.md",
+    "strict": true
+  },
+  "reward_component_ablation_eval": {
+    "enabled": true,
+    "input": "data/processed/rubricbench_queries.jsonl",
+    "gold": "data/processed/splits/rubricbench_gold_test_main.jsonl",
+    "providers": "configs/generators_reward_ablation.local.jsonl",
+    "predictions": "data/processed/reward_component_training_ablation/model_rubrics.jsonl",
+    "eval_data_dir": "data/processed/reward_component_training_ablation",
+    "output_dir": "outputs/reward_component_training_ablation",
+    "variants": ["no_red", "no_valid", "no_verifier", "cov_only"],
+    "embedding_model": "BAAI/bge-large-en-v1.5",
+    "coverage_tau": 0.75,
+    "redundancy_tau": 0.85,
+    "sleep": 0.5,
+    "resume": true,
+    "budget": {
+      "enabled": true,
+      "name": "api_budget_reward_component_ablation_rubrics",
+      "output": "outputs/api_budget/reward_component_ablation_rubrics_budget.json",
+      "output_md": "outputs/api_budget/reward_component_ablation_rubrics_budget.md",
+      "default_qpm": 60,
+      "default_tpm": 60000,
+      "max_calls": 500000,
+      "max_total_tokens": 500000000,
+      "max_cost_usd": 15000,
+      "max_wallclock_minutes_serial": 40000,
+      "strict": true
+    },
+    "gate": {
+      "enabled": true,
+      "name": "reward_component_ablation_training_gate",
+      "gate_name": "Reward-component ablation training and serving readiness",
+      "required_paths": [
+        "outputs/checkpoints/evaluation_criteria_policy_rl",
+        "outputs/checkpoints/evaluation_criteria_policy_rl_no_red",
+        "outputs/checkpoints/evaluation_criteria_policy_rl_no_valid",
+        "outputs/checkpoints/evaluation_criteria_policy_rl_no_verifier",
+        "outputs/checkpoints/evaluation_criteria_policy_rl_cov_only",
+        "outputs/reward_component_training_ablation/training_done.json"
+      ],
+      "required_json": [
+        "outputs/reward_component_training_ablation/training_done.json:reward_variants,variants.full.checkpoint,variants.full.serving,variants.no_red.checkpoint,variants.no_red.serving,variants.no_valid.checkpoint,variants.no_valid.serving,variants.no_verifier.checkpoint,variants.no_verifier.serving,variants.cov_only.checkpoint,variants.cov_only.serving,sft_checkpoint,sft_data,rl_data,rl_data_report,reward_function,sft_data_sha256,rl_data_sha256,rl_data_report_sha256,reward_function_sha256,operator,date",
+        "outputs/reward_component_training_ablation/training_done.json:variants.full.grpo_config,variants.full.rl_data,variants.full.rl_data_report,variants.full.reward_function,variants.full.grpo_config_sha256,variants.full.rl_data_sha256,variants.full.rl_data_report_sha256,variants.full.reward_function_sha256,variants.full.env.BSC_VERIFIER",
+        "outputs/reward_component_training_ablation/training_done.json:variants.no_red.grpo_config,variants.no_red.rl_data,variants.no_red.rl_data_report,variants.no_red.reward_function,variants.no_red.grpo_config_sha256,variants.no_red.rl_data_sha256,variants.no_red.rl_data_report_sha256,variants.no_red.reward_function_sha256,variants.no_red.env.BSC_W_RED,variants.no_red.env.BSC_VERIFIER",
+        "outputs/reward_component_training_ablation/training_done.json:variants.no_valid.grpo_config,variants.no_valid.rl_data,variants.no_valid.rl_data_report,variants.no_valid.reward_function,variants.no_valid.grpo_config_sha256,variants.no_valid.rl_data_sha256,variants.no_valid.rl_data_report_sha256,variants.no_valid.reward_function_sha256,variants.no_valid.env.BSC_W_VALID,variants.no_valid.env.BSC_VERIFIER",
+        "outputs/reward_component_training_ablation/training_done.json:variants.no_verifier.grpo_config,variants.no_verifier.rl_data,variants.no_verifier.rl_data_report,variants.no_verifier.reward_function,variants.no_verifier.grpo_config_sha256,variants.no_verifier.rl_data_sha256,variants.no_verifier.rl_data_report_sha256,variants.no_verifier.reward_function_sha256,variants.no_verifier.env.BSC_W_VALID,variants.no_verifier.env.BSC_W_RED,variants.no_verifier.env.BSC_VERIFIER",
+        "outputs/reward_component_training_ablation/training_done.json:variants.cov_only.grpo_config,variants.cov_only.rl_data,variants.cov_only.rl_data_report,variants.cov_only.reward_function,variants.cov_only.grpo_config_sha256,variants.cov_only.rl_data_sha256,variants.cov_only.rl_data_report_sha256,variants.cov_only.reward_function_sha256,variants.cov_only.env.BSC_W_VALID,variants.cov_only.env.BSC_W_RED,variants.cov_only.env.BSC_VERIFIER"
+      ],
+      "required_json_contains": [
+        "outputs/reward_component_training_ablation/training_done.json:reward_variants=full,no_red,no_valid,no_verifier,cov_only"
+      ],
+      "required_json_equals": [
+        "outputs/reward_component_training_ablation/training_done.json:sft_data=data/processed/blindspot_sft.jsonl",
+        "outputs/reward_component_training_ablation/training_done.json:rl_data=data/processed/proxy_gold_verl.parquet",
+        "outputs/reward_component_training_ablation/training_done.json:rl_data_report=outputs/sft_data/proxy_gold_verl_report.json",
+        "outputs/reward_component_training_ablation/training_done.json:reward_function=src/blindspot_rl/verl_reward.py:compute_score",
+        "outputs/reward_component_training_ablation/training_done.json:variants.full.env.BSC_VERIFIER=rule",
+        "outputs/reward_component_training_ablation/training_done.json:variants.no_red.env.BSC_W_RED=0.0",
+        "outputs/reward_component_training_ablation/training_done.json:variants.no_red.env.BSC_VERIFIER=rule",
+        "outputs/reward_component_training_ablation/training_done.json:variants.no_valid.env.BSC_W_VALID=0.0",
+        "outputs/reward_component_training_ablation/training_done.json:variants.no_valid.env.BSC_VERIFIER=none",
+        "outputs/reward_component_training_ablation/training_done.json:variants.no_verifier.env.BSC_W_VALID=0.5",
+        "outputs/reward_component_training_ablation/training_done.json:variants.no_verifier.env.BSC_W_RED=0.5",
+        "outputs/reward_component_training_ablation/training_done.json:variants.no_verifier.env.BSC_VERIFIER=none",
+        "outputs/reward_component_training_ablation/training_done.json:variants.cov_only.env.BSC_W_VALID=0.0",
+        "outputs/reward_component_training_ablation/training_done.json:variants.cov_only.env.BSC_W_RED=0.0",
+        "outputs/reward_component_training_ablation/training_done.json:variants.cov_only.env.BSC_VERIFIER=none"
+      ],
+      "required_json_sha256": [
+        "outputs/reward_component_training_ablation/training_done.json:sft_data_sha256=data/processed/blindspot_sft.jsonl",
+        "outputs/reward_component_training_ablation/training_done.json:rl_data_sha256=data/processed/proxy_gold_verl.parquet",
+        "outputs/reward_component_training_ablation/training_done.json:rl_data_report_sha256=outputs/sft_data/proxy_gold_verl_report.json",
+        "outputs/reward_component_training_ablation/training_done.json:reward_function_sha256=src/blindspot_rl/verl_reward.py",
+        "outputs/reward_component_training_ablation/training_done.json:variants.full.grpo_config_sha256=configs/verl_grpo_bsc.local.yaml",
+        "outputs/reward_component_training_ablation/training_done.json:variants.full.rl_data_sha256=data/processed/proxy_gold_verl.parquet",
+        "outputs/reward_component_training_ablation/training_done.json:variants.full.rl_data_report_sha256=outputs/sft_data/proxy_gold_verl_report.json",
+        "outputs/reward_component_training_ablation/training_done.json:variants.full.reward_function_sha256=src/blindspot_rl/verl_reward.py",
+        "outputs/reward_component_training_ablation/training_done.json:variants.no_red.grpo_config_sha256=configs/verl_grpo_bsc.local.yaml",
+        "outputs/reward_component_training_ablation/training_done.json:variants.no_red.rl_data_sha256=data/processed/proxy_gold_verl.parquet",
+        "outputs/reward_component_training_ablation/training_done.json:variants.no_red.rl_data_report_sha256=outputs/sft_data/proxy_gold_verl_report.json",
+        "outputs/reward_component_training_ablation/training_done.json:variants.no_red.reward_function_sha256=src/blindspot_rl/verl_reward.py",
+        "outputs/reward_component_training_ablation/training_done.json:variants.no_valid.grpo_config_sha256=configs/verl_grpo_bsc.local.yaml",
+        "outputs/reward_component_training_ablation/training_done.json:variants.no_valid.rl_data_sha256=data/processed/proxy_gold_verl.parquet",
+        "outputs/reward_component_training_ablation/training_done.json:variants.no_valid.rl_data_report_sha256=outputs/sft_data/proxy_gold_verl_report.json",
+        "outputs/reward_component_training_ablation/training_done.json:variants.no_valid.reward_function_sha256=src/blindspot_rl/verl_reward.py",
+        "outputs/reward_component_training_ablation/training_done.json:variants.no_verifier.grpo_config_sha256=configs/verl_grpo_bsc.local.yaml",
+        "outputs/reward_component_training_ablation/training_done.json:variants.no_verifier.rl_data_sha256=data/processed/proxy_gold_verl.parquet",
+        "outputs/reward_component_training_ablation/training_done.json:variants.no_verifier.rl_data_report_sha256=outputs/sft_data/proxy_gold_verl_report.json",
+        "outputs/reward_component_training_ablation/training_done.json:variants.no_verifier.reward_function_sha256=src/blindspot_rl/verl_reward.py",
+        "outputs/reward_component_training_ablation/training_done.json:variants.cov_only.grpo_config_sha256=configs/verl_grpo_bsc.local.yaml",
+        "outputs/reward_component_training_ablation/training_done.json:variants.cov_only.rl_data_sha256=data/processed/proxy_gold_verl.parquet",
+        "outputs/reward_component_training_ablation/training_done.json:variants.cov_only.rl_data_report_sha256=outputs/sft_data/proxy_gold_verl_report.json",
+        "outputs/reward_component_training_ablation/training_done.json:variants.cov_only.reward_function_sha256=src/blindspot_rl/verl_reward.py"
+      ],
+      "instructions": [
+        "Run outputs/training_commands/run_grpo_no_red.sh, run_grpo_no_valid.sh, run_grpo_no_verifier.sh, and run_grpo_cov_only.sh after the full GRPO run.",
+        "Serve the no_red, no_valid, no_verifier, and cov_only checkpoints according to configs/generators_reward_ablation.local.jsonl.",
+        "Write outputs/reward_component_training_ablation/training_done.json with checkpoint paths, serving URLs, reward env settings, operator/date, and SHA256 bindings before generating reward-ablation rubrics."
+      ],
+      "output": "outputs/reward_component_training_ablation/training_gate.json",
+      "output_md": "outputs/reward_component_training_ablation/training_gate.md",
+      "strict": true
+    }
+  },
+  "matrix_pipeline": "configs/pipeline_matrix_real.generated.json",
+  "matrix_manifest": "configs/manifest_matrix_real.generated.json",
+  "extra_pipelines": [
+    {
+      "name": "judgebench_downstream_matrix",
+      "pipeline": "configs/pipeline_matrix_judgebench.generated.json",
+      "manifest": "configs/manifest_matrix_judgebench.generated.json"
+    },
+    {
+      "name": "rewardbench2_multicandidate_matrix",
+      "pipeline": "configs/pipeline_matrix_rewardbench2.generated.json",
+      "manifest": "configs/manifest_matrix_rewardbench2.generated.json"
+    }
+  ],
+  "generalization_pipeline": "configs/pipeline_matrix_generalization.generated.json",
+  "generalization_manifest": "configs/manifest_matrix_generalization.generated.json",
+  "downstream_rlvr_data_pipeline": "configs/policy_rlvr_data_real.template.json",
+  "downstream_rlvr_commands": {
+    "enabled": true,
+    "config": "configs/downstream_rlvr_commands.example.json",
+    "output_dir": "outputs/downstream_rlvr_commands"
+  },
+  "downstream_rlvr_completion_gate": {
+    "enabled": true,
+    "name": "downstream_rlvr_completion_gate",
+    "gate_name": "HealthBench-Hard / ArenaHard downstream policy RLVR readiness",
+    "required_paths": [
+      "outputs/downstream_rlvr_commands/downstream_rlvr_manifest.json",
+      "outputs/policy_rlvr/healthbench_hard_policy",
+      "outputs/policy_rlvr/healthbench_hard_eval.json",
+      "outputs/policy_rlvr/arenahard_policy",
+      "outputs/policy_rlvr/arenahard_eval.json",
+      "outputs/policy_rlvr/downstream_rlvr_done.json"
+    ],
+    "required_json": [
+      "outputs/policy_rlvr/downstream_rlvr_done.json:healthbench_hard_policy,healthbench_hard_eval,arenahard_policy,arenahard_eval,operator,date,benchmarks.healthbench_hard.config,benchmarks.healthbench_hard.train_data,benchmarks.healthbench_hard.val_data,benchmarks.healthbench_hard.criteria_policy_checkpoint,benchmarks.healthbench_hard.rubric_file,benchmarks.healthbench_hard.reward_function,benchmarks.arenahard.config,benchmarks.arenahard.train_data,benchmarks.arenahard.val_data,benchmarks.arenahard.criteria_policy_checkpoint,benchmarks.arenahard.rubric_file,benchmarks.arenahard.reward_function"
+    ],
+    "required_json_equals": [
+      "outputs/policy_rlvr/downstream_rlvr_done.json:benchmarks.healthbench_hard.config=configs/verl_policy_grpo_healthbench_hard.local.yaml",
+      "outputs/policy_rlvr/downstream_rlvr_done.json:benchmarks.healthbench_hard.train_data=data/processed/healthbench_hard_policy_rlvr.parquet",
+      "outputs/policy_rlvr/downstream_rlvr_done.json:benchmarks.healthbench_hard.val_data=data/processed/healthbench_hard_policy_rlvr.parquet",
+      "outputs/policy_rlvr/downstream_rlvr_done.json:benchmarks.healthbench_hard.criteria_policy_checkpoint=outputs/checkpoints/evaluation_criteria_policy_rl",
+      "outputs/policy_rlvr/downstream_rlvr_done.json:benchmarks.healthbench_hard.rubric_file=data/processed/healthbench_model_rubrics.jsonl",
+      "outputs/policy_rlvr/downstream_rlvr_done.json:benchmarks.healthbench_hard.reward_function=src/blindspot_rl/policy_reward.py:compute_score",
+      "outputs/policy_rlvr/downstream_rlvr_done.json:benchmarks.arenahard.config=configs/verl_policy_grpo_arenahard.local.yaml",
+      "outputs/policy_rlvr/downstream_rlvr_done.json:benchmarks.arenahard.train_data=data/processed/arenahard_policy_rlvr.parquet",
+      "outputs/policy_rlvr/downstream_rlvr_done.json:benchmarks.arenahard.val_data=data/processed/arenahard_policy_rlvr.parquet",
+      "outputs/policy_rlvr/downstream_rlvr_done.json:benchmarks.arenahard.criteria_policy_checkpoint=outputs/checkpoints/evaluation_criteria_policy_rl",
+      "outputs/policy_rlvr/downstream_rlvr_done.json:benchmarks.arenahard.rubric_file=data/processed/rewardbench_model_rubrics.jsonl",
+      "outputs/policy_rlvr/downstream_rlvr_done.json:benchmarks.arenahard.reward_function=src/blindspot_rl/policy_reward.py:compute_score"
+    ],
+    "instructions": [
+      "Run outputs/downstream_rlvr_commands/run_healthbench_hard_rlvr.sh on the training machine after evaluation-criteria policy SFT+GRPO completes.",
+      "Run outputs/downstream_rlvr_commands/run_healthbench_hard_eval.sh and save outputs/policy_rlvr/healthbench_hard_eval.json.",
+      "Run outputs/downstream_rlvr_commands/run_arenahard_rlvr.sh only if ArenaHard data and judge access are available.",
+      "Run outputs/downstream_rlvr_commands/run_arenahard_eval.sh and save outputs/policy_rlvr/arenahard_eval.json.",
+      "Write outputs/policy_rlvr/downstream_rlvr_done.json with policy checkpoint paths, eval reports, benchmark config/data/rubric/reward bindings, operator, date, and notes before making downstream RLVR claims."
+    ],
+    "output": "outputs/policy_rlvr/downstream_rlvr_completion_gate.json",
+    "output_md": "outputs/policy_rlvr/downstream_rlvr_completion_gate.md",
+    "strict": true
+  },
+  "evidence": {
+    "config": "configs/evidence_matrix_real.template.json",
+    "output_dir": "outputs/evidence_real"
+  },
+  "final_paper_export": {
+    "enabled": true,
+    "name": "final_paper_export",
+    "main_table_csv": "outputs/matrix_real/main_table.csv",
+    "main_table_md": "outputs/matrix_real/main_table.md",
+    "downstream_table_csv": [
+      "RewardBench=outputs/matrix_real/main_table.csv",
+      "JudgeBench=outputs/matrix_judgebench/main_table.csv",
+      "RewardBench-2=outputs/matrix_rewardbench2/main_table.csv"
+    ],
+    "ablation_csv": "outputs/bsc_ablation/ablation_summary.csv",
+    "teacher_union_csv": "outputs/teacher_union_ablation/teacher_union_ablation.csv",
+    "verifier_filter_csv": "outputs/verifier_filter_ablation/verifier_filter_ablation.csv",
+    "transition_summary_json": [
+      "outputs/matrix_real/dimension_transition/base_to_sft_only/transition_summary.json",
+      "outputs/matrix_real/dimension_transition/base_to_sft_rl/transition_summary.json"
+    ],
+    "semantic_space_dir": "outputs/matrix_real/semantic_space",
+    "audit_report": "outputs/matrix_real/audit_report.json",
+    "evidence_json": "outputs/evidence_real/evidence_matrix.json",
+    "evidence_csv": "outputs/evidence_real/evidence_matrix.csv",
+    "evidence_md": "outputs/evidence_real/evidence_matrix.md",
+    "output_dir": "outputs/paper_artifacts"
+  },
+  "paper_sync": {
+    "enabled": true,
+    "name": "sync_paper_artifacts",
+    "artifacts_dir": "outputs/paper_artifacts",
+    "paper_dir": "paper"
+  },
+  "submission_readiness_pipeline": "configs/submission_readiness_real.template.json",
+  "dashboard": {
+    "config": "configs/dashboard_real.template.json",
+    "output_json": "outputs/dashboard/real_run_dashboard.json",
+    "output_md": "outputs/dashboard/real_run_dashboard.md"
+  },
+  "result_card": {
+    "config": "configs/result_card_real.template.json",
+    "output_json": "outputs/result_card/result_card.json",
+    "output_md": "outputs/result_card/result_card.md",
+    "strict": true
+  },
+  "rebuttal_pack": {
+    "enabled": true,
+    "name": "rebuttal_pack_real",
+    "evidence_matrix": "outputs/evidence_real/evidence_matrix.json",
+    "readiness_report": "outputs/submission_readiness/readiness_report.json",
+    "output_dir": "outputs/rebuttal_pack"
+  },
+  "submission_gap_report": {
+    "enabled": true,
+    "name": "submission_gap_report_real",
+    "readiness_report": "outputs/submission_readiness/readiness_report.json",
+    "evidence_matrix": "outputs/evidence_real/evidence_matrix.json",
+    "rebuttal_manifest": "outputs/rebuttal_pack/rebuttal_pack_manifest.json",
+    "preflight_report": [
+      "outputs/preflight/real_run_preflight.json",
+      "outputs/preflight/sft_data_preflight.json"
+    ],
+    "gate_report": [
+      "outputs/contamination_audit/hard_gold_holdout_contamination.json",
+      "outputs/contamination_audit/rewardbench_downstream_holdout_contamination.json",
+      "outputs/contamination_audit/judgebench_downstream_holdout_contamination.json",
+      "outputs/contamination_audit/rewardbench2_downstream_holdout_contamination.json"
+    ],
+    "output_dir": "outputs/submission_readiness/gap_report"
+  }
+}

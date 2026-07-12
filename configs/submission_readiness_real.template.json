@@ -1,0 +1,76 @@
+{
+  "stages": [
+    {
+      "name": "latex_compile_check",
+      "type": "latex_compile_check",
+      "args": {
+        "paper_dir": "paper",
+        "output_json": "outputs/submission_readiness/latex_compile_report.json",
+        "output_md": "outputs/submission_readiness/latex_compile_report.md",
+        "compile": true,
+        "require_official_style": true,
+        "require_anonymous": true,
+        "max_pages": 8,
+        "strict": false
+      }
+    },
+    {
+      "name": "submission_readiness",
+      "type": "submission_readiness",
+      "args": {
+        "audit_report": "outputs/matrix_real/audit_report.json",
+        "evidence_matrix": "outputs/evidence_real/evidence_matrix.json",
+        "paper_dir": "paper",
+        "raw_gate": [
+          "Data Source Local Config|data_source_local_config|outputs/data_sources/local_config_init.json",
+          "Data Source Report|data_source_report|outputs/data_sources/source_report.json",
+          "Data Readiness Audit|audit|outputs/data_readiness_audit.json",
+          "Real Run Preflight|preflight|outputs/preflight/real_run_preflight.json",
+          "SFT Data Preflight|preflight|outputs/preflight/sft_data_preflight.json",
+          "RubricBench Gold Validation|gold_validation|outputs/data_validation/rubricbench_gold.json",
+          "ResearchRubrics Gold Validation|gold_validation|outputs/data_validation/researchrubrics_gold.json",
+          "RewardBench Proxy-Train Holdout Filter|contamination_audit|outputs/contamination_audit/rewardbench_pref_sft_proxy_train_filter.json",
+          "RewardBench Proxy-Train vs RewardBench Holdout Filter|contamination_audit|outputs/contamination_audit/rewardbench_pref_sft_proxy_train_rewardbench_holdout_filter.json",
+          "RewardBench Proxy-Train vs JudgeBench Holdout Filter|contamination_audit|outputs/contamination_audit/rewardbench_pref_sft_proxy_train_judgebench_holdout_filter.json",
+          "RewardBench Proxy-Train vs RewardBench-2 Holdout Filter|contamination_audit|outputs/contamination_audit/rewardbench_pref_sft_proxy_train_rewardbench2_holdout_filter.json",
+          "RewardBench-2 Query Pool vs RubricBench Train-Seed Filter|contamination_audit|outputs/contamination_audit/rewardbench2_queries_rubricbench_train_seed_filter.json",
+          "RewardBench-2 Query Pool vs ResearchRubrics Train-Seed Filter|contamination_audit|outputs/contamination_audit/rewardbench2_queries_researchrubrics_train_seed_filter.json",
+          "RewardBench-2 Multicandidate vs RubricBench Train-Seed Filter|contamination_audit|outputs/contamination_audit/rewardbench2_multicandidate_rubricbench_train_seed_filter.json",
+          "RewardBench-2 Multicandidate vs ResearchRubrics Train-Seed Filter|contamination_audit|outputs/contamination_audit/rewardbench2_multicandidate_researchrubrics_train_seed_filter.json",
+          "Pre-SFT Clean Proxy-Train vs Hard-Gold Audit|contamination_audit|outputs/contamination_audit/clean_proxy_train_vs_hard_gold_audit.json",
+          "Pre-SFT Clean Proxy-Train vs RewardBench Holdout Audit|contamination_audit|outputs/contamination_audit/clean_proxy_train_vs_rewardbench_downstream_audit.json",
+          "Pre-SFT Clean Proxy-Train vs JudgeBench Holdout Audit|contamination_audit|outputs/contamination_audit/clean_proxy_train_vs_judgebench_downstream_audit.json",
+          "Pre-SFT Clean Proxy-Train vs RewardBench-2 Holdout Audit|contamination_audit|outputs/contamination_audit/clean_proxy_train_vs_rewardbench2_downstream_audit.json",
+          "Hard-Gold Holdout Contamination Audit|contamination_audit|outputs/contamination_audit/hard_gold_holdout_contamination.json",
+          "RewardBench Downstream Holdout Contamination Audit|contamination_audit|outputs/contamination_audit/rewardbench_downstream_holdout_contamination.json",
+          "JudgeBench Downstream Holdout Contamination Audit|contamination_audit|outputs/contamination_audit/judgebench_downstream_holdout_contamination.json",
+          "RewardBench-2 Downstream Holdout Contamination Audit|contamination_audit|outputs/contamination_audit/rewardbench2_downstream_holdout_contamination.json",
+          "BlindSpot SFT vs Hard-Gold Holdout Filter|contamination_audit|outputs/contamination_audit/blindspot_sft_hard_gold_holdout_filter.json",
+          "BlindSpot SFT vs RewardBench Holdout Filter|contamination_audit|outputs/contamination_audit/blindspot_sft_rewardbench_holdout_filter.json",
+          "BlindSpot SFT vs JudgeBench Holdout Filter|contamination_audit|outputs/contamination_audit/blindspot_sft_judgebench_holdout_filter.json",
+          "BlindSpot SFT vs RewardBench-2 Holdout Filter|contamination_audit|outputs/contamination_audit/blindspot_sft_rewardbench2_holdout_filter.json",
+          "Proxy-Gold vs Hard-Gold Holdout Filter|contamination_audit|outputs/contamination_audit/proxy_gold_hard_gold_holdout_filter.json",
+          "Proxy-Gold vs RewardBench Holdout Filter|contamination_audit|outputs/contamination_audit/proxy_gold_rewardbench_holdout_filter.json",
+          "Proxy-Gold vs JudgeBench Holdout Filter|contamination_audit|outputs/contamination_audit/proxy_gold_judgebench_holdout_filter.json",
+          "Proxy-Gold vs RewardBench-2 Holdout Filter|contamination_audit|outputs/contamination_audit/proxy_gold_rewardbench2_holdout_filter.json",
+          "RubricBench Model Evaluation-Criteria API Budget|api_budget|outputs/api_budget/model_rubrics_budget.json",
+          "Teacher Evaluation-Criteria API Budget|api_budget|outputs/api_budget/teacher_rubrics_budget.json",
+          "Meta-Verifier API Budget|api_budget|outputs/api_budget/meta_verifier_budget.json",
+          "RubricBench Model Criteria Verifier API Budget|api_budget|outputs/api_budget/rubricbench_model_rubrics_verifier_budget.json",
+          "RubricBench Model Criteria Verifier Stats|generic|outputs/verifier/rubricbench_model_rubrics_stats.jsonl",
+          "Filtered Teacher Evaluation-Criteria Validation|validation|outputs/validation/teacher_rubrics_filtered/validation_report.json",
+          "Training Completion Gate|manual_gate|outputs/training_commands/training_completion_gate.json",
+          "Matrix Trained Method Gate|manual_gate|outputs/matrix_real/trained_method_gate.json",
+          "JudgeBench Trained Method Gate|manual_gate|outputs/matrix_judgebench/trained_method_gate.json",
+          "RewardBench-2 Trained Method Gate|manual_gate|outputs/matrix_rewardbench2/trained_method_gate.json",
+          "Generalization Trained Method Gate|manual_gate|outputs/generalization_matrix/trained_method_gate.json",
+          "Downstream Policy RLVR Completion Gate|manual_gate|outputs/policy_rlvr/downstream_rlvr_completion_gate.json",
+          "AAAI LaTeX Compile|latex_compile|outputs/submission_readiness/latex_compile_report.json"
+        ],
+        "output_json": "outputs/submission_readiness/readiness_report.json",
+        "output_md": "outputs/submission_readiness/readiness_report.md",
+        "strict": true
+      }
+    }
+  ]
+}

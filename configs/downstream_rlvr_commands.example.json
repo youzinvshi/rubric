@@ -1,0 +1,55 @@
+{
+  "common": {
+    "command": "python3 -m verl.trainer.main_ppo",
+    "env": {
+      "TOKENIZERS_PARALLELISM": "false",
+      "BSC_REWARD_SOURCE": "criteria_policy"
+    },
+    "overrides": [
+      "algorithm.adv_estimator=grpo"
+    ]
+  },
+  "benchmarks": [
+    {
+      "name": "healthbench_hard",
+      "config": "configs/verl_policy_grpo_healthbench_hard.local.yaml",
+      "train_data": "data/processed/healthbench_hard_policy_rlvr.parquet",
+      "val_data": "data/processed/healthbench_hard_policy_rlvr.parquet",
+      "criteria_policy_checkpoint": "outputs/checkpoints/evaluation_criteria_policy_rl",
+      "rubric_file": "data/processed/healthbench_model_rubrics.jsonl",
+      "reward_function": "src/blindspot_rl/policy_reward.py:compute_score",
+      "output_dir": "outputs/policy_rlvr/healthbench_hard_policy",
+      "log": "outputs/logs/healthbench_hard_policy_rlvr.log",
+      "eval_command": "python3 scripts/evaluate_policy_outputs.py --input outputs/policy_rlvr/healthbench_hard_policy/predictions.jsonl --output outputs/policy_rlvr/healthbench_hard_eval.json",
+      "eval_output": "outputs/policy_rlvr/healthbench_hard_eval.json",
+      "eval_log": "outputs/logs/healthbench_hard_policy_eval.log",
+      "notes": [
+        "Copy configs/verl_policy_grpo_healthbench_hard.example.yaml to configs/verl_policy_grpo_healthbench_hard.local.yaml and bind the policy base model before running.",
+        "The evaluation-criteria checkpoint must come from the completed SFT+RL BSC optimization run."
+      ]
+    },
+    {
+      "name": "arenahard",
+      "config": "configs/verl_policy_grpo_arenahard.local.yaml",
+      "train_data": "data/processed/arenahard_policy_rlvr.parquet",
+      "val_data": "data/processed/arenahard_policy_rlvr.parquet",
+      "criteria_policy_checkpoint": "outputs/checkpoints/evaluation_criteria_policy_rl",
+      "rubric_file": "data/processed/rewardbench_model_rubrics.jsonl",
+      "reward_function": "src/blindspot_rl/policy_reward.py:compute_score",
+      "output_dir": "outputs/policy_rlvr/arenahard_policy",
+      "log": "outputs/logs/arenahard_policy_rlvr.log",
+      "eval_command": "python3 scripts/evaluate_policy_outputs.py --input outputs/policy_rlvr/arenahard_policy/predictions.jsonl --output outputs/policy_rlvr/arenahard_eval.json",
+      "eval_output": "outputs/policy_rlvr/arenahard_eval.json",
+      "eval_log": "outputs/logs/arenahard_policy_eval.log",
+      "notes": [
+        "ArenaHard is an optional downstream RLVR extension; keep claims deferred until official evaluation artifacts exist.",
+        "Copy configs/verl_policy_grpo_arenahard.example.yaml to configs/verl_policy_grpo_arenahard.local.yaml and bind the policy base model before running.",
+        "Use the trained evaluation-criteria policy as reward source, not direct human labels."
+      ]
+    }
+  ],
+  "notes": [
+    "This packet generates policy-level downstream RLVR scripts only; it does not run GPU training.",
+    "Do not cite HealthBench-Hard or ArenaHard RLVR gains until the completion gate artifacts pass."
+  ]
+}

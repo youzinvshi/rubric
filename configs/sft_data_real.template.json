@@ -1,0 +1,343 @@
+{
+  "stages": [
+    {
+      "name": "sft_data_preflight",
+      "type": "preflight",
+      "args": {
+        "input": [
+          "data/processed/splits/rubricbench_gold_train_seed.jsonl",
+          "data/processed/healthbench_queries.jsonl",
+          "data/processed/writingbench_queries.jsonl"
+        ],
+        "providers": [
+          "configs/providers.local.jsonl",
+          "configs/verifier.local.jsonl"
+        ],
+        "required_provider": [
+          "gemini-2.5-pro",
+          "gpt-5.4",
+          "gpt-5",
+          "gpt-4o",
+          "meta-verifier"
+        ],
+        "required_provider_in": [
+          "configs/providers.local.jsonl:gemini-2.5-pro,gpt-5.4,gpt-5,gpt-4o",
+          "configs/verifier.local.jsonl:meta-verifier"
+        ],
+        "required_env": [
+          "GPT_AK_1",
+          "GPT_AK_2",
+          "GPT_AK_3"
+        ],
+        "min_records": 1,
+        "output": "outputs/preflight/sft_data_preflight.json",
+        "output_md": "outputs/preflight/sft_data_preflight.md",
+        "strict": true
+      }
+    },
+    {
+      "name": "generate_teacher_rubrics_rubricbench",
+      "type": "generate_teachers",
+      "args": {
+        "input": "data/processed/splits/rubricbench_gold_train_seed.jsonl",
+        "providers": "configs/providers.local.jsonl",
+        "output": "data/processed/teacher_rubrics_raw.jsonl",
+        "data_source": "rubricbench_teacher_generation",
+        "sleep": 0.5,
+        "resume": true,
+        "require_budget_report": "outputs/api_budget/teacher_rubrics_budget.json",
+        "require_preflight_report": "outputs/preflight/sft_data_preflight.json"
+      }
+    },
+    {
+      "name": "generate_teacher_rubrics_healthbench",
+      "type": "generate_teachers",
+      "args": {
+        "input": "data/processed/healthbench_queries.jsonl",
+        "providers": "configs/providers.local.jsonl",
+        "output": "data/processed/teacher_rubrics_raw.jsonl",
+        "data_source": "healthbench_teacher_generation",
+        "sleep": 0.5,
+        "resume": true,
+        "require_budget_report": "outputs/api_budget/healthbench_teacher_rubrics_budget.json",
+        "require_preflight_report": "outputs/preflight/sft_data_preflight.json"
+      }
+    },
+    {
+      "name": "generate_teacher_rubrics_writingbench",
+      "type": "generate_teachers",
+      "args": {
+        "input": "data/processed/writingbench_queries.jsonl",
+        "providers": "configs/providers.local.jsonl",
+        "output": "data/processed/teacher_rubrics_raw.jsonl",
+        "data_source": "writingbench_teacher_generation",
+        "sleep": 0.5,
+        "resume": true,
+        "require_budget_report": "outputs/api_budget/writingbench_teacher_rubrics_budget.json",
+        "require_preflight_report": "outputs/preflight/sft_data_preflight.json"
+      }
+    },
+    {
+      "name": "api_budget_meta_verifier",
+      "type": "api_budget",
+      "args": {
+        "input": "data/processed/teacher_rubrics_raw.jsonl",
+        "providers": "configs/verifier.local.jsonl",
+        "unit_field": "rubrics",
+        "calls_per_record_per_provider": 1,
+        "default_qpm": 60,
+        "default_tpm": 60000,
+        "max_calls": 250000,
+        "max_total_tokens": 250000000,
+        "max_cost_usd": 8000,
+        "max_wallclock_minutes_serial": 20000,
+        "output": "outputs/api_budget/meta_verifier_budget.json",
+        "output_md": "outputs/api_budget/meta_verifier_budget.md",
+        "strict": true
+      }
+    },
+    {
+      "name": "filter_teacher_rubrics",
+      "type": "filter_verifier",
+      "args": {
+        "input": "data/processed/teacher_rubrics_raw.jsonl",
+        "output": "data/processed/teacher_rubrics_filtered.jsonl",
+        "stats_output": "outputs/verifier_stats.jsonl",
+        "report_output": "outputs/verifier/teacher_rubrics_filtered_report.json",
+        "mode": "api",
+        "provider": "configs/verifier.local.jsonl",
+        "require_budget_report": "outputs/api_budget/meta_verifier_budget.json",
+        "require_preflight_report": "outputs/preflight/sft_data_preflight.json",
+        "sleep": 0.2,
+        "drop_empty": true
+      }
+    },
+    {
+      "name": "filter_teacher_rubrics_hard_gold_holdout_overlap",
+      "type": "filter_holdout_contamination",
+      "args": {
+        "holdout": "data/processed/splits/rubricbench_gold_test_main.jsonl",
+        "input": "data/processed/teacher_rubrics_filtered.jsonl",
+        "output": "data/processed/teacher_rubrics_filtered.hard_gold_clean.jsonl",
+        "report": "outputs/contamination_audit/teacher_rubrics_hard_gold_holdout_filter.json",
+        "query_key": ["query", "prompt", "input", "question", "instruction"],
+        "strict": true
+      }
+    },
+    {
+      "name": "filter_teacher_rubrics_rewardbench_downstream_overlap",
+      "type": "filter_holdout_contamination",
+      "args": {
+        "holdout": "data/processed/splits/rewardbench_pref_downstream_holdout.jsonl",
+        "input": "data/processed/teacher_rubrics_filtered.hard_gold_clean.jsonl",
+        "output": "data/processed/teacher_rubrics_filtered.rewardbench_clean.jsonl",
+        "report": "outputs/contamination_audit/teacher_rubrics_rewardbench_holdout_filter.json",
+        "query_key": ["query", "prompt", "input", "question", "instruction"],
+        "strict": true
+      }
+    },
+    {
+      "name": "filter_teacher_rubrics_judgebench_downstream_overlap",
+      "type": "filter_holdout_contamination",
+      "args": {
+        "holdout": "data/processed/judgebench_pref.jsonl",
+        "input": "data/processed/teacher_rubrics_filtered.rewardbench_clean.jsonl",
+        "output": "data/processed/teacher_rubrics_filtered.judgebench_clean.jsonl",
+        "report": "outputs/contamination_audit/teacher_rubrics_judgebench_holdout_filter.json",
+        "query_key": ["query", "prompt", "input", "question", "instruction"],
+        "strict": true
+      }
+    },
+    {
+      "name": "filter_teacher_rubrics_rewardbench2_downstream_overlap",
+      "type": "filter_holdout_contamination",
+      "args": {
+        "holdout": "data/processed/rewardbench2_multicandidate.clean.jsonl",
+        "input": "data/processed/teacher_rubrics_filtered.judgebench_clean.jsonl",
+        "output": "data/processed/teacher_rubrics_training_clean.jsonl",
+        "report": "outputs/contamination_audit/teacher_rubrics_rewardbench2_holdout_filter.json",
+        "query_key": ["query", "prompt", "input", "question", "instruction"],
+        "strict": true
+      }
+    },
+    {
+      "name": "validate_filtered_teacher_rubrics",
+      "type": "validate_rubrics",
+      "args": {
+        "input": "data/processed/teacher_rubrics_training_clean.jsonl",
+        "output_dir": "outputs/validation/teacher_rubrics_filtered",
+        "min_rubrics": 1,
+        "max_rubrics": 50,
+        "redundancy_tau": 0.95,
+        "strict": true
+      }
+    },
+    {
+      "name": "build_sft_all_domains",
+      "type": "build_sft",
+      "args": {
+        "input": "data/processed/teacher_rubrics_training_clean.jsonl",
+        "sft_output": "data/processed/blindspot_sft.unfiltered.jsonl",
+        "proxy_gold_output": "data/processed/proxy_gold.unfiltered.jsonl",
+        "stats_output": "outputs/sft_stats.jsonl",
+        "report_output": "outputs/sft_data/proxy_gold_build_report.json",
+        "data_source": "multi_teacher_proxy",
+        "embedding_model": "BAAI/bge-large-en-v1.5",
+        "dedupe_tau": 0.85,
+        "min_rubrics": 1,
+        "min_teachers": 2
+      }
+    },
+    {
+      "name": "build_healthbench_proxy_gold",
+      "type": "build_sft",
+      "args": {
+        "input": "data/processed/teacher_rubrics_training_clean.jsonl",
+        "sft_output": "data/processed/healthbench_sft.jsonl",
+        "proxy_gold_output": "data/processed/healthbench_proxy_gold.jsonl",
+        "stats_output": "outputs/healthbench_sft_stats.jsonl",
+        "report_output": "outputs/sft_data/healthbench_proxy_gold_build_report.json",
+        "data_source": "healthbench_proxy",
+        "data_source_filter": ["healthbench_teacher_generation"],
+        "embedding_model": "BAAI/bge-large-en-v1.5",
+        "dedupe_tau": 0.85,
+        "min_rubrics": 1,
+        "min_teachers": 2
+      }
+    },
+    {
+      "name": "build_writingbench_proxy_gold",
+      "type": "build_sft",
+      "args": {
+        "input": "data/processed/teacher_rubrics_training_clean.jsonl",
+        "sft_output": "data/processed/writingbench_sft.jsonl",
+        "proxy_gold_output": "data/processed/writingbench_proxy_gold.jsonl",
+        "stats_output": "outputs/writingbench_sft_stats.jsonl",
+        "report_output": "outputs/sft_data/writingbench_proxy_gold_build_report.json",
+        "data_source": "writingbench_proxy",
+        "data_source_filter": ["writingbench_teacher_generation"],
+        "embedding_model": "BAAI/bge-large-en-v1.5",
+        "dedupe_tau": 0.85,
+        "min_rubrics": 1,
+        "min_teachers": 2
+      }
+    },
+    {
+      "name": "filter_blindspot_sft_hard_gold_holdout_overlap",
+      "type": "filter_holdout_contamination",
+      "args": {
+        "holdout": "data/processed/splits/rubricbench_gold_test_main.jsonl",
+        "input": "data/processed/blindspot_sft.unfiltered.jsonl",
+        "output": "data/processed/blindspot_sft.hard_gold_clean.jsonl",
+        "report": "outputs/contamination_audit/blindspot_sft_hard_gold_holdout_filter.json",
+        "query_key": ["query", "prompt", "input", "question", "instruction"],
+        "strict": true
+      }
+    },
+    {
+      "name": "filter_blindspot_sft_rewardbench_downstream_overlap",
+      "type": "filter_holdout_contamination",
+      "args": {
+        "holdout": "data/processed/splits/rewardbench_pref_downstream_holdout.jsonl",
+        "input": "data/processed/blindspot_sft.hard_gold_clean.jsonl",
+        "output": "data/processed/blindspot_sft.rewardbench_clean.jsonl",
+        "report": "outputs/contamination_audit/blindspot_sft_rewardbench_holdout_filter.json",
+        "query_key": ["query", "prompt", "input", "question", "instruction"],
+        "strict": true
+      }
+    },
+    {
+      "name": "filter_blindspot_sft_judgebench_downstream_overlap",
+      "type": "filter_holdout_contamination",
+      "args": {
+        "holdout": "data/processed/judgebench_pref.jsonl",
+        "input": "data/processed/blindspot_sft.rewardbench_clean.jsonl",
+        "output": "data/processed/blindspot_sft.judgebench_clean.jsonl",
+        "report": "outputs/contamination_audit/blindspot_sft_judgebench_holdout_filter.json",
+        "query_key": ["query", "prompt", "input", "question", "instruction"],
+        "strict": true
+      }
+    },
+    {
+      "name": "filter_blindspot_sft_rewardbench2_downstream_overlap",
+      "type": "filter_holdout_contamination",
+      "args": {
+        "holdout": "data/processed/rewardbench2_multicandidate.clean.jsonl",
+        "input": "data/processed/blindspot_sft.judgebench_clean.jsonl",
+        "output": "data/processed/blindspot_sft.jsonl",
+        "report": "outputs/contamination_audit/blindspot_sft_rewardbench2_holdout_filter.json",
+        "query_key": ["query", "prompt", "input", "question", "instruction"],
+        "strict": true
+      }
+    },
+    {
+      "name": "filter_proxy_gold_hard_gold_holdout_overlap",
+      "type": "filter_holdout_contamination",
+      "args": {
+        "holdout": "data/processed/splits/rubricbench_gold_test_main.jsonl",
+        "input": "data/processed/proxy_gold.unfiltered.jsonl",
+        "output": "data/processed/proxy_gold.hard_gold_clean.jsonl",
+        "report": "outputs/contamination_audit/proxy_gold_hard_gold_holdout_filter.json",
+        "query_key": ["query", "prompt", "input", "question", "instruction"],
+        "strict": true
+      }
+    },
+    {
+      "name": "filter_proxy_gold_rewardbench_downstream_overlap",
+      "type": "filter_holdout_contamination",
+      "args": {
+        "holdout": "data/processed/splits/rewardbench_pref_downstream_holdout.jsonl",
+        "input": "data/processed/proxy_gold.hard_gold_clean.jsonl",
+        "output": "data/processed/proxy_gold.rewardbench_clean.jsonl",
+        "report": "outputs/contamination_audit/proxy_gold_rewardbench_holdout_filter.json",
+        "query_key": ["query", "prompt", "input", "question", "instruction"],
+        "strict": true
+      }
+    },
+    {
+      "name": "filter_proxy_gold_judgebench_downstream_overlap",
+      "type": "filter_holdout_contamination",
+      "args": {
+        "holdout": "data/processed/judgebench_pref.jsonl",
+        "input": "data/processed/proxy_gold.rewardbench_clean.jsonl",
+        "output": "data/processed/proxy_gold.judgebench_clean.jsonl",
+        "report": "outputs/contamination_audit/proxy_gold_judgebench_holdout_filter.json",
+        "query_key": ["query", "prompt", "input", "question", "instruction"],
+        "strict": true
+      }
+    },
+    {
+      "name": "filter_proxy_gold_rewardbench2_downstream_overlap",
+      "type": "filter_holdout_contamination",
+      "args": {
+        "holdout": "data/processed/rewardbench2_multicandidate.clean.jsonl",
+        "input": "data/processed/proxy_gold.judgebench_clean.jsonl",
+        "output": "data/processed/proxy_gold.jsonl",
+        "report": "outputs/contamination_audit/proxy_gold_rewardbench2_holdout_filter.json",
+        "query_key": ["query", "prompt", "input", "question", "instruction"],
+        "strict": true
+      }
+    },
+    {
+      "name": "register_blindspot_sft",
+      "type": "register_llamafactory",
+      "args": {
+        "dataset_info": "data/processed/dataset_info.json",
+        "name": "blindspot_sft",
+        "file_name": "blindspot_sft.jsonl",
+        "overwrite": true
+      }
+    },
+    {
+      "name": "convert_proxy_gold_to_verl",
+      "type": "convert_verl",
+      "args": {
+        "input": "data/processed/proxy_gold.jsonl",
+        "output": "data/processed/proxy_gold_verl.parquet",
+        "data_source": "multi_teacher_proxy",
+        "min_records": 1000,
+        "report_output": "outputs/sft_data/proxy_gold_verl_report.json"
+      }
+    }
+  ]
+}

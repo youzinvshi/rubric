@@ -1,0 +1,65 @@
+\section{Limitations and Scope}
+
+BSC depends on the quality and coverage of the human-gold dimension set. If human
+criteria omit a legitimate dimension, BSC cannot reward it. We therefore treat
+RubricBench \texttt{test\_main} as the clean hard-gold benchmark and separate
+it from proxy-gold training data. Proxy criteria elicited from teachers are used
+for scale, but they should not be described as equivalent to human gold.
+
+BSC is also a recall-style diagnostic over evaluation dimensions, not a full
+measure of final judge correctness. Even when a method covers additional
+human-gold dimensions, it may still use them poorly in a downstream decision,
+or it can make a correct pairwise preference for the wrong reasons. For this
+reason, BSC claims are paired with redundancy, hallucination, and downstream
+utility gates;
+the metric is intended to expose missing evaluative dimensions and test
+attempted reductions, not to replace held-out judge-utility evaluation.
+Concretely, an apparent coverage change is only metric-support unless the
+RewardBench, RewardBench-2, and JudgeBench rows pass the paper-facing
+API/model-scorer eligibility checks. If those rows are missing, stale, or
+keyword-only smoke results, the correct manuscript sentence is metric-only BSC
+evidence rather than downstream utility.
+
+Semantic thresholds affect absolute BSC values. We report threshold sweeps and
+confidence intervals, and the main claims should emphasize protocol-fixed
+coverage changes rather than over-interpreting one threshold. A coverage change
+should be described as dimension-level recovery only after the per-gold
+dimension audit shows recovered and lost dimensions under query-aligned inputs,
+fixed BGE embeddings, verifier valid-flag filtering, and the downstream utility gates.
+Aggregate coverage alone cannot establish dimension-level recovery because it
+can hide lost dimensions, duplicate paraphrases, or newly invalid criteria.
+Embedding models can also introduce semantic matching errors. The repository
+therefore provides an annotation-pack builder for matched and unmatched
+dimension pairs, but the manuscript should treat it as C6-passing
+human-audit evidence only after human labels are filled and audited. These safeguards make BSC
+auditable rather than universal: they reduce threshold and embedding-model
+arbitrariness, but they do not eliminate the need for downstream utility and
+human-audit evidence.
+
+The verifier is a necessary quality-control mechanism but may encode its own
+biases. A strict verifier can wrongly reject valid domain-specific criteria,
+while a relaxed verifier can admit generic or weak criteria. Our implementation
+therefore uses fail-closed parsing, domain-aware policies, and separate
+relaxed-verifier audits for HealthBench and BEIR/NQ. Paper claims about proxy
+quality should be tied to verifier retention and validation reports.
+
+Downstream utility depends on the criteria-conditioned scorer. Keyword overlap scorers are
+only smoke-test tools; paper-facing downstream claims require a fixed
+API/model scorer, consistent prompts, and held-out RewardBench, RewardBench-2,
+and JudgeBench evaluation. Finally, this work studies whether LLMs cover human
+evaluation dimensions, not whether human-authored criteria are complete or uniquely
+correct for every open-ended task.
+
+The contamination protocol is intentionally strict but not omniscient. Our
+automated filters and audits operate at normalized query-level exact match, so
+they are designed to catch direct training/evaluation leakage and known split
+overlaps. They do not rule out every paraphrased, templated, or
+semantically near-duplicate query across public corpora. We therefore report the
+exact audit scope and require non-overlap holdouts for claims, while avoiding
+stronger claims that no semantically related examples exist anywhere in the
+training sources.
+Conversely, a zero exact-overlap count is not a clean-isolation certificate if
+the training-side artifacts are absent or stale. In that case the audit is
+reported as \texttt{artifact\_status=blocked} and
+\texttt{overlap\_status=not\_auditable}; the correct paper state is missing C0
+evidence, not a clean holdout claim.

@@ -1,0 +1,5 @@
+{"name":"base","model":"Qwen/Qwen2.5-7B-Instruct","base_url":"http://localhost:8000/v1","api_key_env":"LOCAL_OPENAI_API_KEY","temperature":0.2,"max_tokens":1200}
+{"name":"gpt4o","model":"gpt-4o","base_url":"https://api.openai.com/v1","api_key_env":"OPENAI_API_KEY","temperature":0.2,"max_tokens":1200}
+{"name":"claude","model":"claude-3-5-sonnet-latest","base_url":"https://api.anthropic-openai-compatible.example/v1","api_key_env":"ANTHROPIC_API_KEY","temperature":0.2,"max_tokens":1200}
+{"name":"sft_only","model":"outputs/checkpoints/evaluation_criteria_policy_sft","base_url":"http://localhost:8001/v1","api_key_env":"LOCAL_OPENAI_API_KEY","temperature":0.2,"max_tokens":1200}
+{"name":"sft_rl","model":"outputs/checkpoints/evaluation_criteria_policy_rl","base_url":"http://localhost:8002/v1","api_key_env":"LOCAL_OPENAI_API_KEY","temperature":0.2,"max_tokens":1200}

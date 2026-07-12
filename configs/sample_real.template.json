@@ -1,0 +1,46 @@
+{
+  "stages": [
+    {
+      "name": "sample_rubricbench_gold_pilot",
+      "type": "sample_records",
+      "args": {
+        "input": "data/processed/rubricbench_gold.jsonl",
+        "output": "data/samples/rubricbench_gold_pilot100.jsonl",
+        "n": 100,
+        "seed": 13,
+        "stratify_key": "data_source",
+        "dedupe_key": "query",
+        "report": "outputs/sampling/rubricbench_gold_pilot100.json",
+        "report_md": "outputs/sampling/rubricbench_gold_pilot100.md"
+      }
+    },
+    {
+      "name": "sample_rubricbench_queries_pilot",
+      "type": "sample_records",
+      "args": {
+        "input": "data/processed/rubricbench_queries.jsonl",
+        "output": "data/samples/rubricbench_queries_pilot100.jsonl",
+        "n": 100,
+        "seed": 13,
+        "stratify_key": "data_source",
+        "dedupe_key": "query",
+        "report": "outputs/sampling/rubricbench_queries_pilot100.json",
+        "report_md": "outputs/sampling/rubricbench_queries_pilot100.md"
+      }
+    },
+    {
+      "name": "sample_rewardbench_pref_pilot",
+      "type": "sample_records",
+      "args": {
+        "input": "data/processed/rewardbench_pref.jsonl",
+        "output": "data/samples/rewardbench_pref_pilot200.jsonl",
+        "n": 200,
+        "seed": 13,
+        "stratify_key": "data_source",
+        "dedupe_key": "query",
+        "report": "outputs/sampling/rewardbench_pref_pilot200.json",
+        "report_md": "outputs/sampling/rewardbench_pref_pilot200.md"
+      }
+    }
+  ]
+}

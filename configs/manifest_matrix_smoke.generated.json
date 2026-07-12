@@ -1,0 +1,108 @@
+{
+  "required_files": [
+    "data/processed/matrix_smoke/toy_base/bsc_eval.jsonl",
+    "outputs/matrix_smoke/toy_base/bsc_join_report.json",
+    "outputs/matrix_smoke/toy_base/bsc/summary.json",
+    "data/processed/matrix_smoke/toy_base/downstream_eval.jsonl",
+    "outputs/matrix_smoke/toy_base/downstream_join_report.json",
+    "outputs/matrix_smoke/toy_base/downstream/summary.json",
+    "outputs/matrix_smoke/toy_base/bsc_ci/bootstrap_ci.json",
+    "outputs/matrix_smoke/toy_base/bsc_ci/bootstrap_ci.csv",
+    "outputs/matrix_smoke/toy_base/bsc_ci/bootstrap_ci.md",
+    "outputs/matrix_smoke/toy_base/downstream_ci/bootstrap_ci.json",
+    "outputs/matrix_smoke/toy_base/downstream_ci/bootstrap_ci.csv",
+    "outputs/matrix_smoke/toy_base/downstream_ci/bootstrap_ci.md",
+    "outputs/matrix_smoke/toy_base/bsc_sweep/threshold_sweep.csv",
+    "outputs/matrix_smoke/toy_base/bsc_sweep/threshold_sweep.json",
+    "outputs/matrix_smoke/toy_base/bsc_sweep/threshold_sweep.md",
+    "data/processed/matrix_smoke/toy_alt/bsc_eval.jsonl",
+    "outputs/matrix_smoke/toy_alt/bsc_join_report.json",
+    "outputs/matrix_smoke/toy_alt/bsc/summary.json",
+    "data/processed/matrix_smoke/toy_alt/downstream_eval.jsonl",
+    "outputs/matrix_smoke/toy_alt/downstream_join_report.json",
+    "outputs/matrix_smoke/toy_alt/downstream/summary.json",
+    "outputs/matrix_smoke/toy_alt/bsc_ci/bootstrap_ci.json",
+    "outputs/matrix_smoke/toy_alt/bsc_ci/bootstrap_ci.csv",
+    "outputs/matrix_smoke/toy_alt/bsc_ci/bootstrap_ci.md",
+    "outputs/matrix_smoke/toy_alt/downstream_ci/bootstrap_ci.json",
+    "outputs/matrix_smoke/toy_alt/downstream_ci/bootstrap_ci.csv",
+    "outputs/matrix_smoke/toy_alt/downstream_ci/bootstrap_ci.md",
+    "outputs/matrix_smoke/main_table.csv",
+    "outputs/matrix_smoke/main_table.md",
+    "outputs/matrix_smoke/reward_ablation/ablation_summary.csv",
+    "outputs/matrix_smoke/reward_ablation/ablation_summary.md",
+    "outputs/matrix_smoke/reward_ablation/variants/full_summary.json",
+    "outputs/matrix_smoke/reward_ablation/variants/no_red_summary.json",
+    "outputs/matrix_smoke/reward_ablation/variants/no_valid_summary.json",
+    "outputs/matrix_smoke/reward_ablation/variants/no_verifier_summary.json",
+    "outputs/matrix_smoke/reward_ablation/variants/cov_only_summary.json",
+    "outputs/matrix_smoke/teacher_union_ablation/teacher_union_per_item.csv",
+    "outputs/matrix_smoke/teacher_union_ablation/teacher_union_ablation.csv",
+    "outputs/matrix_smoke/teacher_union_ablation/teacher_union_ablation.md",
+    "outputs/matrix_smoke/teacher_union_ablation/teacher_union_ablation.json",
+    "outputs/matrix_smoke/dimension_transition/toy_base_to_toy_alt/transition_summary.json",
+    "outputs/matrix_smoke/dimension_transition/toy_base_to_toy_alt/transition_per_item.csv",
+    "outputs/matrix_smoke/dimension_transition/toy_base_to_toy_alt/transition_by_category.csv",
+    "outputs/matrix_smoke/dimension_transition/toy_base_to_toy_alt/transition_gold_items.jsonl",
+    "outputs/matrix_smoke/semantic_space/semantic_space.svg",
+    "outputs/matrix_smoke/semantic_space/semantic_space.pdf",
+    "outputs/matrix_smoke/semantic_space/semantic_space_points.csv",
+    "outputs/matrix_smoke/semantic_space/semantic_space_summary.json"
+  ],
+  "summaries": [
+    {
+      "name": "toy_base_bsc",
+      "path": "outputs/matrix_smoke/toy_base/bsc/summary.json",
+      "required_keys": [
+        "n",
+        "input",
+        "embedding_model",
+        "coverage_tau",
+        "redundancy_tau",
+        "data_source_counts",
+        "verifier_source",
+        "verifier_source_counts",
+        "mean_coverage",
+        "mean_blind",
+        "mean_redundancy",
+        "mean_hallucination"
+      ]
+    },
+    {
+      "name": "toy_base_downstream",
+      "path": "outputs/matrix_smoke/toy_base/downstream/summary.json",
+      "required_keys": [
+        "accuracy",
+        "tie_rate",
+        "mean_margin"
+      ]
+    },
+    {
+      "name": "toy_alt_bsc",
+      "path": "outputs/matrix_smoke/toy_alt/bsc/summary.json",
+      "required_keys": [
+        "n",
+        "input",
+        "embedding_model",
+        "coverage_tau",
+        "redundancy_tau",
+        "data_source_counts",
+        "verifier_source",
+        "verifier_source_counts",
+        "mean_coverage",
+        "mean_blind",
+        "mean_redundancy",
+        "mean_hallucination"
+      ]
+    },
+    {
+      "name": "toy_alt_downstream",
+      "path": "outputs/matrix_smoke/toy_alt/downstream/summary.json",
+      "required_keys": [
+        "accuracy",
+        "tie_rate",
+        "mean_margin"
+      ]
+    }
+  ]
+}

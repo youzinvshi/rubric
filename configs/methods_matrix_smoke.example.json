@@ -1,0 +1,67 @@
+{
+  "common": {
+    "bsc_gold": "data/processed/toy_gold_normalized.jsonl",
+    "downstream_preferences": "examples/toy_preference.jsonl",
+    "processed_root": "data/processed/matrix_smoke",
+    "output_root": "outputs/matrix_smoke",
+    "embedding_model": "token-overlap",
+    "coverage_tau": 0.5,
+    "redundancy_tau": 0.9,
+    "downstream_scorer": "keyword",
+    "bsc_data_source": "toy_bsc_matrix",
+    "downstream_data_source": "toy_downstream_matrix",
+    "bootstrap_ci": {
+      "enabled": true,
+      "bsc_metrics": ["coverage", "blind", "redundancy", "hallucination", "reward"],
+      "downstream_metrics": ["correct", "tie", "margin"],
+      "n_boot": 50,
+      "seed": 13,
+      "confidence": 0.95
+    },
+    "bsc_sweep": {
+      "enabled": true,
+      "methods": ["toy_base"],
+      "coverage_tau": [0.5, 0.7],
+      "redundancy_tau": [0.8, 0.9]
+    },
+    "reward_ablation": {
+      "enabled": true,
+      "method": "toy_base",
+      "output_dir": "outputs/matrix_smoke/reward_ablation"
+    },
+    "teacher_union_ablation": {
+      "enabled": true,
+      "teachers": "data/processed/toy_teacher_filtered.jsonl",
+      "output_dir": "outputs/matrix_smoke/teacher_union_ablation",
+      "dedupe_tau": 0.9,
+      "min_teachers": 2
+    },
+    "dimension_transition": {
+      "enabled": true,
+      "baseline": "toy_base",
+      "candidates": ["toy_alt"],
+      "name_prefix": "dimension_transition",
+      "output_dir": "outputs/matrix_smoke/dimension_transition"
+    },
+    "semantic_space": {
+      "enabled": true,
+      "methods": ["toy_base", "toy_alt"],
+      "output_dir": "outputs/matrix_smoke/semantic_space",
+      "max_points": 200
+    }
+  },
+  "methods": [
+    {
+      "name": "toy_base",
+      "model_filter": null,
+      "bsc_rubrics": "data/processed/toy_teacher_filtered.jsonl",
+      "downstream_rubrics": "examples/toy_downstream_rubrics.jsonl"
+    },
+    {
+      "name": "toy_alt",
+      "model_filter": null,
+      "bsc_rubrics": "data/processed/toy_teacher_filtered.jsonl",
+      "downstream_rubrics": "examples/toy_downstream_rubrics.jsonl"
+    }
+  ]
+}

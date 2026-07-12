@@ -1,0 +1,89 @@
+{
+  "sft": {
+    "config": "configs/llamafactory_sft.local.yaml",
+    "command": "llamafactory-cli train",
+    "log": "outputs/logs/sft.log",
+    "output_dir": "outputs/checkpoints/evaluation_criteria_policy_sft",
+    "sft_data": "data/processed/blindspot_sft.jsonl",
+    "env": {
+      "TOKENIZERS_PARALLELISM": "false"
+    },
+    "dataset_info_note": "Make sure blindspot_sft is registered in LLaMA-Factory dataset_info.json."
+  },
+  "grpo": {
+    "config": "configs/verl_grpo_bsc.local.yaml",
+    "command": "python3 -m verl.trainer.main_ppo",
+    "log": "outputs/logs/grpo_bsc.log",
+    "output_dir": "outputs/checkpoints/evaluation_criteria_policy_rl",
+    "rl_data": "data/processed/proxy_gold_verl.parquet",
+    "rl_data_report": "outputs/sft_data/proxy_gold_verl_report.json",
+    "reward_function": "src/blindspot_rl/verl_reward.py:compute_score",
+    "env": {
+      "BSC_EMBEDDING_MODEL": "BAAI/bge-large-en-v1.5",
+      "BSC_COVERAGE_TAU": "0.75",
+      "BSC_REDUNDANCY_TAU": "0.85",
+      "BSC_VERIFIER": "rule",
+      "BSC_W_COV": "1.0",
+      "BSC_W_VALID": "0.5",
+      "BSC_W_RED": "0.5"
+    },
+    "overrides": []
+  },
+  "reward_component_ablation": {
+    "enabled": true,
+    "output_dir": "outputs/reward_component_training_ablation",
+    "variants": {
+      "no_red": {
+        "log": "outputs/logs/grpo_bsc_no_red.log",
+        "output_dir": "outputs/checkpoints/evaluation_criteria_policy_rl_no_red",
+        "env": {
+          "BSC_W_RED": "0.0"
+        },
+        "overrides": [
+          "trainer.experiment_name=bsc_grpo_no_red",
+          "trainer.default_local_dir=outputs/checkpoints/evaluation_criteria_policy_rl_no_red"
+        ]
+      },
+      "no_valid": {
+        "log": "outputs/logs/grpo_bsc_no_valid.log",
+        "output_dir": "outputs/checkpoints/evaluation_criteria_policy_rl_no_valid",
+        "env": {
+          "BSC_W_VALID": "0.0",
+          "BSC_VERIFIER": "none"
+        },
+        "overrides": [
+          "trainer.experiment_name=bsc_grpo_no_valid",
+          "trainer.default_local_dir=outputs/checkpoints/evaluation_criteria_policy_rl_no_valid"
+        ]
+      },
+      "no_verifier": {
+        "log": "outputs/logs/grpo_bsc_no_verifier.log",
+        "output_dir": "outputs/checkpoints/evaluation_criteria_policy_rl_no_verifier",
+        "env": {
+          "BSC_VERIFIER": "none"
+        },
+        "overrides": [
+          "trainer.experiment_name=bsc_grpo_no_verifier",
+          "trainer.default_local_dir=outputs/checkpoints/evaluation_criteria_policy_rl_no_verifier"
+        ]
+      },
+      "cov_only": {
+        "log": "outputs/logs/grpo_bsc_cov_only.log",
+        "output_dir": "outputs/checkpoints/evaluation_criteria_policy_rl_cov_only",
+        "env": {
+          "BSC_W_VALID": "0.0",
+          "BSC_W_RED": "0.0",
+          "BSC_VERIFIER": "none"
+        },
+        "overrides": [
+          "trainer.experiment_name=bsc_grpo_cov_only",
+          "trainer.default_local_dir=outputs/checkpoints/evaluation_criteria_policy_rl_cov_only"
+        ]
+      }
+    }
+  },
+  "notes": [
+    "Copy configs/llamafactory_sft.example.yaml and configs/verl_grpo_bsc.example.yaml to .local.yaml before training.",
+    "Run SFT first, then point the GRPO model path to the SFT checkpoint."
+  ]
+}

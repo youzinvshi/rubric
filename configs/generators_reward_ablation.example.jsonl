@@ -1,0 +1,4 @@
+{"name":"no_red","model":"outputs/checkpoints/evaluation_criteria_policy_rl_no_red","base_url":"http://localhost:8010/v1","api_key_env":"LOCAL_OPENAI_API_KEY","temperature":0.2,"max_tokens":1200}
+{"name":"no_valid","model":"outputs/checkpoints/evaluation_criteria_policy_rl_no_valid","base_url":"http://localhost:8011/v1","api_key_env":"LOCAL_OPENAI_API_KEY","temperature":0.2,"max_tokens":1200}
+{"name":"no_verifier","model":"outputs/checkpoints/evaluation_criteria_policy_rl_no_verifier","base_url":"http://localhost:8012/v1","api_key_env":"LOCAL_OPENAI_API_KEY","temperature":0.2,"max_tokens":1200}
+{"name":"cov_only","model":"outputs/checkpoints/evaluation_criteria_policy_rl_cov_only","base_url":"http://localhost:8013/v1","api_key_env":"LOCAL_OPENAI_API_KEY","temperature":0.2,"max_tokens":1200}
